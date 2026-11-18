@@ -9,19 +9,19 @@ Eine kleine Website mit HTML, CSS und JavaScript. Ohne Framework und ohne Instal
 - `scripts/app.js`: Sudoku-Erzeugung, Eingaben, Speichern und Einstellungen.
 - `scripts/account.js`: Anmeldung und Online-Spielstände.
 - `pages/`: Hilfe, Impressum und Datenschutz.
-- `assets/`: Logo für helle und dunkle Hintergründe.
+- `../assets/`: Logo für helle und dunkle Hintergründe.
 
 Die Kommentare in den drei Dateien erklären die einzelnen Abschnitte.
 
 ## Lokal öffnen
 
-`index.html` im Browser öffnen. Alternativ im Projektordner einen lokalen Server starten:
+`sudoku/index.html` im Browser öffnen. Alternativ im Repository-Hauptordner einen lokalen Server starten:
 
 ```sh
 python3 -m http.server 4173 --bind 127.0.0.1
 ```
 
-Danach `http://localhost:4173` öffnen. Die Schriften Jost und WindSong werden von Google Fonts geladen.
+Danach `http://localhost:4173/sudoku/` öffnen. Die Schriften Jost und WindSong werden von Google Fonts geladen.
 
 ## Häufige Änderungen
 
