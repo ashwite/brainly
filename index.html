@@ -20,10 +20,10 @@
       // Die Seite funktioniert auch, wenn der Browser das Speichern blockiert.
     }
   </script>
-  <link rel="stylesheet" href="style.css?v=0.3">
+  <link rel="stylesheet" href="styles/style.css?v=0.3">
   <!-- Ich lade zuerst die Spiellogik und dann die Konto-Funktionen. defer wartet mit der Ausführung, bis das HTML eingelesen ist. -->
-  <script src="app.js?v=0.5" defer></script>
-  <script src="account.js?v=0.5" data-publishable-key="pk_test_d2FybS1wYW5kYS00MjY1LmNsZXJrLmFjY291bnRzLmRldiQ" defer></script>
+  <script src="scripts/app.js?v=0.5" defer></script>
+  <script src="scripts/account.js?v=0.5" data-publishable-key="pk_test_d2FybS1wYW5kYS00MjY1LmNsZXJrLmFjY291bnRzLmRldiQ" defer></script>
 </head>
 <body>
   <!-- Kopfzeile: Logo links, Schriftzug mittig, Einstellungen rechts. -->
@@ -130,9 +130,9 @@
         <button type="button" data-text="hard" data-level="hard">Schwer</button>
       </div>
       <nav aria-label="Hilfe und rechtliche Informationen" data-label="legalNav">
-        <a href="hilfe.html" data-text="help">Hilfe</a>
-        <a href="impressum.html" data-text="imprint">Impressum</a>
-        <a href="datenschutz.html" data-text="privacy">Datenschutz</a>
+        <a href="pages/hilfe.html" data-text="help">Hilfe</a>
+        <a href="pages/impressum.html" data-text="imprint">Impressum</a>
+        <a href="pages/datenschutz.html" data-text="privacy">Datenschutz</a>
       </nav>
     </div>
     <span id="footer-account-status" role="status"></span>
