@@ -1,6 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=WindSong:wght@400&family=Jost:wght@400;500;600&display=swap');
 
-/* 1. Farbpaare: dunkel und hell gehören immer zu einem Theme. */
+/* GEMEINSAM · Sudoku, Mudoku und Infoseiten
+   Hier pflege ich die Farben, Schriften und die Bausteine, die beide Spiele verwenden. */
+
+/* Farbpaletten: Zu jeder Palette gehören ein heller und ein dunkler Ton. */
 /* Hier lege ich wiederverwendbare Farben fest. var(...) liest später den jeweiligen Wert aus. */
 :root { --palette-dark: #000; --palette-light: #fff; }
 html[data-palette="garden"] { --palette-dark: #141c14; --palette-light: #f6bdd7; }
@@ -31,7 +34,7 @@ html[data-theme="dark"] {
   --ink: var(--palette-light);
 }
 
-/* 2. Grundgestaltung und Tastatur-Fokus. */
+/* Grundgestaltung und Tastatur-Fokus für beide Spiele. */
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--bg); color: var(--ink); font-family: 'Jost', sans-serif; }
 button { font: inherit; color: inherit; cursor: pointer; background: var(--bg); }
@@ -39,7 +42,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
 /* Wenn ich mit der Tastatur unterwegs bin, zeigt der Rahmen, welches Element gerade den Fokus hat. */
 button:focus-visible, a:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
 
-/* 3. Kopfzeile. Die hohe Ebene hält das Menü über den Animationen. */
+/* Gemeinsame Kopfzeile mit Logo, Spielname und Menü. */
 header {
   position: relative;
   z-index: 50;
@@ -86,7 +89,7 @@ html[data-theme="dark"] .logo-dark { display: block; }
 .menu-toggle[aria-expanded="true"] span:first-child { transform: translateY(4px) rotate(45deg); }
 .menu-toggle[aria-expanded="true"] span:last-child { transform: translateY(-4px) rotate(-45deg); }
 
-/* 4. Ausklappbare Navigation mit Farbpunkten. */
+/* Gemeinsame Navigation mit Konto, Stufen und Farbkreisen. */
 .navigation {
   position: absolute;
   top: 51px;
@@ -134,7 +137,7 @@ html[data-theme="dark"] .logo-dark { display: block; }
 .palette-swatch { width: 26px; height: 26px; border: 1px solid var(--line); border-radius: 50%; background: var(--swatch-light); }
 html[data-theme="dark"] .palette-swatch { background: var(--swatch-dark); }
 
-/* 5. Spielfläche: 9 Spalten, dickere Linien trennen die 3×3-Blöcke. */
+/* Gemeinsamer Inhaltsbereich mit Titel und zentrierter Spielfläche. */
 main {
   position: relative;
   z-index: 0;
@@ -149,38 +152,6 @@ main {
 }
 .intro { width: 100%; text-align: center; }
 h1 { margin: 12px 0 4px; font-size: 22px; line-height: 1.35; font-weight: 400; }
-.game { width: 100%; max-width: 470px; }
-.board-wrap { overflow: hidden; border: 2px solid var(--strong-line); border-radius: 9px; }
-/* Ich verteile die Feld-Buttons auf neun gleich breite Spalten. Daraus entstehen bei 81 Feldern neun Zeilen. */
-#board { display: grid; grid-template-columns: repeat(9, 1fr); background: var(--bg); }
-.cell {
-  aspect-ratio: 1;
-  padding: 0;
-  border: 0;
-  border-right: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
-  background: transparent;
-  font-size: 25px;
-  font-weight: 400;
-}
-.cell.given { font-weight: 500; }
-.cell.incorrect { text-decoration: underline wavy; text-underline-offset: 3px; }
-/* Ich mache die Linie nach jeder dritten Spalte dicker. Am äußeren Rand übernimmt der Rahmen die Linie. */
-.cell:nth-child(3n) { border-right: 2px solid var(--strong-line); }
-.cell:nth-child(9n) { border-right: 0; }
-/* Die Felder 19 bis 27 und 46 bis 54 beenden den ersten und zweiten Blockstreifen. Dort ziehe ich unten eine dickere Linie. */
-.cell:nth-child(n+19):nth-child(-n+27),
-.cell:nth-child(n+46):nth-child(-n+54) { border-bottom: 2px solid var(--strong-line); }
-.cell:nth-child(n+73) { border-bottom: 0; }
-/* Die von app.js gesetzten Klassen zeigen Nachbarfelder, gleiche Zahlen und die aktuelle Auswahl unterschiedlich an. */
-.cell.related { background: var(--related); }
-.cell.same { background: var(--same); }
-.cell.selected { background: var(--selected); box-shadow: inset 0 0 0 2px var(--ink); }
-#numbers { display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); gap: 7px; }
-#numbers button, #hint-button { height: 48px; border: 1px solid var(--line); border-radius: 7px; }
-#numbers button { padding-inline: 0; font-size: 23px; }
-#numbers button:hover, #hint-button:enabled:hover { outline: 1px solid var(--ink); outline-offset: -1px; }
-
 /* Meldungen bleiben für Screenreader erreichbar, ohne sichtbare Begleittexte. */
 .sr-only {
   position: absolute;
@@ -194,7 +165,7 @@ h1 { margin: 12px 0 4px; font-size: 22px; line-height: 1.35; font-weight: 400; }
   border: 0;
 }
 
-/* 6. Kleine Bildschirme: schmalere Abstände und kleinere Zahlen. */
+/* Gemeinsame Abstände auf kleinen Bildschirmen. */
 @media (max-width: 700px) {
   header { height: 64px; padding: 0 20px; }
   .brand-wordmark { font-size: 31px; }
@@ -202,21 +173,13 @@ h1 { margin: 12px 0 4px; font-size: 22px; line-height: 1.35; font-weight: 400; }
   main { max-width: 510px; gap: 25px; margin: 25px auto 30px; padding: 0 20px; }
   .intro { text-align: left; }
   h1 { font-size: 20px; margin: 8px 0 0; }
-  .cell { font-size: 22px; }
-  #numbers { gap: 5px; }
-  #numbers button, #hint-button { height: 44px; }
-  #numbers button { font-size: 21px; }
 }
 
-/* 7. Animationen nur aktivieren, wenn keine reduzierte Bewegung gewünscht ist. */
+/* Gemeinsame Animationen für Kopfzeile, Titel und Menü. */
 @media (prefers-reduced-motion: no-preference) {
   header { animation: header-arrive .65s ease-out both; }
   .intro { animation: content-arrive .8s cubic-bezier(.2,.7,.3,1) .12s both; }
-  .scroll-reveal { opacity: 0; transform: translateY(24px); transition: opacity .8s ease, transform .8s cubic-bezier(.2,.7,.3,1); }
-  .scroll-reveal.is-visible { opacity: 1; transform: translateY(0); }
   .navigation:not([hidden]) { animation: nav-arrive .22s ease-out both; transform-origin: top right; }
-  #numbers button { transition: transform .18s ease; }
-  #numbers button:active { transform: scale(.92); }
 }
 @keyframes header-arrive {
   from { opacity: 0; transform: translateY(-10px); }
@@ -281,8 +244,124 @@ body { min-height: 100dvh; display: flex; flex-direction: column; }
 html:lang(de) .help-en,
 html:lang(en) .help-de { display: none; }
 
+/* SUDOKU · Zahlenrätsel
+   Hier gestalte ich Raster, markierte Zellen, Zahlentasten und die Glühbirne. */
+
+.game { width: 100%; max-width: 470px; }
+.board-wrap { overflow: hidden; border: 2px solid var(--strong-line); border-radius: 9px; }
+/* Ich verteile die Feld-Buttons auf neun gleich breite Spalten. Daraus entstehen bei 81 Feldern neun Zeilen. */
+#board { display: grid; grid-template-columns: repeat(9, 1fr); background: var(--bg); }
+.cell {
+  aspect-ratio: 1;
+  padding: 0;
+  border: 0;
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  background: transparent;
+  font-size: 25px;
+  font-weight: 400;
+}
+.cell.given { font-weight: 500; }
+.cell.incorrect { text-decoration: underline wavy; text-underline-offset: 3px; }
+/* Ich mache die Linie nach jeder dritten Spalte dicker. Am äußeren Rand übernimmt der Rahmen die Linie. */
+.cell:nth-child(3n) { border-right: 2px solid var(--strong-line); }
+.cell:nth-child(9n) { border-right: 0; }
+/* Die Felder 19 bis 27 und 46 bis 54 beenden den ersten und zweiten Blockstreifen. Dort ziehe ich unten eine dickere Linie. */
+.cell:nth-child(n+19):nth-child(-n+27),
+.cell:nth-child(n+46):nth-child(-n+54) { border-bottom: 2px solid var(--strong-line); }
+.cell:nth-child(n+73) { border-bottom: 0; }
+/* Die von app.js gesetzten Klassen zeigen Nachbarfelder, gleiche Zahlen und die aktuelle Auswahl unterschiedlich an. */
+.cell.related { background: var(--related); }
+.cell.same { background: var(--same); }
+.cell.selected { background: var(--selected); box-shadow: inset 0 0 0 2px var(--ink); }
+#numbers { display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); gap: 7px; }
+#numbers button, #hint-button { height: 48px; border: 1px solid var(--line); border-radius: 7px; }
+#numbers button { padding-inline: 0; font-size: 23px; }
+#numbers button:hover, #hint-button:enabled:hover { outline: 1px solid var(--ink); outline-offset: -1px; }
+
+/* Sudoku: Die Glühbirne steht neben den Zahlentasten. */
 .number-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 5px; margin-top: 20px; }
 #hint-button { display: grid; place-items: center; width: 32px; padding: 0; }
 #hint-button:disabled { opacity: .55; cursor: default; }
 #hint-message { margin: 8px 0 0; font-size: 14px; text-align: center; }
 #hint-message:empty { margin: 0; }
+
+/* Sudoku: Kleinere Zahlen und Tastenabstände auf dem Handy. */
+@media (max-width: 700px) {
+  .cell { font-size: 22px; }
+  #numbers { gap: 5px; }
+  #numbers button, #hint-button { height: 44px; }
+  #numbers button { font-size: 21px; }
+}
+
+/* Sudoku: Raster und Tasten werden eingeblendet, sofern Bewegung erlaubt ist. */
+@media (prefers-reduced-motion: no-preference) {
+  .scroll-reveal { opacity: 0; transform: translateY(24px); transition: opacity .8s ease, transform .8s cubic-bezier(.2,.7,.3,1); }
+  .scroll-reveal.is-visible { opacity: 1; transform: translateY(0); }
+  #numbers button { transition: transform .18s ease; }
+  #numbers button:active { transform: scale(.92); }
+}
+
+/* MUDOKU · Krimirätsel
+   Diese Regeln gelten auf der Mudoku-Seite. Hier liegen Fallakte, Flurplan und Fehleranzeige. */
+
+.mudoku .case-layout {
+  display: grid;
+  gap: 14px;
+  width: 100%;
+  align-items: start;
+}
+
+@media (min-width: 701px) {
+  .mudoku .case-layout { grid-template-columns: 1fr 1fr; }
+}
+
+/* Ich rahme Fallakte, Flurplan und Auflösung mit denselben Theme-Farben ein. */
+.mudoku .panel { border: 1px solid var(--line); border-radius: 9px; padding: 16px; }
+.mudoku .panel h2 { margin: 0; font-size: 18px; font-weight: 500; }
+.mudoku .panel p { margin: 8px 0; }
+.mudoku .panel ol { padding-left: 1.35rem; }
+.mudoku .panel li + li { margin-top: 8px; }
+.mudoku .panel label { display: block; margin-bottom: 4px; }
+
+/* Auswahllisten und Aktionsbuttons für die Raumzuordnung. */
+.mudoku .panel select, .mudoku .actions button {
+  min-height: 44px;
+  padding: 6px 10px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: var(--bg);
+  color: var(--ink);
+  font: inherit;
+}
+.mudoku .panel select { width: 100%; }
+.mudoku .panel select:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+.mudoku .actions { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 14px; }
+.mudoku .actions button:hover { outline: 1px solid var(--ink); outline-offset: -1px; }
+.mudoku #feedback { margin-bottom: 0; font-weight: 500; }
+.mudoku #feedback:empty { margin: 0; }
+.mudoku .solution { width: 100%; border-color: var(--strong-line); }
+
+/* Der Mudoku-Footer darf bei vielen Einträgen umbrechen. */
+.mudoku .site-footer .footer-links { flex-wrap: wrap; justify-content: center; }
+
+/* Im Dunkelmodus zeige ich auch den hellen Farbton, damit sich die Paletten klar unterscheiden. */
+html[data-theme="dark"] .mudoku .palette-swatch {
+  background: linear-gradient(135deg, var(--swatch-light) 50%, var(--swatch-dark) 50%);
+}
+
+/* Fallauswahl und zusätzliche Aussage in den Fällen mit einer Lüge. */
+.mudoku .case-selection { margin: 12px auto 0; max-width: 470px; }
+.mudoku .case-selection label { display: block; margin-bottom: 4px; }
+.mudoku .case-selection select { width: 100%; }
+.mudoku .case-selection select, .mudoku #false-clue { min-height: 44px; font: inherit; }
+.mudoku .case-selection select {
+  padding: 6px 10px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: var(--bg);
+  color: var(--ink);
+}
+.mudoku #lie-field { margin-top: 12px; }
+/* Eine wellige Linie zeigt falsche Auswahlen direkt im Feld. */
+.mudoku .panel select.incorrect { border-color: var(--ink); text-decoration: underline wavy; text-underline-offset: 3px; }

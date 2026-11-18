@@ -1,10 +1,13 @@
+// Sudoku und Mudoku: Beide Spiele teilen die Anmeldung. Ihre Online-Spielstände sind getrennt.
 // Hier kümmere ich mich um Anmeldung, Konto und Online-Spielstände.
 // Die äußere Funktion starte ich sofort. Ihre Variablen bleiben in dieser Datei gekapselt.
 (() => {
-  // Ich lese den öffentlichen Schlüssel aus dem Script-Tag in index.html.
+  // Ich lese den öffentlichen Schlüssel aus dem Script-Tag der geöffneten Spielseite.
   // Clerk weiß damit, zu welchem Anmeldeprojekt diese Seite gehört. Fehlt der Schlüssel, höre ich hier auf.
   const key = document.currentScript.dataset.publishableKey;
   if (!key) return;
+  // Jedes Spiel bekommt einen eigenen Platz im Konto. Sudoku behält seinen bisherigen Schlüssel.
+  const { translate, saveKey, captureSave, restoreSave } = gameApp;
 
   // Mit querySelector suche ich Elemente anhand ihrer ID. Das # steht für eine ID im HTML.
   const panel = document.querySelector('#account');
@@ -28,7 +31,7 @@
   const load = document.querySelector('#account-load');
   const signOut = document.querySelector('#account-sign-out');
   // In dieser Liste sammle ich alle Konto-Buttons. So kann ich sie bei einer laufenden Aktion gemeinsam sperren.
-  const controls = [profile, footerProfile, signIn, signUp, save, load, signOut, footerSignIn, footerSave, footerLoad];
+  const controls = [profile, footerProfile, signIn, signUp, save, load, signOut, footerSignIn, footerSave, footerLoad].filter(Boolean);
   // Ich übergebe deutschen und englischen Text. Der Ausdruck mit ? wählt anhand der Seitensprache einen davon.
   const message = (de, en) => document.documentElement.lang === 'en' ? en : de;
 
@@ -59,7 +62,6 @@
     const clerk = window.Clerk;
     await clerk.load({ ui: { ClerkUI: window.__internal_ClerkUICtor } });
 
-    // Apply the current game language before opening a Clerk dialog.
     // Ich merke mir die Sprache des Dialogs. Wenn die Spielsprache davon abweicht,
     // lade ich die passende Übersetzung, bevor ich das Fenster öffne.
     let dialogLanguage = 'en';
@@ -89,7 +91,8 @@
     function render() {
       const signedIn = Boolean(clerk.user);
       signIn.hidden = signUp.hidden = signedIn;
-      footerSignIn.hidden = footerSave.hidden = footerLoad.hidden = false;
+      footerSignIn.hidden = false;
+      for (const button of [footerSave, footerLoad].filter(Boolean)) button.hidden = false;
       footerSignIn.dataset.text = signedIn ? 'accountSignOut' : 'accountSignIn';
       footerSignIn.textContent = translate(footerSignIn.dataset.text);
       profile.hidden = footerProfile.hidden = signOut.hidden = !signedIn;
@@ -124,42 +127,41 @@
     signOut.onclick = endSession;
     // Der Footer-Button nutzt denselben Ablauf: Ohne Sitzung öffnet er die Anmeldung, mit Sitzung meldet er ab.
     footerSignIn.onclick = endSession;
-    save.onclick = footerSave.onclick = run(async () => {
-      const user = clerk.user;
-      // Ich verwandle den aktuellen Spielstand in JSON. Das ist eine Textform, die sich speichern und später wieder einlesen lässt.
-      const snapshot = JSON.stringify(game);
-      await user.reload();
-      // Ich prüfe nach dem Warten, ob noch dasselbe Konto aktiv ist. Bei einem Wechsel breche ich ab.
-      if (clerk.user?.id !== user.id) return;
-      if (user.unsafeMetadata.sudokuSave && !confirm(message(
-        'Den bisherigen Online-Spielstand ersetzen?', 'Replace the previous online save?'
-      ))) return;
-      // Ich lege den Spielstand beim Clerk-Konto unter sudokuSave ab.
-      // unsafeMetadata kann vom Browser aus geändert werden. Ich nutze es hier für den Spielstand.
-      await user.updateMetadata({ unsafeMetadata: { sudokuSave: snapshot } });
-      showStatus(message('Online gespeichert.', 'Saved online.'));
-    });
-    load.onclick = footerLoad.onclick = run(async () => {
-      const user = clerk.user;
-      await user.reload();
-      // Ich prüfe nach dem Warten, ob noch dasselbe Konto aktiv ist. Bei einem Wechsel breche ich ab.
-      if (clerk.user?.id !== user.id) return;
-      // Ich lese den gespeicherten Text vom Konto. Ohne einen Text gibt es hier keinen Online-Spielstand zum Laden.
-      const snapshot = user.unsafeMetadata.sudokuSave;
-      if (typeof snapshot !== 'string') {
-        showStatus(message('Kein Online-Spielstand vorhanden.', 'No online save found.'));
-        return;
-      }
-      if (!confirm(message('Den aktuellen Spielstand ersetzen?', 'Replace the current game?'))) return;
-      // Ich lasse die Spieldatei den Stand prüfen und übernehmen. Danach leere ich die Feldauswahl,
-      // speichere den Stand auch im Browser und zeige das neue Raster an.
-      if (!loadGame(snapshot)) throw new Error('Invalid Sudoku save');
-      selectedCell = -1;
-      saveGame();
-      renderBoard();
-      if (game.done) advanceAfterCompletion();
-      showStatus(message('Online-Spielstand geladen.', 'Online save loaded.'));
-    });
+    if (save && footerSave) {
+      save.onclick = footerSave.onclick = run(async () => {
+        const user = clerk.user;
+        // Ich verwandle den aktuellen Spielstand in JSON. Das ist eine Textform, die sich speichern und später wieder einlesen lässt.
+        const snapshot = captureSave();
+        await user.reload();
+        // Ich prüfe nach dem Warten, ob noch dasselbe Konto aktiv ist. Bei einem Wechsel breche ich ab.
+        if (clerk.user?.id !== user.id) return;
+        if (user.unsafeMetadata[saveKey] && !confirm(message(
+          'Den bisherigen Online-Spielstand ersetzen?', 'Replace the previous online save?'
+        ))) return;
+        // Ich lege den Spielstand beim Clerk-Konto unter dem Schlüssel des aktuellen Spiels ab.
+        // unsafeMetadata kann vom Browser aus geändert werden. Ich nutze es hier für den Spielstand.
+        await user.updateMetadata({ unsafeMetadata: { [saveKey]: snapshot } });
+        showStatus(message('Online gespeichert.', 'Saved online.'));
+      });
+    }
+    if (load && footerLoad) {
+      load.onclick = footerLoad.onclick = run(async () => {
+        const user = clerk.user;
+        await user.reload();
+        // Ich prüfe nach dem Warten, ob noch dasselbe Konto aktiv ist. Bei einem Wechsel breche ich ab.
+        if (clerk.user?.id !== user.id) return;
+        // Ich lese den gespeicherten Text vom Konto. Ohne einen Text gibt es hier keinen Online-Spielstand zum Laden.
+        const snapshot = user.unsafeMetadata[saveKey];
+        if (typeof snapshot !== 'string') {
+          showStatus(message('Kein Online-Spielstand vorhanden.', 'No online save found.'));
+          return;
+        }
+        if (!confirm(message('Den aktuellen Spielstand ersetzen?', 'Replace the current game?'))) return;
+        // Die aktive Spiellogik prüft den Stand und stellt die passende Oberfläche wieder her.
+        if (!restoreSave(snapshot)) throw new Error('Invalid game save');
+        showStatus(message('Online-Spielstand geladen.', 'Online save loaded.'));
+      });
+    }
     // Ich lasse die Oberfläche erneut aktualisieren, wenn Clerk eine Änderung bei der Anmeldung meldet.
     clerk.addListener(render);
     render();
