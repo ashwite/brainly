@@ -2,7 +2,6 @@
 // Ich lege Deutsch und Englisch nebeneinander ab. Derselbe Schlüssel steht für denselben Text.
 const uiText = {
   headline: ["Denken statt scrollen.","Think instead of scrolling."],
-  sudokuHome: ["Sudoku Startseite","Sudoku home"],
   game: ["Sudoku-Spiel","Sudoku game"],
   board: ["Sudoku-Raster","Sudoku grid"],
   numbers: ["Zahlen eingeben","Enter numbers"],
@@ -38,7 +37,6 @@ const uiText = {
   dogCharacter: ['Mein Hund Max', 'My dog Max'],
   characterName: ['Charakter {number}', 'Character {number}'],
   noCharacters: ['Die Charakterbilder sind noch nicht verfügbar.', 'Character images are unavailable.'],
-  ladderHome: ['Wordle-Startseite', 'Wordle home'],
   ladderName: ['Wordle', 'Wordle'],
   ladderRules: ['Ändere pro Zug genau einen Buchstaben, bis du das Zielwort erreichst.', 'Change exactly one letter per move until you reach the target word.'],
   ladderPuzzle: ['Rätsel wählen', 'Choose a puzzle'],
@@ -53,7 +51,7 @@ const uiText = {
   ladderUnknown: ['Dieses Wort steht nicht in der Wortliste.', 'This word is not in the word list.'],
   ladderRepeated: ['Dieses Wort war schon in deiner Leiter.', 'This word is already in your ladder.'],
   ladderSolved: ['Ziel erreicht in {count} Zügen.', 'Target reached in {count} moves.'],
-  home: ['Mudoku Startseite', 'Mudoku home'],
+  home: ['Startseite', 'Home'],
   language: ['Sprache', 'Language'],
   difficulty: ['Schwierigkeit', 'Difficulty'],
   easy: ['Leicht', 'Easy'],

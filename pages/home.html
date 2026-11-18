@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#fff">
+  <title>Kleine Denkpause</title>
+  <link rel="icon" href="../assets/miffy.png" type="image/png">
+  <script>
+    const root = document.documentElement
+    root.dataset.theme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+    try {
+      root.lang = localStorage.getItem('sudoku-language') === 'en' ? 'en' : 'de'
+      root.dataset.theme = localStorage.getItem('sudoku-theme') || root.dataset.theme
+      root.dataset.palette = localStorage.getItem('sudoku-palette') || 'mono'
+    } catch {
+      // Wenn der Browser den Speicher blockiert, verwende ich die Vorgaben.
+    }
+  </script>
+  <link rel="stylesheet" href="../styles/style.css?v=31">
+  <script src="../scripts/text.js?v=9" defer></script>
+  <script src="../scripts/site-shell.js?v=2" defer></script>
+  <script src="../scripts/navigation.js?v=2" defer></script>
+  <script src="../scripts/levels.js?v=8" defer></script>
+  <script src="../scripts/account.js?v=3" data-publishable-key="pk_test_d2FybS1wYW5kYS00MjY1LmNsZXJrLmFjY291bnRzLmRldiQ" defer></script>
+</head>
+<body>
+  <main>
+    <ul class="home-tiles">
+      <li>
+        <a href="sudoku.html">
+          <span class="home-tile-image" data-tile="sudoku" aria-hidden="true"></span>
+          <span>Sudoku</span>
+        </a>
+      </li>
+      <li>
+        <a href="mudoku.html">
+          <span class="home-tile-image" data-tile="mudoku" aria-hidden="true"></span>
+          <span>Mudoku</span>
+        </a>
+      </li>
+      <li>
+        <a href="wordle.html">
+          <span class="home-tile-image" data-tile="wordle" aria-hidden="true"></span>
+          <span>Wordle</span>
+        </a>
+      </li>
+      <li>
+        <a href="level.html">
+          <span class="home-tile-image" data-tile="level" aria-hidden="true"></span>
+          <span>Level</span>
+        </a>
+      </li>
+    </ul>
+  </main>
+</body>
+</html>

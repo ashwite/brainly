@@ -341,8 +341,6 @@ html:lang(en) .help-de { display: none; }
 .mudoku #feedback:empty { margin: 0; }
 .mudoku .solution { width: 100%; border-color: var(--strong-line); }
 
-/* Ich erlaube Zeilenumbrüche im Mudoku-Footer, wenn der Platz knapp wird. */
-.mudoku .site-footer .footer-links { flex-wrap: wrap; justify-content: center; }
 
 /* Im Dunkelmodus zeige ich auch den hellen Farbton, damit sich die Paletten klar unterscheiden. */
 html[data-theme="dark"] .mudoku .palette-swatch {
@@ -394,7 +392,6 @@ html[data-theme="dark"] .mudoku .palette-swatch {
 .word-ladder #ladder-path { padding-inline-start: 1.5rem; letter-spacing: .08em; }
 .word-ladder .ladder-actions { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 12px; }
 .word-ladder .ladder-actions button:disabled { opacity: .55; cursor: default; }
-.word-ladder .site-footer .footer-links { flex-wrap: wrap; justify-content: center; }
 
 .level-link { color: inherit; text-decoration: none; }
 .level-summary, .level-games, .level-page > p { width: 100%; }
@@ -549,3 +546,51 @@ html[data-theme="dark"] .mudoku .palette-swatch {
 #character-upload-status { margin: 8px 0 0; }
 #character-upload-status:empty { display: none; }
 .character-celebration img[data-character="custom"] { aspect-ratio: 1; object-fit: contain; }
+
+/* Ich zeige die vier Ziele auf der Startseite mit quadratischen Bildflächen. */
+.home-tiles {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(12px, 3vw, 22px);
+  width: min(92%, 390px);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.home-tiles a {
+  display: grid;
+  gap: 8px;
+  color: inherit;
+  text-align: center;
+  text-decoration: none;
+}
+.home-tile-image {
+  display: block;
+  aspect-ratio: 1;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background-color: var(--related);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+.home-tiles a:hover .home-tile-image { border-color: var(--ink); }
+
+.home-tile-image[data-tile="level"] {
+  background-image: url('../assets/home/level.png');
+  background-size: 225%;
+}
+
+.home-tile-image[data-tile="sudoku"] {
+  background-image: url('../assets/home/sudoku.png');
+}
+
+.home-tile-image[data-tile="mudoku"] {
+  background-image: url('../assets/home/mudoku.png');
+  background-size: 109%;
+}
+
+.home-tile-image[data-tile="wordle"] {
+  background-image: url('../assets/home/wordle.png');
+  background-size: 112%;
+}

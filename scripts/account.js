@@ -8,7 +8,8 @@
   if (!key) return;
   // Ich verwende für jedes Spiel einen eigenen Schlüssel und behalte für Sudoku den bisherigen bei.
   const hasGame = typeof gameApp !== 'undefined';
-  const { saveKey, captureSave, restoreSave } = hasGame ? gameApp : levelProgress;
+  const progress = typeof levelProgress === 'undefined' ? {} : levelProgress;
+  const { saveKey, captureSave, restoreSave } = hasGame ? gameApp : progress;
   const translate = hasGame ? gameApp.translate : window.translate;
 
   // Mit querySelector suche ich Elemente anhand ihrer ID. Das # steht für eine ID im HTML.
