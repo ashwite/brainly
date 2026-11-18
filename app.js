@@ -1,7 +1,9 @@
 'use strict';
 
 // 1. Einstellungen und Zustand des aktuellen Spiels.
+// Diesen Namen verwende ich wie ein Etikett für den Spielstand im Browser.
 const SAVE_KEY = 'denkpause-sudoku-v1';
+// Je schwerer das Rätsel, desto weniger Zahlen möchte ich am Anfang vorgeben.
 const CLUE_COUNTS = { easy: 39, medium: 32, hard: 27 };
 const DIGITS = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 const boardElement = document.querySelector('#board');
@@ -12,6 +14,7 @@ const navigation = document.querySelector('#navigation');
 const themeButtons = document.querySelectorAll('.theme-toggle');
 const root = document.documentElement;
 let game;
+// Hier merke ich mir das gewählte Feld. Die Felder zählen von 0 bis 80, also steht -1 für keine Auswahl.
 let selectedCell = -1;
 
 // Jedes Farbtheme besteht aus Name, dunkler Farbe und heller Farbe.
@@ -30,6 +33,7 @@ const PALETTES = [
 
 // Alle übersetzbaren Texte stehen hier nebeneinander.
 // data-text und data-label verbinden die HTML-Elemente mit diesen Schlüsseln.
+// Ich sammle die deutschen und englischen Texte mit denselben Schlüsseln, damit ich die Sprache zentral wechseln kann.
 const TEXT = {
   de: {
     headline: 'Denken statt scrollen.', legalNav: 'Hilfe und rechtliche Informationen', help: 'Hilfe', imprint: 'Impressum', privacy: 'Datenschutz', colors: 'Farbtheme',
@@ -81,10 +85,13 @@ let hint;
 const hintButton = document.querySelector('#hint-button');
 const hintMessage = document.querySelector('#hint-message');
 
+// Ich hole zum Textschlüssel den Text in der aktuellen Seitensprache.
 function translate(key) {
   return TEXT[root.lang === 'en' ? 'en' : 'de'][key];
 }
 
+// Ich übersetze die Texte und die Beschriftungen für Screenreader anhand der data-Attribute im HTML.
+// Danach aktualisiere ich auch den Browser-Titel, die Bedienelemente und das Raster.
 function updateLanguage() {
   document.querySelectorAll('[data-text]').forEach(element => {
     element.textContent = translate(element.dataset.text);
@@ -112,6 +119,8 @@ function updateLanguage() {
 }
 
 // 2. Sudoku erzeugen. Eine 0 bedeutet immer: Dieses Feld ist leer.
+// Ich mische eine Kopie der Liste. Von hinten nach vorne tausche ich jedes Element mit einer Zufallsposition
+// im noch nicht gemischten Teil. Die ursprüngliche Liste bleibt dabei erhalten.
 function shuffle(items) {
   const result = [...items];
   for (let i = result.length - 1; i > 0; i--) {
@@ -124,6 +133,8 @@ function shuffle(items) {
 function createSolution() {
   // Zeilen und Spalten werden innerhalb gültiger Dreiergruppen vertauscht.
   // So bleibt das Grundmuster ein gültiges Sudoku.
+  // Ich mische die drei Dreiergruppen und auch die Reihenfolge innerhalb jeder Gruppe.
+  // Das mache ich getrennt für Zeilen und Spalten, damit die 3×3-Blöcke erhalten bleiben.
   function shuffledGroups() {
     return shuffle([0, 1, 2]).flatMap(group =>
       shuffle([0, 1, 2]).map(offset => group * 3 + offset)
@@ -133,11 +144,16 @@ function createSolution() {
   const columns = shuffledGroups();
   const digits = shuffle(DIGITS);
   return rows.flatMap(row => columns.map(column => {
+    // Das Grundmuster verschiebt die Zahlen von Zeile zu Zeile. % 9 hält die Position im Bereich 0 bis 8.
+    // Die gemischte Zahlenliste ersetzt das Grundmuster durch eine andere gültige Zahlenfolge.
     const position = (row * 3 + Math.floor(row / 3) + column) % 9;
     return digits[position];
   }));
 }
 
+// Ich rechne die laufende Feldnummer in Zeile und Spalte um.
+// Beispiel: Feld 10 liegt in Zeile 1 und Spalte 1, wenn ich bei 0 anfange zu zählen.
+// In used sammle ich die Zahlen aus derselben Zeile, Spalte und demselben Block. Übrig bleiben die erlaubten Zahlen.
 function possibleDigits(board, index) {
   const row = Math.floor(index / 9);
   const column = index % 9;
@@ -167,9 +183,12 @@ function countSolutions(board, limit = 2) {
       if (options.length === 1) break;
     }
   }
+  // Gibt es kein freies Feld mehr, habe ich auf diesem Weg eine vollständige Lösung gefunden.
   if (nextIndex === -1) return 1;
 
   let total = 0;
+  // Ich setze eine mögliche Zahl probeweise ein und rufe dieselbe Funktion für den Rest des Rasters auf.
+  // Danach leere ich das Feld wieder. So bleiben meine Testzahlen beim Zurückgehen nicht im Raster stehen.
   for (const digit of candidates) {
     board[nextIndex] = digit;
     total += countSolutions(board, limit - total);
@@ -179,6 +198,8 @@ function countSolutions(board, limit = 2) {
   return total;
 }
 
+// Ich starte mit einer kompletten Lösung. Daraus mache ich die Vorgabe und eine eigene Kopie für die Eingaben.
+// Ich entferne Zahlen in zufälliger Reihenfolge, bis ich die gewünschte Anzahl erreiche oder alle Felder geprüft habe.
 function startGame(level = 'easy') {
   const solved = createSolution();
   const given = [...solved];
@@ -201,6 +222,7 @@ function startGame(level = 'easy') {
 }
 
 // 3. Eingabe und Anzeige. Vorgegebene Zahlen können nicht geändert werden.
+// Ich vergleiche, ob zwei Felder dieselbe Zeile, Spalte oder denselben 3×3-Block teilen.
 function sharesUnit(first, second) {
   const firstRow = Math.floor(first / 9);
   const secondRow = Math.floor(second / 9);
@@ -211,6 +233,8 @@ function sharesUnit(first, second) {
      Math.floor(firstColumn / 3) === Math.floor(secondColumn / 3));
 }
 
+// Ich baue die 81 sichtbaren Feld-Buttons aus dem aktuellen Spielstand neu auf.
+// Die CSS-Klassen zeigen Vorgaben, Fehler, die Auswahl und die dazugehörigen Felder an.
 function renderBoard() {
   hintButton.disabled = game.done;
   hintMessage.textContent = hint?.game === game
@@ -237,6 +261,8 @@ function renderBoard() {
     const suffix = cellLabel ? `, ${translate(cellLabel)}` : '';
     button.setAttribute('aria-label', `${translate('row')} ${row}, ${translate('column')} ${column}: ${value || translate('empty')}${suffix}`);
     button.setAttribute('aria-pressed', String(selectedCell === index));
+    // Mit Tab soll man einmal ins Spielfeld gelangen. Das gewählte Feld ist der Einstieg, sonst das erste.
+    // Innerhalb des Rasters wechseln die Pfeiltasten das Feld.
     button.tabIndex = selectedCell === index || (selectedCell === -1 && index === 0) ? 0 : -1;
     button.onclick = () => selectCell(index);
     boardElement.append(button);
@@ -259,6 +285,8 @@ function selectCell(index) {
   renderBoard();
 }
 
+// Bei einem Tipp zeige ich zuerst eine falsche Eingabe, falls es eine gibt.
+// Sonst suche ich ein leeres Feld mit möglichst wenigen gültigen Zahlen und zeige diese als Hinweis.
 hintButton.onclick = () => {
   if (game.done) return;
   const incorrect = game.values.findIndex((value, index) => value !== 0 && value !== game.solved[index]);
@@ -281,6 +309,8 @@ hintButton.onclick = () => {
   renderBoard();
 };
 
+// Ich prüfe, ob das Spiel noch läuft und ein veränderbares Feld ausgewählt ist.
+// Dann trage ich die Zahl ein. Eine 0 leert das Feld. Ich speichere und prüfe, ob alle Felder der Lösung entsprechen.
 function enterDigit(digit) {
   if (game.done) return;
   if (selectedCell < 0) return announce('select');
@@ -297,6 +327,8 @@ function enterDigit(digit) {
 
 function advanceAfterCompletion() {
   announce('completed');
+  // Ich merke mir, welches Spiel fertig war. Nach der Wartezeit starte ich nur dann ein neues,
+  // wenn zwischenzeitlich kein anderer Spielstand geöffnet wurde.
   const completedGame = game;
   // Kurze Pause, damit das vollständig gelöste Raster noch zu sehen ist.
   setTimeout(() => {
@@ -304,6 +336,8 @@ function advanceAfterCompletion() {
   }, 1200);
 }
 
+// Ich merke mir den Textschlüssel, damit ich die Meldung nach einem Sprachwechsel erneut übersetzen kann.
+// Der Screenreader kann die Änderung im Meldungsfeld vorlesen.
 function announce(key) {
   lastMessage = key;
   document.querySelector('#message').textContent = key ? translate(key) : '';
@@ -322,11 +356,15 @@ function saveGame() {
   saveSetting(SAVE_KEY, JSON.stringify(game));
 }
 
+// Ich prüfe, ob ein Raster aus genau 81 ganzen Zahlen besteht. Je nach Raster erlaube ich 0 bis 9 oder 1 bis 9.
 function isValidBoard(board, minimum = 0) {
   return Array.isArray(board) && board.length === 81 &&
     board.every(value => Number.isInteger(value) && value >= minimum && value <= 9);
 }
 
+// Ich lese entweder den mitgegebenen Online-Stand oder den Stand aus dem Browser.
+// Ich prüfe die Schwierigkeit, die Raster, doppelte Ziffern in der Lösung und die unveränderten Vorgaben.
+// Ob das Spiel fertig ist, berechne ich aus den Zahlen selbst.
 function loadGame(serialized) {
   try {
     const saved = JSON.parse(serialized ?? localStorage.getItem(SAVE_KEY));
@@ -351,12 +389,15 @@ function loadGame(serialized) {
 }
 
 // 5. Navigation, Hell-/Dunkelmodus und Farbthemes.
+// Ich klappe das Menü auf oder zu und setze den passenden Zustand und Namen für Screenreader.
 function toggleMenu(open) {
   navigation.hidden = !open;
   menuButton.setAttribute('aria-expanded', String(open));
   menuButton.setAttribute('aria-label', translate(open ? 'closeMenu' : 'openMenu'));
 }
 
+// Ich passe Symbole und Markierungen an die gewählten Farben und den Modus an.
+// Die Hintergrundfarbe gebe ich auch an den Browser weiter, damit er sie für seine Oberfläche nutzen kann.
 function updateAppearance() {
   const dark = root.dataset.theme === 'dark';
   themeButtons.forEach(button => {
@@ -371,6 +412,8 @@ function updateAppearance() {
   document.querySelector('meta[name="theme-color"]').content = background;
 }
 
+// Ich baue pro Palette einen Button. Die kleinen Farbflächen haben je eine Farbe für hell und dunkel.
+// Bei einem Klick speichere ich die gewählte Palette für den nächsten Besuch.
 function createPaletteButtons() {
   for (const palette of PALETTES) {
     const button = document.createElement('button');
@@ -415,6 +458,8 @@ levelButtons.forEach(button => {
   button.onclick = () => {
     const level = button.dataset.level;
     if (game && level !== game.level) {
+      // Vor einem Wechsel der Schwierigkeit vergleiche ich Eingaben und Vorgaben.
+      // Wenn das laufende Rätsel eigene Eingaben enthält, frage ich vor dem Ersetzen nach.
       const hasEntries = game.values.some((value, index) => value !== game.given[index]);
       const mayReplace = !hasEntries || game.done ||
         confirm(translate('replace'));
@@ -433,6 +478,8 @@ for (const digit of DIGITS) {
   numberButtons.append(button);
 }
 
+// Ich lasse Eingabefelder und Dialoge ihre Tasten selbst verarbeiten, damit das Spiel beim Tippen nicht eingreift.
+// Für das Raster übernehme ich Zahlen, Löschtasten und Pfeiltasten.
 document.addEventListener('keydown', event => {
   if (event.defaultPrevented || event.target.closest?.('input, textarea, select, [contenteditable], [role=dialog]')) return;
   if (event.key === 'Escape' && !navigation.hidden) {
@@ -455,6 +502,7 @@ document.addEventListener('keydown', event => {
     else {
       let row = Math.floor(selectedCell / 9);
       let column = selectedCell % 9;
+      // Mit % 9 springe ich am Rand zur gegenüberliegenden Seite. +8 entspricht dabei einem Schritt rückwärts im Kreis.
       if (event.key === 'ArrowRight') column = (column + 1) % 9;
       if (event.key === 'ArrowLeft') column = (column + 8) % 9;
       if (event.key === 'ArrowDown') row = (row + 1) % 9;
@@ -465,6 +513,7 @@ document.addEventListener('keydown', event => {
     boardElement.children[selectedCell].focus();
   }
 });
+// Wenn die Seite verlassen wird, versuche ich den aktuellen Stand noch einmal im Browser zu speichern.
 window.addEventListener('pagehide', saveGame);
 
 // 6. Start: gespeicherte Einstellungen und Spielstand wiederherstellen.
@@ -477,6 +526,8 @@ if (loadGame()) {
 } else startGame();
 
 // Elemente beim ersten Hineinscrollen sanft einblenden.
+// Ich prüfe die Bewegungseinstellung des Geräts. Die Einblendung verwende ich nur, wenn sie erlaubt ist.
+// Der Observer merkt, wann das Raster oder die Zahlentasten in den sichtbaren Bereich kommen.
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 if (!reducedMotion && 'IntersectionObserver' in window) {
   const observer = new IntersectionObserver(entries => {

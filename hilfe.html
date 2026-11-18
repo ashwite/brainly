@@ -6,6 +6,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="assets/miffy-32.png">
   <title>Hilfe · Sudoku</title>
   <!-- Gespeicherte Farben vor dem Laden anzeigen: verhindert ein kurzes Aufblitzen. -->
+  <!-- Ich lese die gespeicherten Einstellungen so früh, dass die Seite gleich in den passenden Farben erscheint. -->
   <script>
     try {
       document.documentElement.lang = localStorage.getItem('sudoku-language') === 'en' ? 'en' : 'de';
@@ -20,7 +21,9 @@
   <link rel="stylesheet" href="style.css?v=0.3">
 </head>
 <body>
+  <!-- Hier beginnt der eigentliche Inhalt. Ich verwende dieselbe Grundgestaltung wie beim Spiel. -->
   <main class="legal-page">
+    <!-- Ich halte beide Sprachfassungen im HTML bereit. CSS zeigt die Fassung an, die zu lang am HTML-Element passt. -->
     <section class="help-de" lang="de">
       <a href="./">← Zurück zum Sudoku</a>
       <h1>Hilfe</h1>
