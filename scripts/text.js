@@ -1,0 +1,58 @@
+// Mudoku: Hier stehen die zweisprachigen Texte der Oberfläche.
+// Ich lege Deutsch und Englisch nebeneinander ab. Derselbe Schlüssel steht für denselben Text.
+const uiText = {
+  home: ['Mudoku Startseite', 'Mudoku home'],
+  language: ['Sprache', 'Language'],
+  difficulty: ['Schwierigkeit', 'Difficulty'],
+  easy: ['Leicht', 'Easy'],
+  medium: ['Mittel', 'Medium'],
+  hard: ['Schwer', 'Hard'],
+  colors: ['Farbtheme', 'Color theme'],
+  settings: ['Spieleinstellungen', 'Game settings'],
+  switchGame: ['Spiel wechseln', 'Switch game'],
+  more: ['Mehr von ashwite', 'More from ashwite'],
+  account: ['Konto', 'Account'],
+  accountSignIn: ['Anmelden', 'Sign in'],
+  accountSignUp: ['Konto erstellen', 'Create account'],
+  accountSignOut: ['Abmelden', 'Sign out'],
+  accountSave: ['Speichern', 'Save'],
+  accountLoad: ['Laden', 'Load'],
+  accountManage: ['Konto verwalten', 'Manage account'],
+  clues: ['Fallakte', 'Case file'],
+  rooms: ['Flurplan', 'Floor plan'],
+  rules: ['Die vier Verdächtigen waren zur Tatzeit in vier verschiedenen Räumen. Nur die Person am Tatort war beim Opfer.', 'The four suspects were in four separate rooms at the time of the murder. Only the person at the crime scene was with the victim.'],
+  instructions: ['Die Räume liegen in der gezeigten Reihenfolge von links nach rechts. Ordne jedem Raum eine Person zu.', 'The rooms are arranged from left to right. Assign one person to each room.'],
+  accusation: ['Wer hat die Tat begangen?', 'Who committed the murder?'],
+  solve: ['Fall lösen', 'Solve case'],
+  reset: ['Zurücksetzen', 'Reset'],
+  solution: ['Auflösung', 'Solution'],
+  help: ['Hilfe', 'Help'],
+  imprint: ['Impressum', 'Legal notice'],
+  privacy: ['Datenschutz', 'Privacy'],
+  legal: ['Hilfe und rechtliche Informationen', 'Help and legal information'],
+  chooseCase: ['Fall auswählen', 'Choose a case'],
+  lieRule: ['Genau eine der Aussagen ist falsch.', 'Exactly one of the statements is false.'],
+  falseClue: ['Welche Aussage ist falsch?', 'Which statement is false?'],
+  chooseStatement: ['Aussage auswählen', 'Choose a statement'],
+  statement: ['Aussage {number}', 'Statement {number}'],
+  wrongStatement: ['Die ausgewählte Aussage ist noch nicht richtig.', 'The selected statement is incorrect.'],
+  errors: ['Fehler: {number}', 'Errors: {number}'],
+  choose: ['Person auswählen', 'Choose a person'],
+  duplicate: ['Ordne jede Person genau einem Raum zu.', 'Assign each person to exactly one room.'],
+  wrongRoom: ['Mindestens eine Zuordnung passt noch nicht zu den Hinweisen. Du kannst weiter umsortieren.', 'At least one assignment does not match the clues. You can rearrange your answers.'],
+  wrongSuspect: ['Alle Räume stimmen. Schau noch einmal, wer im Raum „{room}“ war.', 'All room assignments are correct. Check who was in the {room}.'],
+  solved: ['Fall gelöst. {person} war zur Tatzeit im Raum „{room}“.', 'Case solved. {person} was in the {room} at the time of the murder.'],
+  openMenu: ['Menü öffnen', 'Open menu'],
+  closeMenu: ['Menü schließen', 'Close menu'],
+  useLight: ['Hellmodus einschalten', 'Switch to light mode'],
+  useDark: ['Dunkelmodus einschalten', 'Switch to dark mode'],
+  paletteNames: [
+    ['Schwarz & Weiß', 'Grün & Pink', 'Rot & Pink', 'Hellpink & Dunkelpink', 'Hellblau & Dunkelblau', 'Hellgrün & Dunkelgrün', 'Lavendel', 'Orange & Gelb', 'Braun & Beige'],
+    ['Black & White', 'Green & Pink', 'Red & Pink', 'Light Pink & Dark Pink', 'Light Blue & Dark Blue', 'Light Green & Dark Green', 'Lavender', 'Orange & Yellow', 'Brown & Beige'],
+  ],
+}
+
+// Aus dem Textschlüssel hole ich den deutschen Eintrag an Position 0 oder den englischen an Position 1.
+function translate(key) {
+  return uiText[key][document.documentElement.lang === 'en' ? 1 : 0]
+}
