@@ -20,85 +20,16 @@
     }
   </script>
   <!-- Im Stylesheet sammle ich gemeinsame Regeln und ergänze für jedes Spiel eigene Regeln. -->
-  <link rel="stylesheet" href="../styles/style.css?v=23">
-  <script src="../scripts/text.js?v=8" defer></script>
+  <link rel="stylesheet" href="../styles/style.css?v=24">
+  <script src="../scripts/text.js?v=9" defer></script>
+  <script src="../scripts/site-shell.js?v=2" defer></script>
   <script src="../scripts/navigation.js?v=2" defer></script>
   <script src="../scripts/characters.js?v=7" defer></script>
   <script src="../scripts/levels.js?v=8" defer></script>
   <script src="../scripts/level-share.js?v=1" defer></script>
-  <script src="../scripts/account.js?v=2" data-publishable-key="pk_test_d2FybS1wYW5kYS00MjY1LmNsZXJrLmFjY291bnRzLmRldiQ" defer></script>
+  <script src="../scripts/account.js?v=3" data-publishable-key="pk_test_d2FybS1wYW5kYS00MjY1LmNsZXJrLmFjY291bnRzLmRldiQ" defer></script>
 </head>
 <body>
-  <header>
-    <a class="brand" href="level.html" aria-label="Level">
-      <span class="brand-icon">
-        <img class="logo-light" src="../assets/logo/logo-light.png" alt="">
-        <img class="logo-dark" src="../assets/logo/logo-dark.png" alt="">
-      </span>
-      <span class="brand-wordmark">level</span>
-    </a>
-    <div class="header-actions">
-      <button id="menu-toggle" class="menu-toggle" type="button" aria-label="Menü öffnen"
-        aria-expanded="false" aria-controls="navigation">
-        <span></span>
-        <span></span>
-      </button>
-      <!-- Hier biete ich Sprache, Farben, Schwierigkeit, Konto und den Wechsel zu den anderen Spielen an. -->
-      <nav id="navigation" class="navigation" aria-label="Spieleinstellungen" data-label="settings" hidden>
-        <div class="nav-group">
-          <span class="nav-label" data-text="language">Sprache</span>
-          <div class="languages" role="group" data-label="language">
-            <button type="button" data-language="de" lang="de">Deutsch</button>
-            <button type="button" data-language="en" lang="en">English</button>
-          </div>
-        </div>
-        <div class="nav-group">
-          <span class="nav-label" data-text="colors">Farbtheme</span>
-          <div id="palettes" class="palettes" role="group" aria-label="Farbtheme" data-label="colors">
-            <button type="button" class="theme-toggle" aria-label="Dunkelmodus einschalten" aria-pressed="false">
-              <span aria-hidden="true">☾</span>
-            </button>
-          </div>
-        </div>
-        <div class="nav-group">
-          <span class="nav-label" data-text="difficulty">Schwierigkeit</span>
-          <div class="levels" role="group" data-label="difficulty">
-            <a href="../index.html?difficulty=easy" data-text="easy">Leicht</a>
-            <a href="../index.html?difficulty=medium" data-text="medium">Mittel</a>
-            <a href="../index.html?difficulty=hard" data-text="hard">Schwer</a>
-          </div>
-        </div>
-        <div class="nav-group" id="account">
-          <span class="nav-label" data-text="account">Konto</span>
-          <button id="account-sign-in" type="button" data-text="accountSignIn" hidden>Anmelden</button>
-          <button id="account-sign-up" type="button" data-text="accountSignUp" hidden>Konto erstellen</button>
-          <button id="account-profile" type="button" data-text="accountManage" hidden>Konto verwalten</button>
-          <div class="languages">
-            <button id="account-save" type="button" data-text="accountSave" hidden>Speichern</button>
-            <button id="account-load" type="button" data-text="accountLoad" hidden>Laden</button>
-            <a class="level-link" href="level.html">Level</a>
-            <button id="account-sign-out" type="button" data-text="accountSignOut" hidden>Abmelden</button>
-          </div>
-          <p id="account-status" role="status"></p>
-        </div>
-        <div class="nav-group">
-          <span class="nav-label" data-text="switchGame">Spiel wechseln</span>
-          <div class="languages creator-links">
-            <a href="../index.html">Sudoku</a>
-            <a href="mudoku.html">Mudoku</a>
-            <a href="wordle.html">Wordle</a>
-          </div>
-        </div>
-        <div class="nav-group">
-          <span class="nav-label" data-text="more">Mehr von ashwite</span>
-          <div class="languages creator-links">
-            <a href="https://gitlab.com/ashwite">GitLab</a>
-            <a href="https://github.com/ashwite">GitHub</a>
-          </div>
-        </div>
-      </nav>
-    </div>
-  </header>
   <main class="level-page">
     <section class="level-summary" aria-labelledby="level-title">
       <button id="level-share" type="button" data-label="shareLevel" aria-label="Level als PNG teilen">
@@ -129,43 +60,11 @@
       <p id="character-empty" data-text="noCharacters" hidden>Die Charakterbilder sind noch nicht verfügbar.</p>
     </fieldset>
     <ul class="level-games">
-      <li><a href="../">Sudoku <span data-game-xp="sudoku">0 XP</span></a></li>
+      <li><a href="sudoku.html">Sudoku <span data-game-xp="sudoku">0 XP</span></a></li>
       <li><a href="mudoku.html">Mudoku <span data-game-xp="mudoku">0 XP</span></a></li>
       <li><a href="wordle.html">Wordle <span data-game-xp="wordle">0 XP</span></a></li>
     </ul>
     <p id="level-rules">Mit Hilfestellung gibt es 50 XP pro gelöstem Rätsel, ohne Hilfestellung 100 XP.</p>
   </main>
-  <footer class="site-footer">
-    <div class="footer-links">
-      <div class="footer-account" role="group" data-label="account" aria-label="Konto">
-        <button id="footer-sign-in" type="button" data-text="accountSignIn" hidden>Anmelden</button>
-        <button id="footer-profile" type="button" data-text="accountManage" hidden>Konto verwalten</button>
-        <button id="footer-save" type="button" data-text="accountSave" hidden>Speichern</button>
-        <button id="footer-load" type="button" data-text="accountLoad" hidden>Laden</button>
-        <a class="level-link" href="level.html">Level</a>
-      </div>
-      <div class="levels footer-levels" role="group" data-label="difficulty">
-        <a href="../index.html?difficulty=easy" data-text="easy">Leicht</a>
-        <a href="../index.html?difficulty=medium" data-text="medium">Mittel</a>
-        <a href="../index.html?difficulty=hard" data-text="hard">Schwer</a>
-      </div>
-      <nav aria-label="Hilfe und rechtliche Informationen" data-label="legal">
-        <a href="hilfe.html" data-text="help">Hilfe</a>
-        <a href="impressum.html" data-text="imprint">Impressum</a>
-        <a href="datenschutz.html" data-text="privacy">Datenschutz</a>
-      </nav>
-    </div>
-    <span id="footer-account-status" role="status"></span>
-    <div class="footer-controls">
-      <div class="languages footer-languages" role="group" data-label="language">
-        <button type="button" data-language="en" lang="en" aria-label="English">en</button>
-        <span aria-hidden="true">/</span>
-        <button type="button" data-language="de" lang="de" aria-label="Deutsch">de</button>
-      </div>
-      <button id="theme" type="button" class="theme-toggle" aria-label="Dunkelmodus einschalten" aria-pressed="false">
-        <span aria-hidden="true">☾</span>
-      </button>
-    </div>
-  </footer>
 </body>
 </html>

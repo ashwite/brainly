@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#fff">
+  <meta name="description" content="Denken statt scrollen. Sudoku mit drei Schwierigkeitsstufen und automatischem Spielstand.">
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/miffy.png">
+  <title>Sudoku · Denken statt scrollen</title>
+
+  <!-- Ich wende die gespeicherten Farben früh an, damit die Standardfarben nicht kurz aufblitzen. -->
+  <!-- Ich lese die gespeicherten Einstellungen so früh, dass die Seite gleich in den passenden Farben erscheint. -->
+  <script>
+    try {
+      document.documentElement.lang = localStorage.getItem('sudoku-language') === 'en' ? 'en' : 'de';
+      document.documentElement.dataset.palette = localStorage.getItem('sudoku-palette') || 'mono';
+      document.documentElement.dataset.theme = localStorage.getItem('sudoku-theme') ||
+        (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    } catch {
+      // Wenn der Browser den Speicher blockiert, verwende ich die Vorgaben.
+    }
+  </script>
+  <!-- Im Stylesheet sammle ich gemeinsame Regeln und ergänze für jedes Spiel eigene Regeln. -->
+  <link rel="stylesheet" href="../styles/style.css?v=24">
+  <!-- Ich lade zuerst die Spiellogik und dann die Konto-Funktionen. defer wartet mit der Ausführung, bis das HTML eingelesen ist. -->
+  <script src="../scripts/text.js?v=9" defer></script>
+  <script src="../scripts/site-shell.js?v=2" defer></script>
+  <script src="../scripts/navigation.js?v=2" defer></script>
+  <script src="../scripts/characters.js?v=7" defer></script>
+  <script src="../scripts/levels.js?v=8" defer></script>
+  <script src="../scripts/app.js?v=8" defer></script>
+  <script src="../scripts/account.js?v=3" data-publishable-key="pk_test_d2FybS1wYW5kYS00MjY1LmNsZXJrLmFjY291bnRzLmRldiQ" defer></script>
+</head>
+<body data-game="sudoku">
+
+  <!-- Hier baue ich die Spielfläche für Sudoku auf. -->
+  <main>
+    <section class="intro">
+      <h1 data-text="headline">Denken statt scrollen.</h1>
+    </section>
+    <section class="game" data-label="game" aria-label="Sudoku-Spiel">
+      <!-- Mit JavaScript ergänze ich hier die 81 Felder und die neun Zahlentasten. -->
+      <div class="board-wrap">
+        <div id="board" role="group" data-label="board" aria-label="Sudoku-Raster"></div>
+      </div>
+      <div class="number-row">
+        <div id="numbers" data-label="numbers" aria-label="Zahlen eingeben"></div>
+        <button id="hint-button" type="button" data-label="hint" aria-label="Hinweis">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true">
+            <path d="M9 18h6m-5 3h4m-5-6c0-2-3-3-3-7a6 6 0 0 1 12 0c0 4-3 5-3 7z"/>
+          </svg>
+        </button>
+      </div>
+      <p id="hint-message" role="status"></p>
+      <!-- Ich stelle die Meldungen für Screenreader bereit und blende sie optisch aus. -->
+      <p id="message" class="sr-only" role="status" aria-live="polite"></p>
+    </section>
+  </main>
+</body>
+</html>
