@@ -20,12 +20,13 @@
       // Die Seite funktioniert auch, wenn der Browser das Speichern blockiert.
     }
   </script>
-  <link rel="stylesheet" href="styles/style.css?v=0.3">
+  <!-- Das Stylesheet enthält gemeinsame Regeln und einen Abschnitt pro Spiel. -->
+  <link rel="stylesheet" href="styles/style.css?v=1">
   <!-- Ich lade zuerst die Spiellogik und dann die Konto-Funktionen. defer wartet mit der Ausführung, bis das HTML eingelesen ist. -->
-  <script src="scripts/app.js?v=0.5" defer></script>
-  <script src="scripts/account.js?v=0.5" data-publishable-key="pk_test_d2FybS1wYW5kYS00MjY1LmNsZXJrLmFjY291bnRzLmRldiQ" defer></script>
+  <script src="scripts/app.js?v=1" defer></script>
+  <script src="scripts/account.js?v=0.8" data-publishable-key="pk_test_d2FybS1wYW5kYS00MjY1LmNsZXJrLmFjY291bnRzLmRldiQ" defer></script>
 </head>
-<body>
+<body data-game="sudoku">
   <!-- Kopfzeile: Logo links, Schriftzug mittig, Einstellungen rechts. -->
   <header>
     <a class="brand" href="./" data-label="home" aria-label="Sudoku Startseite">
@@ -84,6 +85,12 @@
           <p id="account-status" role="status"></p>
         </div>
         <div class="nav-group">
+          <span class="nav-label" data-text="switchGame">Spiel wechseln</span>
+          <div class="languages creator-links">
+            <a href="mudoku.html">Mudoku</a>
+          </div>
+        </div>
+        <div class="nav-group">
           <span class="nav-label" data-text="moreFromAshwite">Mehr von ashwite</span>
           <div class="languages creator-links">
             <a href="https://gitlab.com/ashwite">GitLab</a>
@@ -95,6 +102,7 @@
     </div>
   </header>
 
+  <!-- Sudoku: Hier beginnt die Oberfläche für das eigentliche Spiel. -->
   <main>
     <section class="intro">
       <h1 data-text="headline">Denken statt scrollen.</h1>

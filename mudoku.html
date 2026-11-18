@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Ordne vier Verdächtige ihren Räumen zu und löse den Fall.">
+  <title>Mudoku · Der letzte Termin</title>
+  <link rel="icon" href="assets/miffy.png" type="image/png">
+  <!-- Ich lese Sprache und Farben beim Laden, damit die Seite direkt zu den Einstellungen aus Sudoku passt. -->
+  <meta name="theme-color" content="#fff">
+  <script>
+    const preferredTheme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    document.documentElement.dataset.theme = preferredTheme;
+    try {
+      document.documentElement.lang = localStorage.getItem('sudoku-language') === 'en' ? 'en' : 'de';
+      document.documentElement.dataset.theme = localStorage.getItem('sudoku-theme') || preferredTheme;
+      document.documentElement.dataset.palette = localStorage.getItem('sudoku-palette') || 'mono';
+    } catch {
+      // Wenn der Browser den Speicher blockiert, verwende ich die Systemeinstellung.
+    }
+  </script>
+  <!-- Das Stylesheet enthält gemeinsame Regeln und einen Abschnitt pro Spiel. -->
+  <link rel="stylesheet" href="styles/style.css?v=1">
+  <script src="scripts/text.js?v=0.8" defer></script>
+  <script src="scripts/navigation.js" defer></script>
+  <script src="scripts/cases.js?v=0.8" defer></script>
+  <script src="scripts/app.js?v=1" defer></script>
+  <script src="scripts/account.js?v=0.8" data-publishable-key="pk_test_d2FybS1wYW5kYS00MjY1LmNsZXJrLmFjY291bnRzLmRldiQ" defer></script>
+</head>
+<body class="mudoku" data-game="mudoku">
+  <!-- Die Kopfzeile nutzt dasselbe Logo und Klappmenü wie Sudoku. -->
+  <header>
+    <a class="brand" href="mudoku.html" aria-label="Mudoku Startseite" data-label="home">
+      <span class="brand-icon">
+        <img class="logo-light" src="assets/logo-light.png" alt="">
+        <img class="logo-dark" src="assets/logo-dark.png" alt="">
+      </span>
+      <span class="brand-wordmark">mudoku</span>
+    </a>
+    <div class="header-actions">
+      <button id="menu-toggle" class="menu-toggle" type="button" aria-label="Menü öffnen"
+        aria-expanded="false" aria-controls="navigation">
+        <span></span>
+        <span></span>
+      </button>
+      <!-- Hier biete ich Sprache, Farben, Schwierigkeit, Konto und den Wechsel zu Sudoku an. -->
+      <nav id="navigation" class="navigation" aria-label="Spieleinstellungen" data-label="settings" hidden>
+        <div class="nav-group">
+          <span class="nav-label" data-text="language">Sprache</span>
+          <div class="languages" role="group" data-label="language">
+            <button type="button" data-language="de" lang="de">Deutsch</button>
+            <button type="button" data-language="en" lang="en">English</button>
+          </div>
+        </div>
+        <div class="nav-group">
+          <span class="nav-label" data-text="colors">Farbtheme</span>
+          <div id="palettes" class="palettes" role="group" aria-label="Farbtheme" data-label="colors">
+            <button type="button" class="theme-toggle" aria-label="Dunkelmodus einschalten" aria-pressed="false">
+              <span aria-hidden="true">☾</span>
+            </button>
+          </div>
+        </div>
+        <div class="nav-group">
+          <span class="nav-label" data-text="difficulty">Schwierigkeit</span>
+          <div class="levels" role="group" data-label="difficulty">
+            <button type="button" data-level="easy" data-text="easy" aria-pressed="false">Leicht</button>
+            <button type="button" data-level="medium" data-text="medium" aria-pressed="false">Mittel</button>
+            <button type="button" data-level="hard" data-text="hard" aria-pressed="false">Schwer</button>
+          </div>
+        </div>
+        <div class="nav-group" id="account" hidden>
+          <span class="nav-label" data-text="account">Konto</span>
+          <button id="account-sign-in" type="button" data-text="accountSignIn">Anmelden</button>
+          <button id="account-sign-up" type="button" data-text="accountSignUp">Konto erstellen</button>
+          <button id="account-profile" type="button" data-text="accountManage" hidden>Konto verwalten</button>
+          <div class="languages">
+            <button id="account-save" type="button" data-text="accountSave">Speichern</button>
+            <button id="account-load" type="button" data-text="accountLoad">Laden</button>
+            <button id="account-sign-out" type="button" data-text="accountSignOut" hidden>Abmelden</button>
+          </div>
+          <p id="account-status" role="status"></p>
+        </div>
+        <div class="nav-group">
+          <span class="nav-label" data-text="switchGame">Spiel wechseln</span>
+          <div class="languages creator-links">
+            <a href="index.html">Sudoku</a>
+          </div>
+        </div>
+        <div class="nav-group">
+          <span class="nav-label" data-text="more">Mehr von ashwite</span>
+          <div class="languages creator-links">
+            <a href="https://gitlab.com/ashwite">GitLab</a>
+            <a href="https://github.com/ashwite">GitHub</a>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Mudoku: Hier beginnt die Oberfläche für das eigentliche Spiel. -->
+  <main>
+    <div class="intro">
+      <h1 id="case-title"></h1>
+      <p id="case-intro"></p>
+      <div class="case-selection">
+        <label for="case-picker" data-text="chooseCase">Fall auswählen</label>
+        <select id="case-picker"></select>
+      </div>
+    </div>
+
+    <div class="case-layout">
+      <section class="panel" aria-labelledby="clue-title">
+        <h2 id="clue-title" data-text="clues">Fallakte</h2>
+        <p data-text="rules">Die vier Verdächtigen waren zur Tatzeit in vier verschiedenen Räumen. Nur die Person am Tatort war beim Opfer.</p>
+        <p id="lie-rule" data-text="lieRule" hidden>Genau eine der Aussagen ist falsch.</p>
+        <ol id="clues"></ol>
+      </section>
+
+      <!-- app.js füllt die Raumfelder. Bei bestimmten Fällen kommt die Auswahl der falschen Aussage dazu. -->
+      <form class="panel" id="case-form">
+        <h2 data-text="rooms">Flurplan</h2>
+        <p data-text="instructions">Die Räume liegen in der gezeigten Reihenfolge von links nach rechts. Ordne jedem Raum eine Person zu.</p>
+        <ol id="rooms"></ol>
+
+        <label for="suspect" data-text="accusation">Wer hat die Tat begangen?</label>
+        <select id="suspect" required></select>
+
+        <div id="lie-field" hidden>
+          <label for="false-clue" data-text="falseClue">Welche Aussage ist falsch?</label>
+          <select id="false-clue" disabled></select>
+        </div>
+        <p id="field-errors" role="status"></p>
+
+        <div class="actions">
+          <button type="submit" data-text="solve">Fall lösen</button>
+          <button type="reset" class="secondary" data-text="reset">Zurücksetzen</button>
+        </div>
+        <p id="feedback" role="status"></p>
+      </form>
+    </div>
+
+    <!-- Die Auflösung bleibt verborgen, bis alle Antworten richtig sind. -->
+    <section id="solution" class="panel solution" aria-labelledby="solution-title" hidden>
+      <h2 id="solution-title" data-text="solution">Auflösung</h2>
+      <p id="solution-text"></p>
+    </section>
+  </main>
+  <!-- Unten wiederhole ich die wichtigsten Bedienelemente für einen schnellen Zugriff. -->
+  <footer class="site-footer">
+    <div class="footer-links">
+      <button id="footer-sign-in" type="button" data-text="accountSignIn" hidden>Anmelden</button>
+      <button id="footer-profile" type="button" data-text="accountManage" hidden>Konto verwalten</button>
+      <button id="footer-save" type="button" data-text="accountSave" hidden>Speichern</button>
+      <button id="footer-load" type="button" data-text="accountLoad" hidden>Laden</button>
+      <div class="levels footer-levels" role="group" data-label="difficulty">
+        <button type="button" data-level="easy" data-text="easy" aria-pressed="false">Leicht</button>
+        <button type="button" data-level="medium" data-text="medium" aria-pressed="false">Mittel</button>
+        <button type="button" data-level="hard" data-text="hard" aria-pressed="false">Schwer</button>
+      </div>
+      <nav aria-label="Hilfe und rechtliche Informationen" data-label="legal">
+        <a href="pages/hilfe.html" data-text="help">Hilfe</a>
+        <a href="pages/impressum.html" data-text="imprint">Impressum</a>
+        <a href="pages/datenschutz.html" data-text="privacy">Datenschutz</a>
+      </nav>
+    </div>
+    <span id="footer-account-status" role="status"></span>
+    <div class="footer-controls">
+      <div class="languages footer-languages" role="group" data-label="language">
+        <button type="button" data-language="en" lang="en" aria-label="English">en</button>
+        <span aria-hidden="true">/</span>
+        <button type="button" data-language="de" lang="de" aria-label="Deutsch">de</button>
+      </div>
+      <button id="theme" type="button" class="theme-toggle" aria-label="Dunkelmodus einschalten" aria-pressed="false">
+        <span aria-hidden="true">☾</span>
+      </button>
+    </div>
+  </footer>
+</body>
+</html>
