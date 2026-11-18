@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=WindSong:wght@400&family=Jost:wght@400;500;600&display=swap');
 
 /* 1. Farbpaare: dunkel und hell gehören immer zu einem Theme. */
+/* Hier lege ich wiederverwendbare Farben fest. var(...) liest später den jeweiligen Wert aus. */
 :root { --palette-dark: #000; --palette-light: #fff; }
 html[data-palette="garden"] { --palette-dark: #141c14; --palette-light: #f6bdd7; }
 html[data-palette="rose"] { --palette-dark: #3b090b; --palette-light: #fa5c5c; }
@@ -12,6 +13,7 @@ html[data-palette="sunshine"] { --palette-dark: #703a03; --palette-light: #fff0a
 html[data-palette="sand"] { --palette-dark: #261c12; --palette-light: #f0e2cc; }
 
 /* Hell-/Dunkelmodus tauscht nur Hintergrund und Schriftfarbe. */
+/* Hier lege ich wiederverwendbare Farben fest. var(...) liest später den jeweiligen Wert aus. */
 :root {
   color-scheme: light;
   --bg: var(--palette-light);
@@ -22,6 +24,7 @@ html[data-palette="sand"] { --palette-dark: #261c12; --palette-light: #f0e2cc; }
   --same: color-mix(in srgb, var(--ink) 12%, var(--bg));
   --selected: color-mix(in srgb, var(--ink) 20%, var(--bg));
 }
+/* Im Dunkelmodus verwende ich den dunklen Farbton als Hintergrund und den hellen für Text und Linien. */
 html[data-theme="dark"] {
   color-scheme: dark;
   --bg: var(--palette-dark);
@@ -33,6 +36,7 @@ html[data-theme="dark"] {
 body { margin: 0; background: var(--bg); color: var(--ink); font-family: 'Jost', sans-serif; }
 button { font: inherit; color: inherit; cursor: pointer; background: var(--bg); }
 button, a { -webkit-tap-highlight-color: transparent; }
+/* Wenn ich mit der Tastatur unterwegs bin, zeigt der Rahmen, welches Element gerade den Fokus hat. */
 button:focus-visible, a:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
 
 /* 3. Kopfzeile. Die hohe Ebene hält das Menü über den Animationen. */
@@ -78,6 +82,7 @@ html[data-theme="dark"] .logo-dark { display: block; }
   background: transparent;
 }
 .menu-toggle span { width: 23px; height: 1px; background: var(--ink); transition: transform .18s; }
+/* Wenn das Menü offen ist, drehe ich die beiden Striche zu einem X. */
 .menu-toggle[aria-expanded="true"] span:first-child { transform: translateY(4px) rotate(45deg); }
 .menu-toggle[aria-expanded="true"] span:last-child { transform: translateY(-4px) rotate(-45deg); }
 
@@ -96,6 +101,7 @@ html[data-theme="dark"] .logo-dark { display: block; }
   background: var(--bg);
   box-shadow: 0 12px 30px #00000018;
 }
+/* Wenn JavaScript hidden setzt, nehme ich den Bereich ganz aus der Anzeige. */
 .navigation[hidden],
 #account button[hidden],
 #account[hidden] { display: none; }
@@ -145,6 +151,7 @@ main {
 h1 { margin: 12px 0 4px; font-size: 22px; line-height: 1.35; font-weight: 400; }
 .game { width: 100%; max-width: 470px; }
 .board-wrap { overflow: hidden; border: 2px solid var(--strong-line); border-radius: 9px; }
+/* Ich verteile die Feld-Buttons auf neun gleich breite Spalten. Daraus entstehen bei 81 Feldern neun Zeilen. */
 #board { display: grid; grid-template-columns: repeat(9, 1fr); background: var(--bg); }
 .cell {
   aspect-ratio: 1;
@@ -158,11 +165,14 @@ h1 { margin: 12px 0 4px; font-size: 22px; line-height: 1.35; font-weight: 400; }
 }
 .cell.given { font-weight: 500; }
 .cell.incorrect { text-decoration: underline wavy; text-underline-offset: 3px; }
+/* Ich mache die Linie nach jeder dritten Spalte dicker. Am äußeren Rand übernimmt der Rahmen die Linie. */
 .cell:nth-child(3n) { border-right: 2px solid var(--strong-line); }
 .cell:nth-child(9n) { border-right: 0; }
+/* Die Felder 19 bis 27 und 46 bis 54 beenden den ersten und zweiten Blockstreifen. Dort ziehe ich unten eine dickere Linie. */
 .cell:nth-child(n+19):nth-child(-n+27),
 .cell:nth-child(n+46):nth-child(-n+54) { border-bottom: 2px solid var(--strong-line); }
 .cell:nth-child(n+73) { border-bottom: 0; }
+/* Die von app.js gesetzten Klassen zeigen Nachbarfelder, gleiche Zahlen und die aktuelle Auswahl unterschiedlich an. */
 .cell.related { background: var(--related); }
 .cell.same { background: var(--same); }
 .cell.selected { background: var(--selected); box-shadow: inset 0 0 0 2px var(--ink); }
@@ -234,6 +244,7 @@ h1 { margin: 12px 0 4px; font-size: 22px; line-height: 1.35; font-weight: 400; }
 .creator-links button:disabled { opacity: .55; cursor: default; }
 
 body { min-height: 100dvh; display: flex; flex-direction: column; }
+/* Ich richte die Fußzeile als Raster ein, damit Links, Einstellungen und die Konto-Meldung eigene Plätze haben. */
 .site-footer {
   display: grid;
   grid-template-columns: auto auto;
@@ -266,6 +277,7 @@ body { min-height: 100dvh; display: flex; flex-direction: column; }
   margin: 48px auto;
 }
 
+/* Ich blende auf der Hilfeseite den englischen Abschnitt bei Deutsch aus und den deutschen Abschnitt bei Englisch. */
 html:lang(de) .help-en,
 html:lang(en) .help-de { display: none; }
 

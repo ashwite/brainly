@@ -9,6 +9,7 @@
   <title>Sudoku · Denken statt scrollen</title>
 
   <!-- Gespeicherte Farben vor dem Laden anzeigen: verhindert ein kurzes Aufblitzen. -->
+  <!-- Ich lese die gespeicherten Einstellungen so früh, dass die Seite gleich in den passenden Farben erscheint. -->
   <script>
     try {
       document.documentElement.lang = localStorage.getItem('sudoku-language') === 'en' ? 'en' : 'de';
@@ -20,6 +21,7 @@
     }
   </script>
   <link rel="stylesheet" href="style.css?v=0.3">
+  <!-- Ich lade zuerst die Spiellogik und dann die Konto-Funktionen. defer wartet mit der Ausführung, bis das HTML eingelesen ist. -->
   <script src="app.js?v=0.5" defer></script>
   <script src="account.js?v=0.5" data-publishable-key="pk_test_d2FybS1wYW5kYS00MjY1LmNsZXJrLmFjY291bnRzLmRldiQ" defer></script>
 </head>
@@ -41,6 +43,7 @@
         <span></span>
       </button>
 
+      <!-- Dieses Menü ist anfangs zugeklappt. app.js steuert, wann es sichtbar ist. -->
       <nav id="navigation" class="navigation" data-label="settings" aria-label="Spieleinstellungen" hidden>
         <div class="nav-group">
           <span class="nav-label" data-text="language">Sprache</span>
@@ -67,6 +70,7 @@
             <button data-text="hard" data-level="hard">Schwer</button>
           </div>
         </div>
+        <!-- Hier stehen meine Konto-Buttons. account.js zeigt den Bereich an und verbindet die Buttons mit Clerk. -->
         <div class="nav-group" id="account" hidden>
           <span class="nav-label" data-text="account">Konto</span>
           <button id="account-sign-in" data-text="accountSignIn" type="button">Anmelden</button>
@@ -113,6 +117,7 @@
       <p id="message" class="sr-only" role="status" aria-live="polite"></p>
     </section>
   </main>
+  <!-- Unten biete ich die wichtigsten Einstellungen, Konto-Aktionen und Links zu den Infoseiten noch einmal an. -->
   <footer class="site-footer">
     <div class="footer-links">
       <button id="footer-sign-in" type="button" data-text="accountSignIn" hidden>Anmelden</button>
