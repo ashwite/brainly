@@ -4,13 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/png" sizes="32x32" href="../assets/miffy.png">
-  <title>Hilfe · Sudoku</title>
+  <title>Hilfe · Kleine Denkpause</title>
   <!-- Gespeicherte Farben vor dem Laden anzeigen: verhindert ein kurzes Aufblitzen. -->
   <!-- Ich lese die gespeicherten Einstellungen so früh, dass die Seite gleich in den passenden Farben erscheint. -->
   <script>
     try {
       document.documentElement.lang = localStorage.getItem('sudoku-language') === 'en' ? 'en' : 'de';
-      if (document.documentElement.lang === 'en') document.title = 'Help · Sudoku';
+      if (document.documentElement.lang === 'en') document.title = 'Help · Kleine Denkpause';
       document.documentElement.dataset.palette = localStorage.getItem('sudoku-palette') || 'mono';
       document.documentElement.dataset.theme = localStorage.getItem('sudoku-theme') ||
         (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
@@ -18,28 +18,52 @@
       // Die Seite funktioniert auch, wenn der Browser das Speichern blockiert.
     }
   </script>
-  <link rel="stylesheet" href="../styles/style.css?v=0.3">
+  <link rel="stylesheet" href="../styles/style.css?v=1">
 </head>
 <body>
-  <!-- Hier beginnt der eigentliche Inhalt. Ich verwende dieselbe Grundgestaltung wie beim Spiel. -->
   <main class="legal-page">
-    <!-- Ich halte beide Sprachfassungen im HTML bereit. CSS zeigt die Fassung an, die zu lang am HTML-Element passt. -->
-    <section class="help-de" lang="de">
-      <a href="../index.html">← Zurück zum Sudoku</a>
+    <div class="help-de" lang="de">
       <h1>Hilfe</h1>
-      <p>Fülle das Raster so, dass jede Zahl von 1 bis 9 in jeder Zeile, Spalte und jedem 3×3-Block genau einmal vorkommt.</p>
-      <p>Wähle ein freies Feld und tippe eine Zahl an oder drücke 1 bis 9. Mit Rücktaste, Entf oder einem zweiten Tipp auf das gewählte Feld löschst du deine Eingabe.</p>
-      <p>Eine wellige Unterstreichung zeigt eine falsche Zahl an. Sie verschwindet beim Korrigieren oder Löschen.</p>
-      <p>Wenn du nicht weiterkommst, tippe auf die kleine Glühbirne rechts neben den Zahlentasten. Sie markiert eine falsche Eingabe oder wählt ein freies Feld aus und zeigt dir, welche Zahlen dort infrage kommen. Du trägst die Zahl selbst ein.</p>
-    </section>
-    <section class="help-en" lang="en">
-      <a href="../index.html">← Back to Sudoku</a>
+      <section>
+        <h2>Sudoku</h2>
+        <p>Fülle das Raster so, dass jede Zahl von 1 bis 9 in jeder Zeile, Spalte und jedem 3×3-Block genau einmal vorkommt.</p>
+        <p>Wähle ein freies Feld und tippe eine Zahl an oder drücke 1 bis 9. Mit Rücktaste, Entf oder einem zweiten Tipp auf das gewählte Feld löschst du deine Eingabe.</p>
+        <p>Eine wellige Unterstreichung zeigt eine falsche Zahl an. Sie verschwindet beim Korrigieren oder Löschen.</p>
+        <p>Wenn du nicht weiterkommst, tippe auf die kleine Glühbirne rechts neben den Zahlentasten. Sie markiert eine falsche Eingabe oder wählt ein freies Feld aus und zeigt dir, welche Zahlen dort infrage kommen. Du trägst die Zahl selbst ein.</p>
+        <a href="../index.html">Sudoku spielen</a>
+      </section>
+      <section>
+        <h2>Mudoku</h2>
+        <p>In Mudoku löst du einen Kriminalfall. Vier Verdächtige waren zur Tatzeit in vier verschiedenen Räumen. Finde heraus, wer am Tatort war.</p>
+        <p>Lies zuerst die Hinweise in der <strong>Fallakte</strong>. Der <strong>Flurplan</strong> zeigt die Räume von links nach rechts. „Direkt links“ bedeutet, dass die beiden Räume nebeneinanderliegen.</p>
+        <p>Wähle für jeden Raum eine Person aus. Jede Person darf nur einmal vorkommen. Du kannst deine Zuordnung jederzeit ändern.</p>
+        <p>Wähle unter <strong>Wer hat die Tat begangen?</strong> die Person aus, die du dem Tatort zugeordnet hast. Mit <strong>Fall lösen</strong> kannst du deine Eingaben prüfen. Sobald alles stimmt, erscheint die Auflösung. Nach fünf Sekunden startet der nächste Fall derselben Stufe, sofern es einen gibt.</p>
+        <p>Wähle oben einen Fall deiner Schwierigkeitsstufe aus. In manchen schweren Fällen ist genau eine Aussage falsch. Dann musst du zusätzlich diese Aussage auswählen.</p>
+        <p>Eine wellige Unterstreichung markiert eine falsche Eingabe. Die Fehleranzeige zählt die aktuell falschen Felder. Bei einer falschen Antwort kannst du weiter umsortieren. Mit <strong>Zurücksetzen</strong> leerst du alle Auswahlen.</p>
+        <a href="../mudoku.html">Mudoku spielen</a>
+      </section>
+    </div>
+    <div class="help-en" lang="en">
       <h1>Help</h1>
-      <p>Fill the grid so that each number from 1 to 9 appears exactly once in every row, column and 3×3 box.</p>
-      <p>Select an empty cell and tap a number or press 1 to 9. Press Backspace or Delete, or tap the selected cell again, to clear your entry.</p>
-      <p>A wavy underline marks an incorrect number. It disappears when you correct or clear the entry.</p>
-      <p>If you get stuck, tap the small light bulb to the right of the number buttons. It highlights an incorrect entry or selects an empty cell and shows which numbers could fit there. You enter the number yourself.</p>
-    </section>
+      <section>
+        <h2>Sudoku</h2>
+        <p>Fill the grid so that each number from 1 to 9 appears exactly once in every row, column and 3×3 box.</p>
+        <p>Select an empty cell and tap a number or press 1 to 9. Press Backspace or Delete, or tap the selected cell again, to clear your entry.</p>
+        <p>A wavy underline marks an incorrect number. It disappears when you correct or clear the entry.</p>
+        <p>If you get stuck, tap the small light bulb to the right of the number buttons. It highlights an incorrect entry or selects an empty cell and shows which numbers could fit there. You enter the number yourself.</p>
+        <a href="../index.html">Play Sudoku</a>
+      </section>
+      <section>
+        <h2>Mudoku</h2>
+        <p>In Mudoku, you solve a murder mystery. Four suspects were in four different rooms at the time of the murder. Find out who was at the crime scene.</p>
+        <p>Read the clues in the <strong>Case file</strong> first. The <strong>Floor plan</strong> shows the rooms from left to right. “Immediately to the left” means the two rooms are next to each other.</p>
+        <p>Choose one person for each room. Each person can only appear once. You can change your assignments at any time.</p>
+        <p>Under <strong>Who committed the murder?</strong>, choose the person you assigned to the crime scene. Use <strong>Solve case</strong> to check your answers. As soon as everything is correct, the solution appears. After five seconds, the next case on the same difficulty starts if there is one.</p>
+        <p>Choose a case from your difficulty level at the top. In some hard cases, exactly one statement is false. Select that statement as part of your answer.</p>
+        <p>A wavy underline marks an incorrect choice. The error count shows how many fields are currently incorrect. If an answer is wrong, you can keep rearranging your choices. Use <strong>Reset</strong> to clear all selections.</p>
+        <a href="../mudoku.html">Play Mudoku</a>
+      </section>
+    </div>
   </main>
 </body>
 </html>

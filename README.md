@@ -1,44 +1,56 @@
-# Sudoku
+# Kleine Denkpause
 
-Eine kleine Website mit HTML, CSS und JavaScript. Ohne Framework und ohne Installation.
+Zwei Minispiele für eine kurze Denkpause. Die Seiten bestehen aus HTML, CSS und JavaScript und lassen sich ohne Installation öffnen.
 
-## Dateien
+## Lokal starten
 
-- `index.html`: Aufbau der Seite und Navigation.
-- `styles/style.css`: Farben, Schriften, Größen und Animationen.
-- `scripts/app.js`: Sudoku-Erzeugung, Eingaben, Speichern und Einstellungen.
-- `scripts/account.js`: Anmeldung und Online-Spielstände.
-- `pages/`: Hilfe, Impressum und Datenschutz.
-- `assets/`: Logo für helle und dunkle Hintergründe.
-
-Die Kommentare in den drei Dateien erklären die einzelnen Abschnitte.
-
-## Lokal öffnen
-
-`index.html` im Browser öffnen. Alternativ im Projektordner einen lokalen Server starten:
+Öffne [Sudoku](index.html) oder [Mudoku](mudoku.html) im Browser. Du kannst auch im Hauptordner einen lokalen Server starten:
 
 ```sh
 python3 -m http.server 4173 --bind 127.0.0.1
 ```
 
-Danach `http://localhost:4173` öffnen. Die Schriften Jost und WindSong werden von Google Fonts geladen.
+Danach erreichst du [Sudoku](http://localhost:4173/) und [Mudoku](http://localhost:4173/mudoku.html) über den Server. Im Menü kannst du unter **Spiel wechseln** zwischen beiden Spielen wechseln.
 
-## Häufige Änderungen
+## Sudoku
 
-- Text und Menüpunkte: in `index.html`.
-- Schriftgrößen und Abstände: in `styles/style.css`.
-- Farbthemes: Farbpaare am Anfang von `styles/style.css` und die Liste `PALETTES` in `scripts/app.js`.
-- Anzahl vorgegebener Zahlen: `CLUE_COUNTS` in `scripts/app.js`. Weniger Vorgaben machen das Rätsel meist schwieriger; die Zahl allein ist keine Bewertung der nötigen Lösungsstrategien.
-- Wartezeit vor dem nächsten Sudoku: `1200` Millisekunden in `advanceAfterCompletion()`.
+Fülle das Raster so, dass die Zahlen von 1 bis 9 in jeder Zeile, jeder Spalte und jedem 3×3-Block genau einmal vorkommen. Wähle ein Feld und nutze die Zahlentasten auf der Seite oder deine Tastatur. Mit den Pfeiltasten wechselst du das Feld. Mit Rücktaste, Entf oder einem zweiten Tipp auf das ausgewählte Feld löschst du deine Eingabe.
 
-## Bedienung
+Die Glühbirne hilft dir bei falschen Eingaben oder zeigt mögliche Zahlen für ein freies Feld. Sobald du ein Sudoku gelöst hast, startet ein neues Rätsel derselben Stufe.
 
-Ein Feld auswählen und eine Zahl anklicken oder 1–9 drücken. Ein zweiter Tipp auf das ausgewählte Feld löscht die eigene Eingabe. Vorgegebene Zahlen bleiben stehen. Pfeiltasten wechseln das Feld; Rücktaste oder Entf löschen. Sobald alles richtig gelöst ist, beginnt automatisch ein neues Sudoku derselben Schwierigkeitsstufe.
+| Datei | Inhalt |
+|---|---|
+| [index.html](index.html) | Spielfeld, Navigation und Fußzeile |
+| [scripts/app.js](scripts/app.js), Abschnitt Sudoku | Rätselerzeugung, Eingaben, Hinweise, Spielstand im Browser und Texte der Oberfläche |
 
-Ohne Konto bleibt der Spielstand im Browser. Mit einem Clerk-Konto kannst du ihn über „Speichern“ und „Laden“ zwischen Geräten übertragen. Die Anzeigeeinstellungen bleiben im jeweiligen Browser.
+Die Anzahl der vorgegebenen Zahlen steht in `CLUE_COUNTS`. Die Pause vor dem nächsten Sudoku steht in `advanceAfterCompletion()`.
 
-## Sprache und gespeicherte Einstellungen
+## Mudoku
 
-Deutsch und Englisch lassen sich in der Navigation umschalten. Alle Übersetzungen stehen in der Liste `TEXT` in `scripts/app.js`. `data-text` übersetzt sichtbare Texte in der HTML-Datei, `data-label` deren Beschriftung für Screenreader.
+Lies die Fallakte und ordne vier Verdächtige vier Räumen zu. Gib dann an, wer am Tatort war. In den letzten 20 Fällen musst du zusätzlich die falsche Aussage auswählen.
 
-Die Schlüssel `sudoku-language`, `sudoku-palette` und `sudoku-theme` speichern die Sprache, das Farbtheme und den Hell-/Dunkelmodus im Browser. Die kleine Anweisung im HTML-Kopf liest sie vor der ersten Anzeige. Der Wechsel der Sprache verändert den Spielstand nicht.
+Über **Fall auswählen** findest du 20 leichte, 20 mittlere und 40 schwere Fälle. Falsche Eingaben werden wellig unterstrichen. Die Fehleranzeige zählt die aktuell falschen Felder. Sobald alles stimmt, erscheint die Auflösung. Nach fünf Sekunden beginnt der nächste Fall derselben Stufe, falls es einen gibt.
+
+| Datei | Inhalt |
+|---|---|
+| [mudoku.html](mudoku.html) | Fallakte, Flurplan, Fallauswahl und Fußzeile |
+| [scripts/app.js](scripts/app.js), Abschnitt Mudoku | Raumzuordnung, Fehleranzeige, Prüfung und Fallwechsel |
+| [scripts/navigation.js](scripts/navigation.js) | Menü, Sprachwechsel und Farbwahl |
+| [scripts/cases.js](scripts/cases.js) | Fälle, Hinweise und Auflösungen auf Deutsch und Englisch |
+| [scripts/text.js](scripts/text.js) | Zweisprachige Texte der Oberfläche |
+
+## Gemeinsame Einstellungen und Dateien
+
+Beide Spiele teilen sich Sprache, Farbtheme und Hell-/Dunkelmodus im Browser. In den HTML-Dateien steht `data-text` für sichtbare Texte und `data-label` für Beschriftungen, die ein Screenreader vorlesen kann.
+
+Sudoku speichert den Spielstand automatisch im Browser. Über **Speichern** und **Laden** können beide Spiele ihren jeweiligen Online-Spielstand im selben Clerk-Konto ablegen.
+
+| Pfad | Inhalt |
+|---|---|
+| [styles/style.css](styles/style.css) | Gemeinsame Gestaltung und eigene Abschnitte für Sudoku und Mudoku |
+| [assets/](assets/) | Logos für helle und dunkle Hintergründe und das Browser-Tab-Symbol |
+| [scripts/account.js](scripts/account.js) | Anmeldung und getrennte Online-Spielstände |
+| [pages/hilfe.html](pages/hilfe.html) | Gemeinsame Spielanleitungen auf Deutsch und Englisch |
+| [pages/impressum.html](pages/impressum.html) und [pages/datenschutz.html](pages/datenschutz.html) | Impressum und Datenschutz |
+
+Die Schriften Jost und WindSong werden von Google Fonts geladen.
