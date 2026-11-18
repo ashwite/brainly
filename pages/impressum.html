@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/miffy.png">
+  <title>Impressum · Sudoku</title>
+  <!-- Ich wende die gespeicherten Farben früh an, damit die Standardfarben nicht kurz aufblitzen. -->
+  <!-- Ich lese die gespeicherten Einstellungen so früh, dass die Seite gleich in den passenden Farben erscheint. -->
+  <script>
+    try {
+      document.documentElement.lang = localStorage.getItem('sudoku-language') === 'en' ? 'en' : 'de';
+      if (document.documentElement.lang === 'en') document.title = 'Legal notice · Sudoku';
+      document.documentElement.dataset.palette = localStorage.getItem('sudoku-palette') || 'mono';
+      document.documentElement.dataset.theme = localStorage.getItem('sudoku-theme') ||
+        (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    } catch {
+      // Wenn der Browser den Speicher blockiert, verwende ich die Vorgaben.
+    }
+  </script>
+  <link rel="stylesheet" href="../styles/style.css?v=2">
+</head>
+<body>
+  <!-- Hier beginnt der eigentliche Inhalt. Ich verwende dieselbe Grundgestaltung wie beim Spiel. -->
+  <main class="legal-page">
+    <section class="help-de" lang="de">
+      <a href="../index.html">← Zurück zum Sudoku</a>
+      <h1>Impressum</h1>
+      <p>Entwurf. Die Angaben zur verantwortlichen Person und zur Kontaktaufnahme werden vor der Veröffentlichung ergänzt.</p>
+      <h2>Verantwortlich für diese Website</h2>
+      <p>[Vollständiger Name]<br>[Anschrift]<br>[E-Mail-Adresse]</p>
+    </section>
+    <section class="help-en" lang="en">
+      <a href="../index.html">← Back to Sudoku</a>
+      <h1>Legal notice</h1>
+      <p>Draft. Details of the person responsible and their contact information will be added before publication.</p>
+      <h2>Person responsible for this website</h2>
+      <p>[Full name]<br>[Postal address]<br>[Email address]</p>
+    </section>
+  </main>
+</body>
+</html>

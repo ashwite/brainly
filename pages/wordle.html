@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Ändere pro Zug einen Buchstaben und erreiche das Zielwort.">
+  <title>Wordle · Kleine Denkpause</title>
+  <link rel="icon" href="../assets/miffy.png" type="image/png">
+  <!-- Ich lese Sprache und Farben beim Laden, damit die Seite direkt zu den Einstellungen aus Sudoku passt. -->
+  <meta name="theme-color" content="#fff">
+  <script>
+    const preferredTheme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    document.documentElement.dataset.theme = preferredTheme;
+    try {
+      document.documentElement.lang = localStorage.getItem('sudoku-language') === 'en' ? 'en' : 'de';
+      document.documentElement.dataset.theme = localStorage.getItem('sudoku-theme') || preferredTheme;
+      document.documentElement.dataset.palette = localStorage.getItem('sudoku-palette') || 'mono';
+    } catch {
+      // Wenn der Browser den Speicher blockiert, verwende ich die Systemeinstellung.
+    }
+  </script>
+  <!-- Im Stylesheet sammle ich gemeinsame Regeln und ergänze für jedes Spiel eigene Regeln. -->
+  <link rel="stylesheet" href="../styles/style.css?v=22">
+  <script src="../scripts/text.js?v=4" defer></script>
+  <script src="../scripts/navigation.js?v=2" defer></script>
+  <script src="../scripts/wordle.js?v=6" defer></script>
+  <script src="../scripts/characters.js?v=7" defer></script>
+  <script src="../scripts/levels.js?v=7" defer></script>
+  <script src="../scripts/app.js?v=8" defer></script>
+  <script src="../scripts/account.js?v=2" data-publishable-key="pk_test_d2FybS1wYW5kYS00MjY1LmNsZXJrLmFjY291bnRzLmRldiQ" defer></script>
+</head>
+<body class="word-ladder" data-game="wordle">
+  <!-- In der Kopfzeile verwende ich dasselbe Logo und Klappmenü wie bei Sudoku. -->
+  <header>
+    <a class="brand" href="wordle.html" aria-label="Wordle-Startseite" data-label="ladderHome">
+      <span class="brand-icon">
+        <img class="logo-light" src="../assets/logo/logo-light.png" alt="">
+        <img class="logo-dark" src="../assets/logo/logo-dark.png" alt="">
+      </span>
+      <span class="brand-wordmark">wordle</span>
+    </a>
+    <div class="header-actions">
+      <button id="menu-toggle" class="menu-toggle" type="button" aria-label="Menü öffnen"
+        aria-expanded="false" aria-controls="navigation">
+        <span></span>
+        <span></span>
+      </button>
+      <!-- Hier biete ich Sprache, Farben, Schwierigkeit, Konto und den Wechsel zu den anderen Spielen an. -->
+      <nav id="navigation" class="navigation" aria-label="Spieleinstellungen" data-label="settings" hidden>
+        <div class="nav-group">
+          <span class="nav-label" data-text="language">Sprache</span>
+          <div class="languages" role="group" data-label="language">
+            <button type="button" data-language="de" lang="de">Deutsch</button>
+            <button type="button" data-language="en" lang="en">English</button>
+          </div>
+        </div>
+        <div class="nav-group">
+          <span class="nav-label" data-text="colors">Farbtheme</span>
+          <div id="palettes" class="palettes" role="group" aria-label="Farbtheme" data-label="colors">
+            <button type="button" class="theme-toggle" aria-label="Dunkelmodus einschalten" aria-pressed="false">
+              <span aria-hidden="true">☾</span>
+            </button>
+          </div>
+        </div>
+        <div class="nav-group">
+          <span class="nav-label" data-text="difficulty">Schwierigkeit</span>
+          <div class="levels" role="group" data-label="difficulty">
+            <button type="button" data-level="easy" data-text="easy" aria-pressed="false">Leicht</button>
+            <button type="button" data-level="medium" data-text="medium" aria-pressed="false">Mittel</button>
+            <button type="button" data-level="hard" data-text="hard" aria-pressed="false">Schwer</button>
+          </div>
+        </div>
+        <div class="nav-group" id="account">
+          <span class="nav-label" data-text="account">Konto</span>
+          <button id="account-sign-in" type="button" data-text="accountSignIn" hidden>Anmelden</button>
+          <button id="account-sign-up" type="button" data-text="accountSignUp" hidden>Konto erstellen</button>
+          <button id="account-profile" type="button" data-text="accountManage" hidden>Konto verwalten</button>
+          <div class="languages">
+            <button id="account-save" type="button" data-text="accountSave" hidden>Speichern</button>
+            <button id="account-load" type="button" data-text="accountLoad" hidden>Laden</button>
+            <a class="level-link" href="level.html">Level</a>
+            <button id="account-sign-out" type="button" data-text="accountSignOut" hidden>Abmelden</button>
+          </div>
+          <p id="account-status" role="status"></p>
+        </div>
+        <div class="nav-group">
+          <span class="nav-label" data-text="switchGame">Spiel wechseln</span>
+          <div class="languages creator-links">
+            <a href="../index.html">Sudoku</a>
+            <a href="mudoku.html">Mudoku</a>
+          </div>
+        </div>
+        <div class="nav-group">
+          <span class="nav-label" data-text="more">Mehr von ashwite</span>
+          <div class="languages creator-links">
+            <a href="https://gitlab.com/ashwite">GitLab</a>
+            <a href="https://github.com/ashwite">GitHub</a>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Wordle: Ich zeige Start, Ziel und die bisher gespielten Wörter. -->
+  <main>
+    <div class="intro">
+      <h1 data-text="ladderName">Wordle</h1>
+      <p data-text="ladderRules">Ändere pro Zug genau einen Buchstaben, bis du das Zielwort erreichst.</p>
+    </div>
+    <section class="ladder-game" aria-labelledby="ladder-puzzle-label">
+      <label id="ladder-puzzle-label" for="ladder-puzzle" data-text="ladderPuzzle">Rätsel wählen</label>
+      <select id="ladder-puzzle"></select>
+      <dl class="ladder-words">
+        <div><dt data-text="ladderStart">Startwort</dt><dd id="ladder-start"></dd></div>
+        <div><dt data-text="ladderTarget">Zielwort</dt><dd id="ladder-target"></dd></div>
+      </dl>
+      <ol id="ladder-path" data-label="ladderPath"></ol>
+      <form id="ladder-form">
+        <label for="ladder-input" data-text="ladderNext">Nächstes Wort</label>
+        <input id="ladder-input" type="text" spellcheck="false" autocomplete="off" autocapitalize="characters" required>
+        <div class="ladder-actions">
+          <button id="ladder-submit" type="submit" data-text="ladderCheck">Wort prüfen</button>
+          <button id="ladder-undo" type="button" data-text="ladderUndo">Zug zurück</button>
+          <button id="ladder-reset" type="reset" data-text="reset">Zurücksetzen</button>
+        </div>
+      </form>
+      <p id="ladder-status" role="status"></p>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <div class="footer-links">
+      <div class="footer-account" role="group" data-label="account" aria-label="Konto">
+        <button id="footer-sign-in" type="button" data-text="accountSignIn" hidden>Anmelden</button>
+        <button id="footer-profile" type="button" data-text="accountManage" hidden>Konto verwalten</button>
+        <button id="footer-save" type="button" data-text="accountSave" hidden>Speichern</button>
+        <button id="footer-load" type="button" data-text="accountLoad" hidden>Laden</button>
+        <a class="level-link" href="level.html">Level</a>
+      </div>
+      <div class="levels footer-levels" role="group" data-label="difficulty">
+        <button type="button" data-level="easy" data-text="easy" aria-pressed="false">Leicht</button>
+        <button type="button" data-level="medium" data-text="medium" aria-pressed="false">Mittel</button>
+        <button type="button" data-level="hard" data-text="hard" aria-pressed="false">Schwer</button>
+      </div>
+      <nav aria-label="Hilfe und rechtliche Informationen" data-label="legal">
+        <a href="hilfe.html" data-text="help">Hilfe</a>
+        <a href="impressum.html" data-text="imprint">Impressum</a>
+        <a href="datenschutz.html" data-text="privacy">Datenschutz</a>
+      </nav>
+    </div>
+    <span id="footer-account-status" role="status"></span>
+    <div class="footer-controls">
+      <div class="languages footer-languages" role="group" data-label="language">
+        <button type="button" data-language="en" lang="en" aria-label="English">en</button>
+        <span aria-hidden="true">/</span>
+        <button type="button" data-language="de" lang="de" aria-label="Deutsch">de</button>
+      </div>
+      <button id="theme" type="button" class="theme-toggle" aria-label="Dunkelmodus einschalten" aria-pressed="false">
+        <span aria-hidden="true">☾</span>
+      </button>
+    </div>
+  </footer>
+</body>
+</html>

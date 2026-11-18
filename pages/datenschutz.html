@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/miffy.png">
+  <title>Datenschutz · Sudoku</title>
+  <!-- Ich wende die gespeicherten Farben früh an, damit die Standardfarben nicht kurz aufblitzen. -->
+  <!-- Ich lese die gespeicherten Einstellungen so früh, dass die Seite gleich in den passenden Farben erscheint. -->
+  <script>
+    try {
+      document.documentElement.lang = localStorage.getItem('sudoku-language') === 'en' ? 'en' : 'de';
+      if (document.documentElement.lang === 'en') document.title = 'Privacy · Kleine Denkpause';
+      document.documentElement.dataset.palette = localStorage.getItem('sudoku-palette') || 'mono';
+      document.documentElement.dataset.theme = localStorage.getItem('sudoku-theme') ||
+        (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    } catch {
+      // Wenn der Browser den Speicher blockiert, verwende ich die Vorgaben.
+    }
+  </script>
+  <link rel="stylesheet" href="../styles/style.css?v=2">
+</head>
+<body>
+  <!-- Hier beginnt der eigentliche Inhalt. Ich verwende dieselbe Grundgestaltung wie beim Spiel. -->
+  <main class="legal-page">
+    <div class="help-de" lang="de">
+      <a href="../index.html">← Zurück zum Sudoku</a>
+      <h1>Datenschutz</h1>
+      <p>Entwurf. Verantwortliche Stelle, Kontaktdaten und Angaben zu den eingesetzten Diensten sind vor der Veröffentlichung zu vervollständigen.</p>
+      <h2>Spielen ohne Konto</h2>
+      <p>Im Browser bleiben der Sudoku-Spielstand, die XP, der eingetragene Name, die Charakterauswahl und die Einstellungen für Sprache und Farben gespeichert.</p>
+      <h2>Benutzerkonto und Spielstand</h2>
+      <p>Die Anmeldung läuft über Clerk. Wenn du einen Spielstand oder deine XP online speicherst, werden sie bei Clerk hinterlegt und können auf einem anderen Gerät geladen werden.</p>
+      <h2>Hosting und Schriftarten</h2>
+      <p>Die Website wird über GitHub Pages bereitgestellt. Beim Laden der Seite werden Schriftarten von Google Fonts abgerufen.</p>
+    </div>
+    <div class="help-en" lang="en">
+      <a href="../index.html">← Back to Sudoku</a>
+      <h1>Privacy</h1>
+      <p>Draft. The data controller, contact details, and information about the services used must be added before publication.</p>
+      <h2>Playing without an account</h2>
+      <p>Your browser stores your Sudoku game, XP, the name you enter, your character choice, and your language and colour settings.</p>
+      <h2>Accounts and saved progress</h2>
+      <p>Clerk handles sign-in. If you save a game or your XP online, Clerk stores that progress so you can load it on another device.</p>
+      <h2>Hosting and fonts</h2>
+      <p>The website is hosted on GitHub Pages. It loads fonts from Google Fonts.</p>
+    </div>
+  </main>
+</body>
+</html>
