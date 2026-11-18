@@ -1,4 +1,4 @@
-// Sudoku und Mudoku: Beide Spiele teilen die Anmeldung. Ihre Online-Spielstände sind getrennt.
+// Ich verwende dieselbe Anmeldung für alle Spiele und speichere ihre Online-Spielstände getrennt.
 // Hier kümmere ich mich um Anmeldung, Konto und Online-Spielstände.
 // Die äußere Funktion starte ich sofort. Ihre Variablen bleiben in dieser Datei gekapselt.
 (() => {
@@ -6,11 +6,12 @@
   // Clerk weiß damit, zu welchem Anmeldeprojekt diese Seite gehört. Fehlt der Schlüssel, höre ich hier auf.
   const key = document.currentScript.dataset.publishableKey;
   if (!key) return;
-  // Jedes Spiel bekommt einen eigenen Platz im Konto. Sudoku behält seinen bisherigen Schlüssel.
-  const { translate, saveKey, captureSave, restoreSave } = gameApp;
+  // Ich verwende für jedes Spiel einen eigenen Schlüssel und behalte für Sudoku den bisherigen bei.
+  const hasGame = typeof gameApp !== 'undefined';
+  const { saveKey, captureSave, restoreSave } = hasGame ? gameApp : levelProgress;
+  const translate = hasGame ? gameApp.translate : window.translate;
 
   // Mit querySelector suche ich Elemente anhand ihrer ID. Das # steht für eine ID im HTML.
-  const panel = document.querySelector('#account');
   const status = document.querySelector('#account-status');
   const footerStatus = document.querySelector('#footer-account-status');
   // Ich zeige denselben Hinweis im Menü und unten auf der Seite an, etwa nach dem Speichern.
@@ -86,13 +87,13 @@
     const openSignIn = () => openAccountDialog(() => clerk.openSignIn());
     const openSignUp = () => openAccountDialog(() => clerk.openSignUp());
 
-    // Wenn clerk.user vorhanden ist, gibt es eine angemeldete Person. Danach entscheide ich,
-    // welche Buttons zu sehen sind und ob unten Anmelden oder Abmelden steht.
+    // Ich erkenne die aktive Anmeldung an clerk.user.
+    // Je nach Anmeldung zeige ich die passenden Konto-Buttons.
     function render() {
       const signedIn = Boolean(clerk.user);
       signIn.hidden = signUp.hidden = signedIn;
       footerSignIn.hidden = false;
-      for (const button of [footerSave, footerLoad].filter(Boolean)) button.hidden = false;
+      for (const button of [save, load, footerSave, footerLoad].filter(Boolean)) button.hidden = false;
       footerSignIn.dataset.text = signedIn ? 'accountSignOut' : 'accountSignIn';
       footerSignIn.textContent = translate(footerSignIn.dataset.text);
       profile.hidden = footerProfile.hidden = signOut.hidden = !signedIn;
@@ -100,7 +101,7 @@
 
     // Ich verwende denselben Ablauf für Speichern, Laden und Abmelden.
     // Ohne Anmeldung öffne ich zuerst das Anmeldefenster. Danach muss man die Aktion erneut anklicken.
-    // finally schaltet die Buttons auch dann wieder frei, wenn etwas schiefgeht oder der Ablauf früher endet.
+    // In finally schalte ich die Buttons auch nach Fehlern oder einem vorzeitigen Ende wieder frei.
     function run(action) {
       return async () => {
         controls.forEach(button => { button.disabled = true; });
@@ -125,7 +126,7 @@
     profile.onclick = footerProfile.onclick = () => openAccountDialog(() => clerk.openUserProfile());
     const endSession = run(() => clerk.signOut());
     signOut.onclick = endSession;
-    // Der Footer-Button nutzt denselben Ablauf: Ohne Sitzung öffnet er die Anmeldung, mit Sitzung meldet er ab.
+    // Über den Footer-Button öffne ich die Anmeldung oder melde eine aktive Sitzung ab.
     footerSignIn.onclick = endSession;
     if (save && footerSave) {
       save.onclick = footerSave.onclick = run(async () => {
@@ -156,8 +157,12 @@
           showStatus(message('Kein Online-Spielstand vorhanden.', 'No online save found.'));
           return;
         }
-        if (!confirm(message('Den aktuellen Spielstand ersetzen?', 'Replace the current game?'))) return;
-        // Die aktive Spiellogik prüft den Stand und stellt die passende Oberfläche wieder her.
+        const prompt = hasGame
+          ? message('Den aktuellen Spielstand ersetzen?', 'Replace the current game?')
+          : message('Den Online-XP-Stand mit dem lokalen Fortschritt zusammenführen?',
+            'Merge online XP with your local progress?');
+        if (!confirm(prompt)) return;
+        // Ich verwende die Spiellogik, um den gespeicherten Stand zu prüfen und wiederherzustellen.
         if (!restoreSave(snapshot)) throw new Error('Invalid game save');
         showStatus(message('Online-Spielstand geladen.', 'Online save loaded.'));
       });
@@ -165,13 +170,11 @@
     // Ich lasse die Oberfläche erneut aktualisieren, wenn Clerk eine Änderung bei der Anmeldung meldet.
     clerk.addListener(render);
     render();
-    panel.hidden = false;
   }
 
   // Wenn beim Start etwas schiefgeht, blende ich die Konto-Buttons aus und zeige im Menü eine Meldung.
   initialize().catch(() => {
     controls.forEach(button => { button.hidden = true; });
     showStatus(message('Anmeldung derzeit nicht verfügbar.', 'Sign-in is currently unavailable.'));
-    panel.hidden = false;
   });
 })();

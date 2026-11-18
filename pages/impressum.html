@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/png" sizes="32x32" href="../assets/miffy.png">
   <title>Impressum · Sudoku</title>
-  <!-- Gespeicherte Farben vor dem Laden anzeigen: verhindert ein kurzes Aufblitzen. -->
+  <!-- Ich wende die gespeicherten Farben früh an, damit die Standardfarben nicht kurz aufblitzen. -->
   <!-- Ich lese die gespeicherten Einstellungen so früh, dass die Seite gleich in den passenden Farben erscheint. -->
   <script>
     try {
@@ -15,10 +15,10 @@
       document.documentElement.dataset.theme = localStorage.getItem('sudoku-theme') ||
         (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
     } catch {
-      // Die Seite funktioniert auch, wenn der Browser das Speichern blockiert.
+      // Wenn der Browser den Speicher blockiert, verwende ich die Vorgaben.
     }
   </script>
-  <link rel="stylesheet" href="../styles/style.css?v=1">
+  <link rel="stylesheet" href="../styles/style.css?v=2">
 </head>
 <body>
   <!-- Hier beginnt der eigentliche Inhalt. Ich verwende dieselbe Grundgestaltung wie beim Spiel. -->

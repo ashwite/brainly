@@ -1,9 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=WindSong:wght@400&family=Jost:wght@400;500;600&display=swap');
 
-/* GEMEINSAM · Sudoku, Mudoku und Infoseiten
-   Hier pflege ich die Farben, Schriften und die Bausteine, die beide Spiele verwenden. */
+/* GEMEINSAM · Hier gestalte ich die Spiele und Infoseiten. */
 
-/* Farbpaletten: Zu jeder Palette gehören ein heller und ein dunkler Ton. */
+/* Ich lege für jede Palette einen hellen und einen dunklen Ton fest. */
 /* Hier lege ich wiederverwendbare Farben fest. var(...) liest später den jeweiligen Wert aus. */
 :root { --palette-dark: #000; --palette-light: #fff; }
 html[data-palette="garden"] { --palette-dark: #141c14; --palette-light: #f6bdd7; }
@@ -15,7 +14,7 @@ html[data-palette="lavender"] { --palette-dark: #1a0e21; --palette-light: #ebe1f
 html[data-palette="sunshine"] { --palette-dark: #703a03; --palette-light: #fff0a6; }
 html[data-palette="sand"] { --palette-dark: #261c12; --palette-light: #f0e2cc; }
 
-/* Hell-/Dunkelmodus tauscht nur Hintergrund und Schriftfarbe. */
+/* Für den Hell- und Dunkelmodus tausche ich Hintergrund- und Schriftfarbe. */
 /* Hier lege ich wiederverwendbare Farben fest. var(...) liest später den jeweiligen Wert aus. */
 :root {
   color-scheme: light;
@@ -34,7 +33,7 @@ html[data-theme="dark"] {
   --ink: var(--palette-light);
 }
 
-/* Grundgestaltung und Tastatur-Fokus für beide Spiele. */
+/* Hier lege ich die Grundgestaltung und den sichtbaren Tastaturfokus fest. */
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--bg); color: var(--ink); font-family: 'Jost', sans-serif; }
 button { font: inherit; color: inherit; cursor: pointer; background: var(--bg); }
@@ -42,7 +41,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
 /* Wenn ich mit der Tastatur unterwegs bin, zeigt der Rahmen, welches Element gerade den Fokus hat. */
 button:focus-visible, a:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
 
-/* Gemeinsame Kopfzeile mit Logo, Spielname und Menü. */
+/* Ich gestalte die gemeinsame Kopfzeile mit Logo, Spielname und Menü. */
 header {
   position: relative;
   z-index: 50;
@@ -89,13 +88,13 @@ html[data-theme="dark"] .logo-dark { display: block; }
 .menu-toggle[aria-expanded="true"] span:first-child { transform: translateY(4px) rotate(45deg); }
 .menu-toggle[aria-expanded="true"] span:last-child { transform: translateY(-4px) rotate(-45deg); }
 
-/* Gemeinsame Navigation mit Konto, Stufen und Farbkreisen. */
+/* Ich gestalte die Navigation für Konto, Stufen und Farbauswahl. */
 .navigation {
   position: absolute;
   top: 51px;
   right: 0;
   z-index: 20;
-  width: 280px;
+  width: min(280px, calc(100vw - 40px));
   max-height: calc(100dvh - 90px);
   overflow-y: auto;
   padding: 24px;
@@ -118,7 +117,8 @@ html[data-theme="dark"] .logo-dark { display: block; }
 .nav-label { font-size: 12px; letter-spacing: 1.3px; text-transform: uppercase; }
 .theme-toggle { display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 0; font-size: 24px; }
 .levels { display: flex; justify-content: space-between; gap: 8px; width: 100%; }
-.levels button { padding: 8px 6px; border: 0; font-size: 15px; }
+.levels button, .levels a { padding: 8px 6px; border: 0; font-size: 15px; }
+.levels a { color: inherit; text-decoration: none; }
 .levels .active { text-decoration: underline; text-underline-offset: 5px; }
 .palettes { display: flex; flex-wrap: wrap; gap: 12px; }
 .palettes .theme-toggle { width: 36px; height: 36px; font-size: 22px; }
@@ -137,7 +137,7 @@ html[data-theme="dark"] .logo-dark { display: block; }
 .palette-swatch { width: 26px; height: 26px; border: 1px solid var(--line); border-radius: 50%; background: var(--swatch-light); }
 html[data-theme="dark"] .palette-swatch { background: var(--swatch-dark); }
 
-/* Gemeinsamer Inhaltsbereich mit Titel und zentrierter Spielfläche. */
+/* Ich richte den Inhaltsbereich mit Titel und mittiger Spielfläche ein. */
 main {
   position: relative;
   z-index: 0;
@@ -152,7 +152,7 @@ main {
 }
 .intro { width: 100%; text-align: center; }
 h1 { margin: 12px 0 4px; font-size: 22px; line-height: 1.35; font-weight: 400; }
-/* Meldungen bleiben für Screenreader erreichbar, ohne sichtbare Begleittexte. */
+/* Ich blende Meldungen optisch aus und halte sie für Screenreader erreichbar. */
 .sr-only {
   position: absolute;
   width: 1px;
@@ -165,20 +165,20 @@ h1 { margin: 12px 0 4px; font-size: 22px; line-height: 1.35; font-weight: 400; }
   border: 0;
 }
 
-/* Gemeinsame Abstände auf kleinen Bildschirmen. */
+/* Ich passe die Abstände für kleine Bildschirme an. */
 @media (max-width: 700px) {
   header { height: 64px; padding: 0 20px; }
   .brand-wordmark { font-size: 31px; }
-  .navigation { top: 47px; width: 260px; }
+  .navigation { top: 47px; width: min(260px, calc(100vw - 40px)); }
   main { max-width: 510px; gap: 25px; margin: 25px auto 30px; padding: 0 20px; }
   .intro { text-align: left; }
   h1 { font-size: 20px; margin: 8px 0 0; }
 }
 
-/* Gemeinsame Animationen für Kopfzeile, Titel und Menü. */
+/* Ich animiere Kopfzeile, Titel und Menü. */
 @media (prefers-reduced-motion: no-preference) {
-  header { animation: header-arrive .65s ease-out both; }
-  .intro { animation: content-arrive .8s cubic-bezier(.2,.7,.3,1) .12s both; }
+  header { animation: header-arrive .25s ease-out both; }
+  .intro { animation: content-arrive .3s cubic-bezier(.2,.7,.3,1) both; }
   .navigation:not([hidden]) { animation: nav-arrive .22s ease-out both; transform-origin: top right; }
 }
 @keyframes header-arrive {
@@ -194,11 +194,12 @@ h1 { margin: 12px 0 4px; font-size: 22px; line-height: 1.35; font-weight: 400; }
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-/* Sprachwahl: die aktive Sprache wird wie die Schwierigkeit unterstrichen. */
+/* Ich unterstreiche die aktive Sprache wie die gewählte Schwierigkeitsstufe. */
 .languages { display: flex; gap: 20px; }
 .languages button,
 .creator-links a,
-#account button { padding: 8px 0; border: 0; font-size: 15px; }
+#account button,
+#account .level-link { padding: 8px 0; border: 0; font-size: 15px; }
 .languages button[aria-pressed="true"] { text-decoration: underline; text-underline-offset: 5px; }
 
 .creator-links { flex-wrap: wrap; }
@@ -219,19 +220,21 @@ body { min-height: 100dvh; display: flex; flex-direction: column; }
   border-top: 1px solid var(--line);
   font-size: min(2.4vw, 14px);
 }
-.footer-links, .site-footer nav {
+.footer-links, .footer-account, .site-footer nav {
   display: flex;
   align-items: center;
   gap: min(1.35vw, 20px);
   white-space: nowrap;
 }
-.footer-links > button { border: 0; padding: 8px 0; }
+.footer-links, .footer-account { flex-wrap: wrap; justify-content: center; }
+.footer-account > button { border: 0; padding: 8px 0; }
 .footer-levels { width: auto; gap: min(1vw, 8px); }
 .site-footer a { color: inherit; text-decoration: none; }
 .legal-page a { color: inherit; text-underline-offset: 4px; }
 .footer-controls { grid-column: 2; grid-row: 1; display: flex; align-items: center; gap: min(1vw, 12px); }
 .footer-languages { align-items: center; gap: min(.4vw, 3px); }
-.footer-languages button, .footer-levels button { min-height: 44px; padding-inline: 0; font-size: inherit; }
+.footer-levels a { display: inline-flex; align-items: center; }
+.footer-languages button, .footer-levels button, .footer-levels a { min-height: 44px; padding-inline: 0; font-size: inherit; }
 .site-footer .theme-toggle { width: min(7vw, 44px); font-size: min(4vw, 24px); }
 #footer-account-status { grid-column: 1 / -1; grid-row: 2; text-align: center; }
 .legal-page {
@@ -244,8 +247,7 @@ body { min-height: 100dvh; display: flex; flex-direction: column; }
 html:lang(de) .help-en,
 html:lang(en) .help-de { display: none; }
 
-/* SUDOKU · Zahlenrätsel
-   Hier gestalte ich Raster, markierte Zellen, Zahlentasten und die Glühbirne. */
+/* SUDOKU · Hier gestalte ich das Zahlenraster und die Eingabe. */
 
 .game { width: 100%; max-width: 470px; }
 .board-wrap { overflow: hidden; border: 2px solid var(--strong-line); border-radius: 9px; }
@@ -270,7 +272,7 @@ html:lang(en) .help-de { display: none; }
 .cell:nth-child(n+19):nth-child(-n+27),
 .cell:nth-child(n+46):nth-child(-n+54) { border-bottom: 2px solid var(--strong-line); }
 .cell:nth-child(n+73) { border-bottom: 0; }
-/* Die von app.js gesetzten Klassen zeigen Nachbarfelder, gleiche Zahlen und die aktuelle Auswahl unterschiedlich an. */
+/* Mit den Klassen aus app.js hebe ich verwandte Felder, gleiche Zahlen und die Auswahl unterschiedlich hervor. */
 .cell.related { background: var(--related); }
 .cell.same { background: var(--same); }
 .cell.selected { background: var(--selected); box-shadow: inset 0 0 0 2px var(--ink); }
@@ -279,14 +281,14 @@ html:lang(en) .help-de { display: none; }
 #numbers button { padding-inline: 0; font-size: 23px; }
 #numbers button:hover, #hint-button:enabled:hover { outline: 1px solid var(--ink); outline-offset: -1px; }
 
-/* Sudoku: Die Glühbirne steht neben den Zahlentasten. */
+/* Ich platziere die Glühbirne neben den Zahlentasten. */
 .number-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 5px; margin-top: 20px; }
 #hint-button { display: grid; place-items: center; width: 32px; padding: 0; }
 #hint-button:disabled { opacity: .55; cursor: default; }
 #hint-message { margin: 8px 0 0; font-size: 14px; text-align: center; }
 #hint-message:empty { margin: 0; }
 
-/* Sudoku: Kleinere Zahlen und Tastenabstände auf dem Handy. */
+/* Auf kleinen Bildschirmen verwende ich kleinere Zahlen und Tastenabstände. */
 @media (max-width: 700px) {
   .cell { font-size: 22px; }
   #numbers { gap: 5px; }
@@ -294,16 +296,13 @@ html:lang(en) .help-de { display: none; }
   #numbers button { font-size: 21px; }
 }
 
-/* Sudoku: Raster und Tasten werden eingeblendet, sofern Bewegung erlaubt ist. */
+/* Ich gebe beim Drücken der Zahlentasten eine kurze visuelle Rückmeldung. */
 @media (prefers-reduced-motion: no-preference) {
-  .scroll-reveal { opacity: 0; transform: translateY(24px); transition: opacity .8s ease, transform .8s cubic-bezier(.2,.7,.3,1); }
-  .scroll-reveal.is-visible { opacity: 1; transform: translateY(0); }
   #numbers button { transition: transform .18s ease; }
   #numbers button:active { transform: scale(.92); }
 }
 
-/* MUDOKU · Krimirätsel
-   Diese Regeln gelten auf der Mudoku-Seite. Hier liegen Fallakte, Flurplan und Fehleranzeige. */
+/* MUDOKU · Hier gestalte ich Fallakte, Flurplan und Fehleranzeige. */
 
 .mudoku .case-layout {
   display: grid;
@@ -324,7 +323,7 @@ html:lang(en) .help-de { display: none; }
 .mudoku .panel li + li { margin-top: 8px; }
 .mudoku .panel label { display: block; margin-bottom: 4px; }
 
-/* Auswahllisten und Aktionsbuttons für die Raumzuordnung. */
+/* Ich gestalte die Auswahllisten und Aktionsbuttons für die Raumzuordnung. */
 .mudoku .panel select, .mudoku .actions button {
   min-height: 44px;
   padding: 6px 10px;
@@ -342,7 +341,7 @@ html:lang(en) .help-de { display: none; }
 .mudoku #feedback:empty { margin: 0; }
 .mudoku .solution { width: 100%; border-color: var(--strong-line); }
 
-/* Der Mudoku-Footer darf bei vielen Einträgen umbrechen. */
+/* Ich erlaube Zeilenumbrüche im Mudoku-Footer, wenn der Platz knapp wird. */
 .mudoku .site-footer .footer-links { flex-wrap: wrap; justify-content: center; }
 
 /* Im Dunkelmodus zeige ich auch den hellen Farbton, damit sich die Paletten klar unterscheiden. */
@@ -350,7 +349,7 @@ html[data-theme="dark"] .mudoku .palette-swatch {
   background: linear-gradient(135deg, var(--swatch-light) 50%, var(--swatch-dark) 50%);
 }
 
-/* Fallauswahl und zusätzliche Aussage in den Fällen mit einer Lüge. */
+/* Ich gestalte die Fallauswahl und die Auswahl der falschen Aussage. */
 .mudoku .case-selection { margin: 12px auto 0; max-width: 470px; }
 .mudoku .case-selection label { display: block; margin-bottom: 4px; }
 .mudoku .case-selection select { width: 100%; }
@@ -363,5 +362,155 @@ html[data-theme="dark"] .mudoku .palette-swatch {
   color: var(--ink);
 }
 .mudoku #lie-field { margin-top: 12px; }
-/* Eine wellige Linie zeigt falsche Auswahlen direkt im Feld. */
+/* Ich markiere falsche Auswahlen direkt im Feld mit einer welligen Linie. */
 .mudoku .panel select.incorrect { border-color: var(--ink); text-decoration: underline wavy; text-underline-offset: 3px; }
+
+/* WORDLE · Hier zeige ich den Weg vom Startwort zum Zielwort als Liste. */
+.word-ladder .ladder-game {
+  width: 100%;
+  max-width: 470px;
+}
+
+.word-ladder .ladder-game label { display: block; margin-bottom: 4px; }
+.word-ladder .ladder-game input,
+.word-ladder .ladder-game select,
+.word-ladder .ladder-actions button {
+  min-height: 44px;
+  padding: 6px 10px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: var(--bg);
+  color: var(--ink);
+  font: inherit;
+}
+.word-ladder .ladder-game input,
+.word-ladder .ladder-game select { width: 100%; }
+.word-ladder .ladder-game input { text-transform: uppercase; }
+.word-ladder .ladder-game input[aria-invalid="true"] { border-color: var(--ink); text-decoration: underline wavy; }
+.word-ladder .ladder-game input:focus-visible,
+.word-ladder .ladder-game select:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+.word-ladder .ladder-words { display: flex; justify-content: space-between; gap: 12px; }
+.word-ladder .ladder-words dd { margin: 0; font-size: 1.35rem; letter-spacing: .1em; }
+.word-ladder #ladder-path { padding-inline-start: 1.5rem; letter-spacing: .08em; }
+.word-ladder .ladder-actions { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 12px; }
+.word-ladder .ladder-actions button:disabled { opacity: .55; cursor: default; }
+.word-ladder .site-footer .footer-links { flex-wrap: wrap; justify-content: center; }
+
+.level-link { color: inherit; text-decoration: none; }
+.level-summary, .level-games, .level-page > p { width: 100%; }
+.level-summary, .level-games {
+  border: 1px solid var(--line);
+  border-radius: 9px;
+}
+.level-summary { display: grid; gap: 12px; padding: 20px; }
+.level-summary h1 { margin: 0; font-size: clamp(24px, 5vw, 36px); }
+.level-summary progress { width: 100%; accent-color: var(--ink); }
+.level-games { list-style: none; margin: 0; padding: 0; }
+.level-games li + li { border-top: 1px solid var(--line); }
+.level-games a {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 20px;
+  color: inherit;
+  text-underline-offset: 4px;
+}
+.level-games a:hover { background: var(--related); }
+.level-page > p { margin: 0; }
+
+.level-name { display: grid; gap: 6px; width: 100%; }
+.level-name input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  color: inherit;
+  background: var(--bg);
+  font: inherit;
+}
+.level-name input:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+
+#level-character { justify-self: center; object-fit: contain; }
+.character-picker {
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+  padding: 12px 16px 16px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+}
+.character-picker legend { padding-inline: 6px; }
+#character-options { display: flex; flex-wrap: wrap; gap: 8px; }
+.character-picker label { position: relative; cursor: pointer; }
+.character-picker input { position: absolute; opacity: 0; }
+.character-picker label img {
+  display: block;
+  padding: 4px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  object-fit: contain;
+}
+.character-picker input:checked + img { border-color: var(--ink); background: var(--same); }
+.character-picker input:focus-visible + img { outline: 2px solid var(--ink); outline-offset: 2px; }
+#character-empty { margin: 0; }
+
+.character-celebration {
+  position: fixed;
+  z-index: 60;
+  inset: 0;
+  width: fit-content;
+  height: fit-content;
+  max-width: 100%;
+  margin: auto;
+  padding: 16px;
+  place-content: center;
+  justify-items: center;
+  gap: 8px;
+  pointer-events: none;
+}
+.character-celebration:not([hidden]) { display: grid; }
+.character-celebration p {
+  max-width: min(85vw, 32rem);
+  margin: 0;
+  color: var(--ink);
+  font: inherit;
+  font-size: clamp(24px, 5vw, 36px);
+  text-align: center;
+  overflow-wrap: anywhere;
+  text-shadow: 0 0 4px var(--bg), 0 2px 6px var(--bg);
+}
+.character-celebration img {
+  width: clamp(168px, 38vw, 224px);
+  height: auto;
+  filter: drop-shadow(0 6px 9px rgb(0 0 0 / 35%));
+}
+#level-character[data-character="6"] { width: 192px; height: 192px; }
+.character-celebration img[data-character="6"] { width: clamp(208px, 48vw, 288px); }
+@media (prefers-reduced-motion: no-preference) {
+  .character-celebration:not([hidden]) { animation: character-arrive 2s both; }
+  @keyframes character-arrive {
+    0% {
+      opacity: 0;
+      transform: translateY(8px) scale(.97);
+      animation-timing-function: ease-out;
+    }
+    18% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      animation-timing-function: ease-in-out;
+    }
+    48% {
+      transform: translateY(-6px);
+      animation-timing-function: ease-in-out;
+    }
+    76% {
+      opacity: 1;
+      transform: translateY(0);
+      animation-timing-function: ease-in;
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(6px) scale(.99);
+    }
+  }
+}

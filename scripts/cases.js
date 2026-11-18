@@ -1,4 +1,4 @@
-// Mudoku: Hier stehen die Falldaten und Auflösungen auf Deutsch und Englisch.
+// Hier sammle ich die Falldaten und Auflösungen für Mudoku auf Deutsch und Englisch.
 // Ich halte die Falltexte und die richtige Zuordnung zusammen, damit ich später weitere Fälle hinzufügen kann.
 const firstCase = {
   title: 'Der letzte Termin',
@@ -30,7 +30,7 @@ const englishFirstCase = {
   explanation: 'Ben was in the lab, the third room. Mira was immediately to his left in the waiting room. Emil was at reception, the first room. That leaves Nora in the treatment room.',
 }
 
-// Die Räume stehen im Flurplan von links nach rechts. person ist die Lösung für den jeweiligen Raum.
+// Ich ordne die Räume im Flurplan von links nach rechts an und hinterlege unter person die richtige Zuordnung.
 const legacyCases = {
   easy: { de: firstCase, en: englishFirstCase },
   medium: {
@@ -97,8 +97,8 @@ const legacyCases = {
   },
 }
 
-// Fallnummern bleiben stabil, damit ein gespeicherter Fall später wiedergefunden wird.
-// Eine Fallnummer gehört zu genau einem Fall. falseClue ist die Nummer der falschen Aussage, falls es eine gibt.
+// Ich halte die Fallnummern stabil, damit ich gespeicherte Fälle wiederfinde.
+// Ich vergebe pro Fall eine eigene Nummer und hinterlege eine falsche Aussage bei Bedarf unter falseClue.
 const caseCatalog = [
   {"id": 1, "level": "easy", "people": ["Mira", "Ben", "Nora", "Emil"], "rooms": [{"name": "Empfang", "person": "Emil"}, {"name": "Wartezimmer", "person": "Mira"}, {"name": "Labor", "person": "Ben"}, {"name": "Behandlungszimmer", "person": "Nora", "crimeScene": true}], "de": {"title": "Der letzte Termin", "intro": "Kurz nach Praxisschluss geht ein Alarm ein. Dr. Winter wurde im Raum Behandlungszimmer getötet.", "clues": ["Ben war im Labor. Dort hat er zur Tatzeit eine Probe eingescannt.", "Mira war direkt links von Ben. Das sieht man auf einem Foto vom Flur.", "Emil war am Empfang. Eine Zeugin hat ihn dort gesehen."], "explanation": "Ben steht im Labor auf Platz 3, Mira unmittelbar davor auf Platz 2 und Emil am Empfang auf Platz 1. Für Nora bleibt Platz 4. Empfang: Emil · Wartezimmer: Mira · Labor: Ben · Behandlungszimmer: Nora."}, "en": {"title": "The Last Appointment", "intro": "An alarm goes off just after closing time. Dr. Winter was killed in the treatment room.", "roomNames": ["Reception", "Waiting room", "Lab", "Treatment room"], "clues": ["Ben was in the lab. He scanned a sample there at the time of the murder.", "Mira was immediately to the left of Ben. A photo of the corridor shows where she was.", "Emil was at reception. A witness saw him there."], "explanation": "Ben was in the third room, the lab. Mira was just to his left in the waiting room. Emil was at reception, so Nora was in the treatment room. Reception: Emil · Waiting room: Mira · Lab: Ben · Treatment room: Nora."}},
   {"id": 2, "level": "easy", "people": ["Mika", "Leo", "Theo", "Maja"], "rooms": [{"name": "Archiv", "person": "Mika"}, {"name": "Empfang", "person": "Leo"}, {"name": "Sprechzimmer", "person": "Theo", "crimeScene": true}, {"name": "Aufenthaltsraum", "person": "Maja"}], "de": {"title": "Das leere Wartezimmer", "intro": "Die letzte Sprechstunde ist gerade vorbei. Dr. Sommer wurde im Raum Sprechzimmer getötet.", "clues": ["Theo war im Raum „Sprechzimmer“.", "Mika war links von Theo.", "Leo war direkt links von Theo."], "explanation": "Von den 24 möglichen Zuordnungen bleiben nach den Hinweisen in der angegebenen Reihenfolge 6 → 4 → 1 übrig. Archiv: Mika · Empfang: Leo · Sprechzimmer: Theo · Aufenthaltsraum: Maja."}, "en": {"title": "The Empty Waiting Room", "intro": "The final clinic session has just ended. Dr. Sommer was killed in the consulting room.", "roomNames": ["Archive", "Reception", "Consulting room", "Break room"], "clues": ["Theo was in the consulting room.", "Mika was to the left of Theo.", "Leo was immediately to the left of Theo."], "explanation": "Of the 24 possible arrangements, 6 → 4 → 1 remain as you apply the clues in order. Archive: Mika · Reception: Leo · Consulting room: Theo · Break room: Maja."}},

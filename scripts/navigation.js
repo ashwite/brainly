@@ -1,4 +1,4 @@
-// Mudoku: Ich steuere das Menü, die Sprache und die gemeinsamen Farbeinstellungen.
+// Hier steuere ich das gemeinsame Menü sowie Sprache und Farben.
 const appearance = document.documentElement
 const menuToggle = document.querySelector('#menu-toggle')
 const menu = document.querySelector('#navigation')
@@ -17,7 +17,7 @@ const PALETTES = [
   { id: 'sand', name: 'Braun & Beige' },
 ];
 
-// Ich nutze dieselben Speicherschlüssel wie Sudoku. Beide Spiele merken sich so dieselben Farben.
+// Ich verwende dieselben gespeicherten Einstellungen auf allen Spielseiten.
 function saveAppearance(key, value) {
   try {
     localStorage.setItem(key, value)
@@ -111,7 +111,7 @@ function updateLanguage() {
   })
   updateAppearance()
   setMenu(!menu.hidden)
-  document.dispatchEvent(new Event('mudoku-language-change'))
+  document.dispatchEvent(new Event('game-language-change'))
 }
 
 for (const button of document.querySelectorAll('[data-language]')) {

@@ -1,56 +1,61 @@
 # Kleine Denkpause
 
-Zwei Minispiele für eine kurze Denkpause. Die Seiten bestehen aus HTML, CSS und JavaScript und lassen sich ohne Installation öffnen.
+Drei Minispiele für zwischendurch. Löse ein Sudoku, kläre einen Kriminalfall oder finde einen Weg von einem Wort zum nächsten. In allen drei Spielen sammelst du XP für dasselbe Level.
 
-## Lokal starten
+## So geht’s los
 
-Öffne [Sudoku](index.html) oder [Mudoku](mudoku.html) im Browser. Du kannst auch im Hauptordner einen lokalen Server starten:
+Öffne [Sudoku](index.html) im Browser. Oben rechts findest du das Menü. Unter **Spiel wechseln** kannst du zu [Mudoku](pages/mudoku.html) oder [Wordle](pages/wordle.html) wechseln. Unter **Schwierigkeit** wählst du zwischen **Leicht**, **Mittel** und **Schwer**.
+
+Wenn du die Spiele auf deinem Computer für dich allein öffnest und den XP-Stand zwischen allen drei Spielen teilen möchtest, kannst du sie über einen lokalen Server öffnen. Öffne dafür ein Terminal im Projektordner und führe diesen Befehl aus. Dafür muss Python 3 installiert sein.
 
 ```sh
 python3 -m http.server 4173 --bind 127.0.0.1
 ```
 
-Danach erreichst du [Sudoku](http://localhost:4173/) und [Mudoku](http://localhost:4173/mudoku.html) über den Server. Im Menü kannst du unter **Spiel wechseln** zwischen beiden Spielen wechseln.
+Lass das Terminal geöffnet und ruf [Kleine Denkpause im Browser](http://localhost:4173/) auf.
 
 ## Sudoku
 
-Fülle das Raster so, dass die Zahlen von 1 bis 9 in jeder Zeile, jeder Spalte und jedem 3×3-Block genau einmal vorkommen. Wähle ein Feld und nutze die Zahlentasten auf der Seite oder deine Tastatur. Mit den Pfeiltasten wechselst du das Feld. Mit Rücktaste, Entf oder einem zweiten Tipp auf das ausgewählte Feld löschst du deine Eingabe.
+Fülle die freien Felder mit den Zahlen 1 bis 9. Jede Zahl darf in jeder Zeile, jeder Spalte und jedem 3×3-Block nur einmal vorkommen.
 
-Die Glühbirne hilft dir bei falschen Eingaben oder zeigt mögliche Zahlen für ein freies Feld. Sobald du ein Sudoku gelöst hast, startet ein neues Rätsel derselben Stufe.
-
-| Datei | Inhalt |
-|---|---|
-| [index.html](index.html) | Spielfeld, Navigation und Fußzeile |
-| [scripts/app.js](scripts/app.js), Abschnitt Sudoku | Rätselerzeugung, Eingaben, Hinweise, Spielstand im Browser und Texte der Oberfläche |
-
-Die Anzahl der vorgegebenen Zahlen steht in `CLUE_COUNTS`. Die Pause vor dem nächsten Sudoku steht in `advanceAfterCompletion()`.
+Wähle ein freies Feld und tippe auf eine Zahl unter dem Raster oder drücke sie auf der Tastatur. Mit der Rücktaste, der Entf-Taste oder einem zweiten Tipp auf das Feld löschst du deine Eingabe. Die Glühbirne zeigt dir eine falsche Eingabe oder mögliche Zahlen für ein freies Feld. Nach einem gelösten Sudoku beginnt ein neues Rätsel derselben Stufe.
 
 ## Mudoku
 
-Lies die Fallakte und ordne vier Verdächtige vier Räumen zu. Gib dann an, wer am Tatort war. In den letzten 20 Fällen musst du zusätzlich die falsche Aussage auswählen.
+Lies die Fallakte und ordne die vier Verdächtigen den vier Räumen zu. Wähle dann die Person aus, die am Tatort war. Bei manchen Fällen musst du zusätzlich angeben, welche Aussage falsch ist.
 
-Über **Fall auswählen** findest du 20 leichte, 20 mittlere und 40 schwere Fälle. Falsche Eingaben werden wellig unterstrichen. Die Fehleranzeige zählt die aktuell falschen Felder. Sobald alles stimmt, erscheint die Auflösung. Nach fünf Sekunden beginnt der nächste Fall derselben Stufe, falls es einen gibt.
+Falsche Zuordnungen werden wellig unterstrichen. Sobald alle Antworten stimmen, erscheint die Auflösung. Falls es einen weiteren Fall derselben Stufe gibt, öffnet er sich nach einer kurzen Pause.
 
-| Datei | Inhalt |
-|---|---|
-| [mudoku.html](mudoku.html) | Fallakte, Flurplan, Fallauswahl und Fußzeile |
-| [scripts/app.js](scripts/app.js), Abschnitt Mudoku | Raumzuordnung, Fehleranzeige, Prüfung und Fallwechsel |
-| [scripts/navigation.js](scripts/navigation.js) | Menü, Sprachwechsel und Farbwahl |
-| [scripts/cases.js](scripts/cases.js) | Fälle, Hinweise und Auflösungen auf Deutsch und Englisch |
-| [scripts/text.js](scripts/text.js) | Zweisprachige Texte der Oberfläche |
+## Wordle
 
-## Gemeinsame Einstellungen und Dateien
+Erreiche das Zielwort, indem du pro Zug genau einen Buchstaben austauschst. Jeder Zug muss ein gültiges Wort aus der Wortliste ergeben. Du kannst keine Buchstaben hinzufügen, entfernen oder umstellen und darfst ein Wort nur einmal pro Runde verwenden.
 
-Beide Spiele teilen sich Sprache, Farbtheme und Hell-/Dunkelmodus im Browser. In den HTML-Dateien steht `data-text` für sichtbare Texte und `data-label` für Beschriftungen, die ein Screenreader vorlesen kann.
+Mit **Zug zurück** kannst du den letzten Schritt rückgängig machen. Über die Rätselauswahl kannst du jederzeit ein anderes Rätsel öffnen.
 
-Sudoku speichert den Spielstand automatisch im Browser. Über **Speichern** und **Laden** können beide Spiele ihren jeweiligen Online-Spielstand im selben Clerk-Konto ablegen.
+## Level und Charakter
 
-| Pfad | Inhalt |
-|---|---|
-| [styles/style.css](styles/style.css) | Gemeinsame Gestaltung und eigene Abschnitte für Sudoku und Mudoku |
-| [assets/](assets/) | Logos für helle und dunkle Hintergründe und das Browser-Tab-Symbol |
-| [scripts/account.js](scripts/account.js) | Anmeldung und getrennte Online-Spielstände |
-| [pages/hilfe.html](pages/hilfe.html) | Gemeinsame Spielanleitungen auf Deutsch und Englisch |
-| [pages/impressum.html](pages/impressum.html) und [pages/datenschutz.html](pages/datenschutz.html) | Impressum und Datenschutz |
+Öffne **Level** im Konto-Bereich des Menüs oder im Footer. Auf der [Level-Seite](pages/level.html) siehst du deine Gesamt-XP, die XP pro Spiel und den Fortschritt zum nächsten Level.
 
-Die Schriften Jost und WindSong werden von Google Fonts geladen.
+| Abschluss | Belohnung |
+| --- | --- |
+| Richtig gelöst mit Hilfestellung, etwa mit der Glühbirne in Sudoku | 50 XP |
+| Richtig gelöst ohne Hilfestellung | 100 XP |
+
+Jedes Rätsel bringt einmal XP. Du startest auf Level 1 und steigst alle **1.000 XP** ein Level auf.
+
+Unter **Dein Name** kannst du zum Beispiel **Anni** eintragen. Darunter wählst du deinen Charakter. Der Hund ist vorausgewählt. Nach einem gelösten Rätsel erscheint dein Charakter kurz in der Bildschirmmitte, zum Beispiel mit **„Super Anni!“** darüber.
+
+## Speichern und Laden
+
+Deine XP, dein Name und deine Charakterauswahl bleiben in dem Browser gespeichert, in dem du spielst. Auch Sudoku merkt sich dein aktuelles Rätsel automatisch.
+
+Mit einem Konto kannst du deinen Fortschritt zusätzlich online sichern. **Speichern** und **Laden** findest du im Konto-Bereich des Menüs und im Footer.
+
+- **Auf einer Spielseite** beziehen sich die Buttons auf den Spielstand dieses Spiels.
+- **Auf der Level-Seite** speichern und laden sie deine XP aus allen drei Spielen. Beim Laden werden deine lokalen und online gespeicherten Abschlüsse zusammengeführt. Jedes Rätsel zählt dabei einmal.
+
+## Sprache, Farben und Hilfe
+
+Im Menü kannst du zwischen Deutsch und Englisch wechseln, ein Farbtheme auswählen und den Hell- oder Dunkelmodus einstellen. Diese Einstellungen gelten für alle drei Spiele und die Level-Seite.
+
+Weitere Erklärungen zu den Spielen findest du unter [Hilfe](pages/hilfe.html). [Impressum](pages/impressum.html) und [Datenschutz](pages/datenschutz.html) sind ebenfalls im Footer verlinkt.

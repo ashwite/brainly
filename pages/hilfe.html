@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/png" sizes="32x32" href="../assets/miffy.png">
   <title>Hilfe · Kleine Denkpause</title>
-  <!-- Gespeicherte Farben vor dem Laden anzeigen: verhindert ein kurzes Aufblitzen. -->
+  <!-- Ich wende die gespeicherten Farben früh an, damit die Standardfarben nicht kurz aufblitzen. -->
   <!-- Ich lese die gespeicherten Einstellungen so früh, dass die Seite gleich in den passenden Farben erscheint. -->
   <script>
     try {
@@ -15,10 +15,10 @@
       document.documentElement.dataset.theme = localStorage.getItem('sudoku-theme') ||
         (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
     } catch {
-      // Die Seite funktioniert auch, wenn der Browser das Speichern blockiert.
+      // Wenn der Browser den Speicher blockiert, verwende ich die Vorgaben.
     }
   </script>
-  <link rel="stylesheet" href="../styles/style.css?v=1">
+  <link rel="stylesheet" href="../styles/style.css?v=2">
 </head>
 <body>
   <main class="legal-page">
@@ -40,7 +40,12 @@
         <p>Wähle unter <strong>Wer hat die Tat begangen?</strong> die Person aus, die du dem Tatort zugeordnet hast. Mit <strong>Fall lösen</strong> kannst du deine Eingaben prüfen. Sobald alles stimmt, erscheint die Auflösung. Nach fünf Sekunden startet der nächste Fall derselben Stufe, sofern es einen gibt.</p>
         <p>Wähle oben einen Fall deiner Schwierigkeitsstufe aus. In manchen schweren Fällen ist genau eine Aussage falsch. Dann musst du zusätzlich diese Aussage auswählen.</p>
         <p>Eine wellige Unterstreichung markiert eine falsche Eingabe. Die Fehleranzeige zählt die aktuell falschen Felder. Bei einer falschen Antwort kannst du weiter umsortieren. Mit <strong>Zurücksetzen</strong> leerst du alle Auswahlen.</p>
-        <a href="../mudoku.html">Mudoku spielen</a>
+        <a href="mudoku.html">Mudoku spielen</a>
+      </section>
+      <section>
+        <h2>Wordle</h2>
+        <p>Ändere pro Zug genau einen Buchstaben des aktuellen Worts. Jeder Schritt muss in der Wortliste stehen. Wähle Leicht, Mittel oder Schwer und dann ein Rätsel der Stufe. Wenn du das Zielwort erreichst, ist das Rätsel gelöst. Nach drei Sekunden startet das nächste Rätsel derselben Stufe, wenn es eines gibt. Mit „Zug zurück“ kannst du eine Abzweigung rückgängig machen.</p>
+        <a href="wordle.html">Wordle spielen</a>
       </section>
     </div>
     <div class="help-en" lang="en">
@@ -61,7 +66,12 @@
         <p>Under <strong>Who committed the murder?</strong>, choose the person you assigned to the crime scene. Use <strong>Solve case</strong> to check your answers. As soon as everything is correct, the solution appears. After five seconds, the next case on the same difficulty starts if there is one.</p>
         <p>Choose a case from your difficulty level at the top. In some hard cases, exactly one statement is false. Select that statement as part of your answer.</p>
         <p>A wavy underline marks an incorrect choice. The error count shows how many fields are currently incorrect. If an answer is wrong, you can keep rearranging your choices. Use <strong>Reset</strong> to clear all selections.</p>
-        <a href="../mudoku.html">Play Mudoku</a>
+        <a href="mudoku.html">Play Mudoku</a>
+      </section>
+      <section>
+        <h2>Wordle</h2>
+        <p>Change exactly one letter of the current word each turn. Every step must be in the word list. Choose Easy, Medium, or Hard, then pick a puzzle at that level. Reach the target word to solve the puzzle. After three seconds, the next puzzle at the same level starts if there is one. Use “Undo move” to try a different route.</p>
+        <a href="wordle.html">Play Wordle</a>
       </section>
     </div>
   </main>
