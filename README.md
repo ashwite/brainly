@@ -43,7 +43,9 @@ Mit **Zug zurück** kannst du den letzten Schritt rückgängig machen. Über die
 
 Jedes Rätsel bringt einmal XP. Du startest auf Level 1 und steigst alle **1.000 XP** ein Level auf.
 
-Unter **Dein Name** kannst du zum Beispiel **Anni** eintragen. Darunter wählst du deinen Charakter. Der Hund ist vorausgewählt. Nach einem gelösten Rätsel erscheint dein Charakter kurz in der Bildschirmmitte, zum Beispiel mit **„Super Anni!“** darüber.
+Unter **Dein Name** kannst du zum Beispiel **Anni** eintragen. Darunter wählst du deinen Charakter. Mein Hund Max ist vorausgewählt. Über das **+** neben den Charakteren kannst du ein eigenes Charakterbild mit transparentem Hintergrund verwenden. Es bleibt in deinem Browser gespeichert. Nach einem gelösten Rätsel erscheint dein Charakter kurz in der Bildschirmmitte, zum Beispiel mit **„Super Anni!“** darüber.
+
+Mit **Level als PNG teilen** erstellst du ein Bild mit deinem Level, deinen XP und deinem Charakter. Wenn du einen Namen eingetragen hast, erscheint er ebenfalls auf dem Bild. Je nach Browser öffnet sich das Teilen-Menü oder du kannst das PNG herunterladen.
 
 ## Speichern und Laden
 

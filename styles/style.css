@@ -402,9 +402,25 @@ html[data-theme="dark"] .mudoku .palette-swatch {
   border: 1px solid var(--line);
   border-radius: 9px;
 }
-.level-summary { display: grid; gap: 12px; padding: 20px; }
+.level-summary { position: relative; display: grid; gap: 12px; padding: 20px; }
 .level-summary h1 { margin: 0; font-size: clamp(24px, 5vw, 36px); }
 .level-summary progress { width: 100%; accent-color: var(--ink); }
+#level-share {
+  position: absolute;
+  inset-block-start: 8px;
+  inset-inline-end: 8px;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 7px;
+}
+#level-share:hover { background: var(--related); }
+#level-share:disabled { opacity: .55; cursor: wait; }
+#level-share-status { margin: 0; }
+#level-share-status:empty { display: none; }
 .level-games { list-style: none; margin: 0; padding: 0; }
 .level-games li + li { border-top: 1px solid var(--line); }
 .level-games a {
@@ -440,9 +456,10 @@ html[data-theme="dark"] .mudoku .palette-swatch {
   border-radius: 9px;
 }
 .character-picker legend { padding-inline: 6px; }
-#character-options { display: flex; flex-wrap: wrap; gap: 8px; }
-.character-picker label { position: relative; cursor: pointer; }
-.character-picker input { position: absolute; opacity: 0; }
+.character-choices { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+#character-options { display: contents; }
+#character-options label { position: relative; cursor: pointer; }
+#character-options input { position: absolute; opacity: 0; }
 .character-picker label img {
   display: block;
   padding: 4px;
@@ -514,3 +531,21 @@ html[data-theme="dark"] .mudoku .palette-swatch {
     }
   }
 }
+
+.character-upload-label {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  font-size: 20px;
+  cursor: pointer;
+}
+.character-upload-label:hover { background: var(--related); }
+.character-upload-label:focus-within { outline: 2px solid var(--ink); outline-offset: 2px; }
+.character-upload-label:has(input:disabled) { opacity: .55; cursor: wait; }
+#character-upload-status { margin: 8px 0 0; }
+#character-upload-status:empty { display: none; }
+.character-celebration img[data-character="custom"] { aspect-ratio: 1; object-fit: contain; }

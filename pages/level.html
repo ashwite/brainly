@@ -20,11 +20,12 @@
     }
   </script>
   <!-- Im Stylesheet sammle ich gemeinsame Regeln und ergänze für jedes Spiel eigene Regeln. -->
-  <link rel="stylesheet" href="../styles/style.css?v=19">
-  <script src="../scripts/text.js?v=5" defer></script>
+  <link rel="stylesheet" href="../styles/style.css?v=23">
+  <script src="../scripts/text.js?v=8" defer></script>
   <script src="../scripts/navigation.js?v=2" defer></script>
-  <script src="../scripts/characters.js?v=6" defer></script>
+  <script src="../scripts/characters.js?v=7" defer></script>
   <script src="../scripts/levels.js?v=8" defer></script>
+  <script src="../scripts/level-share.js?v=1" defer></script>
   <script src="../scripts/account.js?v=2" data-publishable-key="pk_test_d2FybS1wYW5kYS00MjY1LmNsZXJrLmFjY291bnRzLmRldiQ" defer></script>
 </head>
 <body>
@@ -100,10 +101,16 @@
   </header>
   <main class="level-page">
     <section class="level-summary" aria-labelledby="level-title">
+      <button id="level-share" type="button" data-label="shareLevel" aria-label="Level als PNG teilen">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 15V3m-4 4 4-4 4 4M7 11H5v10h14V11h-2"/>
+        </svg>
+      </button>
       <img id="level-character" width="144" height="144" alt="" hidden>
       <h1 id="level-title" data-level-status>Level 1 · 0 XP</h1>
       <label id="level-next" for="level-progress">0 / 1.000 XP → Level 2</label>
       <progress id="level-progress" max="1000" value="0"></progress>
+      <p id="level-share-status" role="status"></p>
     </section>
     <div class="level-name">
       <label for="level-name" data-text="playerName">Dein Name</label>
@@ -111,7 +118,14 @@
     </div>
     <fieldset class="character-picker">
       <legend data-text="chooseCharacter">Charakter wählen</legend>
-      <div id="character-options"></div>
+      <div class="character-choices">
+        <div id="character-options"></div>
+        <label class="character-upload-label">
+          <input id="character-upload" class="sr-only" type="file" accept=".png,image/png" data-label="uploadCharacter" aria-label="Eigenes PNG auswählen" disabled>
+          <span aria-hidden="true">+</span>
+        </label>
+      </div>
+      <p id="character-upload-status" role="status"></p>
       <p id="character-empty" data-text="noCharacters" hidden>Die Charakterbilder sind noch nicht verfügbar.</p>
     </fieldset>
     <ul class="level-games">
