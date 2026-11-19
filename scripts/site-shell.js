@@ -15,6 +15,7 @@
     </button>
   </header>`)
   document.body.insertAdjacentHTML('beforeend', `
+  <div class="footer-skate" aria-hidden="true"></div>
   <footer class="site-footer">
     <div class="footer-links">
       <a href="${base}pages/home.html" data-label="home">Home</a>
@@ -22,11 +23,8 @@
         <button id="footer-sign-in" type="button" data-text="accountSignIn" hidden>Anmelden</button>
         <button id="footer-sign-up" type="button" data-text="accountSignUp" hidden>Konto erstellen</button>
         <button id="footer-profile" type="button" data-text="accountManage" hidden>Konto verwalten</button>
-        <button id="footer-load" type="button" data-text="accountLoad" hidden>Laden</button>
-        <a class="level-link" href="${base}pages/home.html#level">Level</a>
       </div>
-      <nav aria-label="Hilfe und rechtliche Informationen" data-label="legal">
-        <a href="${base}pages/home.html#hilfe" data-text="help">Hilfe</a>
+      <nav aria-label="Rechtliche Informationen" data-label="legal">
         <span data-text="imprint">Impressum</span>
         <a href="${base}pages/datenschutz.html" data-text="privacy">Datenschutz</a>
       </nav>

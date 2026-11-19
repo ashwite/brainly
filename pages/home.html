@@ -16,37 +16,87 @@
       // Wenn der Browser den Speicher blockiert, verwende ich die Vorgaben.
     }
   </script>
-  <link rel="stylesheet" href="../styles/style.css?v=53">
-  <script src="../scripts/text.js?v=18" defer></script>
-  <script src="../scripts/site-shell.js?v=11" defer></script>
+  <link rel="stylesheet" href="../styles/style.css?v=78">
+  <script src="../scripts/text.js?v=21" defer></script>
+  <script src="../scripts/site-shell.js?v=17" defer></script>
   <script src="../scripts/navigation.js?v=5" defer></script>
-  <script src="../scripts/characters.js?v=9" defer></script>
-  <script src="../scripts/levels.js?v=10" defer></script>
+  <script src="../scripts/home-help.js?v=2" defer></script>
+  <script src="../scripts/characters.js?v=10" defer></script>
+  <script src="../scripts/levels.js?v=11" defer></script>
   <script src="../scripts/level-share.js?v=1" defer></script>
-  <script src="../scripts/account.js?v=5" data-publishable-key="pk_test_d2FybS1wYW5kYS00MjY1LmNsZXJrLmFjY291bnRzLmRldiQ" defer></script>
+  <script src="../scripts/account.js?v=6" data-publishable-key="pk_test_d2FybS1wYW5kYS00MjY1LmNsZXJrLmFjY291bnRzLmRldiQ" defer></script>
 </head>
 <body class="home-page">
   <main>
     <ul class="home-tiles">
       <li>
-        <a href="sudoku.html">
-          <span class="home-tile-image" data-tile="sudoku" aria-hidden="true"></span>
-          <span>Sudoku</span>
-        </a>
+        <span class="home-tile-image" data-tile="sudoku" aria-hidden="true"></span>
+        <div class="home-tile-caption">
+          <a class="home-tile-link" href="sudoku.html">Sudoku</a>
+          <button class="home-info" type="button" aria-expanded="false" aria-controls="hilfe-sudoku"
+            data-label="helpSudoku" aria-label="Anleitung zu Sudoku">i</button>
+        </div>
       </li>
       <li>
-        <a href="mudoku.html">
-          <span class="home-tile-image" data-tile="mudoku" aria-hidden="true"></span>
-          <span>Mudoku</span>
-        </a>
+        <span class="home-tile-image" data-tile="mudoku" aria-hidden="true"></span>
+        <div class="home-tile-caption">
+          <a class="home-tile-link" href="mudoku.html">Mudoku</a>
+          <button class="home-info" type="button" aria-expanded="false" aria-controls="hilfe-mudoku"
+            data-label="helpMudoku" aria-label="Anleitung zu Mudoku">i</button>
+        </div>
       </li>
       <li>
-        <a href="wordle.html">
-          <span class="home-tile-image" data-tile="wordle" aria-hidden="true"></span>
-          <span>Wordle</span>
-        </a>
+        <span class="home-tile-image" data-tile="wordle" aria-hidden="true"></span>
+        <div class="home-tile-caption">
+          <a class="home-tile-link" href="wordle.html">Wordle</a>
+          <button class="home-info" type="button" aria-expanded="false" aria-controls="hilfe-wordle"
+            data-label="helpWordle" aria-label="Anleitung zu Wordle">i</button>
+        </div>
       </li>
     </ul>
+    <section id="hilfe-sudoku" class="home-help" aria-labelledby="hilfe-sudoku-title" hidden>
+      <h2 id="hilfe-sudoku-title">Sudoku</h2>
+      <div class="help-de" lang="de">
+        <p>Fülle das Raster so, dass jede Zahl von 1 bis 9 in jeder Zeile, Spalte und jedem 3×3-Block genau einmal vorkommt.</p>
+        <p>Wähle ein freies Feld und tippe eine Zahl an oder drücke 1 bis 9. Mit Rücktaste, Entf oder einem zweiten Tipp auf das gewählte Feld löschst du deine Eingabe.</p>
+        <p>Eine wellige Unterstreichung zeigt eine falsche Zahl an. Sie verschwindet beim Korrigieren oder Löschen.</p>
+        <p>Wenn du nicht weiterkommst, tippe auf die kleine Glühbirne rechts neben den Zahlentasten. Sie markiert eine falsche Eingabe oder wählt ein freies Feld aus und zeigt dir, welche Zahlen dort infrage kommen. Du trägst die Zahl selbst ein.</p>
+      </div>
+      <div class="help-en" lang="en">
+        <p>Fill the grid so that each number from 1 to 9 appears exactly once in every row, column and 3×3 box.</p>
+        <p>Select an empty cell and tap a number or press 1 to 9. Press Backspace or Delete, or tap the selected cell again, to clear your entry.</p>
+        <p>A wavy underline marks an incorrect number. It disappears when you correct or clear the entry.</p>
+        <p>If you get stuck, tap the small light bulb to the right of the number buttons. It highlights an incorrect entry or selects an empty cell and shows which numbers could fit there. You enter the number yourself.</p>
+      </div>
+    </section>
+    <section id="hilfe-mudoku" class="home-help" aria-labelledby="hilfe-mudoku-title" hidden>
+      <h2 id="hilfe-mudoku-title">Mudoku</h2>
+      <div class="help-de" lang="de">
+        <p>In Mudoku löst du einen Kriminalfall. Vier Verdächtige waren zur Tatzeit in vier verschiedenen Räumen. Finde heraus, wer am Tatort war.</p>
+        <p>Lies zuerst die Hinweise in der <strong>Fallakte</strong>. Der <strong>Flurplan</strong> zeigt die Räume von links nach rechts. „Direkt links“ bedeutet, dass die beiden Räume nebeneinanderliegen.</p>
+        <p>Wähle für jeden Raum eine Person aus. Jede Person darf nur einmal vorkommen. Du kannst deine Zuordnung jederzeit ändern.</p>
+        <p>Wähle unter <strong>Wer hat die Tat begangen?</strong> die Person aus, die du dem Tatort zugeordnet hast. Mit <strong>Fall lösen</strong> kannst du deine Eingaben prüfen. Sobald alles stimmt, erscheint die Auflösung. Nach fünf Sekunden öffnet sich der nächste ungelöste Fall, sofern es einen gibt.</p>
+        <p>In manchen schweren Fällen ist genau eine Aussage falsch. Dann musst du zusätzlich diese Aussage auswählen.</p>
+        <p>Eine wellige Unterstreichung markiert eine falsche Eingabe. Die Fehleranzeige zählt die aktuell falschen Felder. Bei einer falschen Antwort kannst du weiter umsortieren. Mit <strong>Zurücksetzen</strong> leerst du alle Auswahlen.</p>
+      </div>
+      <div class="help-en" lang="en">
+        <p>In Mudoku, you solve a murder mystery. Four suspects were in four different rooms at the time of the murder. Find out who was at the crime scene.</p>
+        <p>Read the clues in the <strong>Case file</strong> first. The <strong>Floor plan</strong> shows the rooms from left to right. “Immediately to the left” means the two rooms are next to each other.</p>
+        <p>Choose one person for each room. Each person can only appear once. You can change your assignments at any time.</p>
+        <p>Under <strong>Who committed the murder?</strong>, choose the person you assigned to the crime scene. Use <strong>Solve case</strong> to check your answers. As soon as everything is correct, the solution appears. After five seconds, the next unsolved case opens if there is one.</p>
+        <p>In some hard cases, exactly one statement is false. Select that statement as part of your answer.</p>
+        <p>A wavy underline marks an incorrect choice. The error count shows how many fields are currently incorrect. If an answer is wrong, you can keep rearranging your choices. Use <strong>Reset</strong> to clear all selections.</p>
+      </div>
+    </section>
+    <section id="hilfe-wordle" class="home-help" aria-labelledby="hilfe-wordle-title" hidden>
+      <h2 id="hilfe-wordle-title">Wordle</h2>
+      <div class="help-de" lang="de">
+        <p>Ändere pro Zug genau einen Buchstaben des aktuellen Worts. Jeder Schritt muss in der Wortliste stehen. Wenn du das Zielwort erreichst, ist das Rätsel gelöst. Nach drei Sekunden öffnet sich das nächste ungelöste Rätsel, wenn es eines gibt. Mit „Zug zurück“ kannst du eine Abzweigung rückgängig machen.</p>
+      </div>
+      <div class="help-en" lang="en">
+        <p>Change exactly one letter of the current word each turn. Every step must be in the word list. Reach the target word to solve the puzzle. After three seconds, the next unsolved puzzle opens if there is one. Use “Undo move” to try a different route.</p>
+      </div>
+    </section>
     <section id="level" class="home-level" aria-labelledby="level-title" tabindex="-1">
       <section class="level-summary" aria-labelledby="level-title">
         <button id="level-share" type="button" data-label="shareLevel" aria-label="Level als PNG teilen">
@@ -58,20 +108,20 @@
         <label id="level-next" for="level-progress">0 / 1.000 XP → Level 2</label>
         <progress id="level-progress" max="1000" value="0"></progress>
         <p id="level-share-status" role="status"></p>
-        <ul class="level-games">
-          <li><a href="sudoku.html">Sudoku <span data-game-xp="sudoku">0 XP</span></a></li>
-          <li><a href="mudoku.html">Mudoku <span data-game-xp="mudoku">0 XP</span></a></li>
-          <li><a href="wordle.html">Wordle <span data-game-xp="wordle">0 XP</span></a></li>
-        </ul>
       </section>
       <div class="level-character-settings">
-        <img id="level-character" width="144" height="144" alt="" hidden>
-        <div class="level-name">
-          <label for="level-name" data-text="playerName">Dein Name</label>
-          <input id="level-name" type="text" autocomplete="nickname" maxlength="40" placeholder="Anni">
+        <div class="level-character-profile">
+          <button id="character-toggle" class="character-toggle" type="button" aria-controls="character-picker"
+            aria-expanded="false" data-label="chooseCharacter" aria-label="Charakter wählen">
+            <img id="level-character" width="144" height="144" alt="" hidden>
+          </button>
+          <div class="level-name">
+            <label for="level-name" data-text="playerName">Dein Name</label>
+            <input id="level-name" type="text" autocomplete="nickname" maxlength="40" placeholder="Anni">
+          </div>
         </div>
-        <fieldset class="character-picker">
-          <legend data-text="chooseCharacter">Charakter wählen</legend>
+        <fieldset id="character-picker" class="character-picker" hidden>
+          <legend class="sr-only" data-text="chooseCharacter">Charakter wählen</legend>
           <div class="character-choices">
             <div id="character-options"></div>
             <label class="character-upload-label">
@@ -82,59 +132,6 @@
           <p id="character-upload-status" role="status"></p>
           <p id="character-empty" data-text="noCharacters" hidden>Die Charakterbilder sind noch nicht verfügbar.</p>
         </fieldset>
-      </div>
-    </section>
-    <section id="hilfe" class="home-help" aria-labelledby="help-title" tabindex="-1">
-      <h2 id="help-title" data-text="help">Hilfe</h2>
-      <div class="help-de" lang="de">
-        <section>
-          <h3>Sudoku</h3>
-          <p>Fülle das Raster so, dass jede Zahl von 1 bis 9 in jeder Zeile, Spalte und jedem 3×3-Block genau einmal vorkommt.</p>
-          <p>Wähle ein freies Feld und tippe eine Zahl an oder drücke 1 bis 9. Mit Rücktaste, Entf oder einem zweiten Tipp auf das gewählte Feld löschst du deine Eingabe.</p>
-          <p>Eine wellige Unterstreichung zeigt eine falsche Zahl an. Sie verschwindet beim Korrigieren oder Löschen.</p>
-          <p>Wenn du nicht weiterkommst, tippe auf die kleine Glühbirne rechts neben den Zahlentasten. Sie markiert eine falsche Eingabe oder wählt ein freies Feld aus und zeigt dir, welche Zahlen dort infrage kommen. Du trägst die Zahl selbst ein.</p>
-          <a href="sudoku.html">Sudoku spielen</a>
-        </section>
-        <section>
-          <h3>Mudoku</h3>
-          <p>In Mudoku löst du einen Kriminalfall. Vier Verdächtige waren zur Tatzeit in vier verschiedenen Räumen. Finde heraus, wer am Tatort war.</p>
-          <p>Lies zuerst die Hinweise in der <strong>Fallakte</strong>. Der <strong>Flurplan</strong> zeigt die Räume von links nach rechts. „Direkt links“ bedeutet, dass die beiden Räume nebeneinanderliegen.</p>
-          <p>Wähle für jeden Raum eine Person aus. Jede Person darf nur einmal vorkommen. Du kannst deine Zuordnung jederzeit ändern.</p>
-          <p>Wähle unter <strong>Wer hat die Tat begangen?</strong> die Person aus, die du dem Tatort zugeordnet hast. Mit <strong>Fall lösen</strong> kannst du deine Eingaben prüfen. Sobald alles stimmt, erscheint die Auflösung. Nach fünf Sekunden öffnet sich der nächste ungelöste Fall, sofern es einen gibt.</p>
-          <p>In manchen schweren Fällen ist genau eine Aussage falsch. Dann musst du zusätzlich diese Aussage auswählen.</p>
-          <p>Eine wellige Unterstreichung markiert eine falsche Eingabe. Die Fehleranzeige zählt die aktuell falschen Felder. Bei einer falschen Antwort kannst du weiter umsortieren. Mit <strong>Zurücksetzen</strong> leerst du alle Auswahlen.</p>
-          <a href="mudoku.html">Mudoku spielen</a>
-        </section>
-        <section>
-          <h3>Wordle</h3>
-          <p>Ändere pro Zug genau einen Buchstaben des aktuellen Worts. Jeder Schritt muss in der Wortliste stehen. Wenn du das Zielwort erreichst, ist das Rätsel gelöst. Nach drei Sekunden öffnet sich das nächste ungelöste Rätsel, wenn es eines gibt. Mit „Zug zurück“ kannst du eine Abzweigung rückgängig machen.</p>
-          <a href="wordle.html">Wordle spielen</a>
-        </section>
-      </div>
-      <div class="help-en" lang="en">
-        <section>
-          <h3>Sudoku</h3>
-          <p>Fill the grid so that each number from 1 to 9 appears exactly once in every row, column and 3×3 box.</p>
-          <p>Select an empty cell and tap a number or press 1 to 9. Press Backspace or Delete, or tap the selected cell again, to clear your entry.</p>
-          <p>A wavy underline marks an incorrect number. It disappears when you correct or clear the entry.</p>
-          <p>If you get stuck, tap the small light bulb to the right of the number buttons. It highlights an incorrect entry or selects an empty cell and shows which numbers could fit there. You enter the number yourself.</p>
-          <a href="sudoku.html">Play Sudoku</a>
-        </section>
-        <section>
-          <h3>Mudoku</h3>
-          <p>In Mudoku, you solve a murder mystery. Four suspects were in four different rooms at the time of the murder. Find out who was at the crime scene.</p>
-          <p>Read the clues in the <strong>Case file</strong> first. The <strong>Floor plan</strong> shows the rooms from left to right. “Immediately to the left” means the two rooms are next to each other.</p>
-          <p>Choose one person for each room. Each person can only appear once. You can change your assignments at any time.</p>
-          <p>Under <strong>Who committed the murder?</strong>, choose the person you assigned to the crime scene. Use <strong>Solve case</strong> to check your answers. As soon as everything is correct, the solution appears. After five seconds, the next unsolved case opens if there is one.</p>
-          <p>In some hard cases, exactly one statement is false. Select that statement as part of your answer.</p>
-          <p>A wavy underline marks an incorrect choice. The error count shows how many fields are currently incorrect. If an answer is wrong, you can keep rearranging your choices. Use <strong>Reset</strong> to clear all selections.</p>
-          <a href="mudoku.html">Play Mudoku</a>
-        </section>
-        <section>
-          <h3>Wordle</h3>
-          <p>Change exactly one letter of the current word each turn. Every step must be in the word list. Reach the target word to solve the puzzle. After three seconds, the next unsolved puzzle opens if there is one. Use “Undo move” to try a different route.</p>
-          <a href="wordle.html">Play Wordle</a>
-        </section>
       </div>
     </section>
   </main>

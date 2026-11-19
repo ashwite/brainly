@@ -60,6 +60,13 @@
     return
   }
 
+  const toggle = document.querySelector('#character-toggle')
+  const picker = document.querySelector('#character-picker')
+  toggle.addEventListener('click', () => {
+    picker.hidden = !picker.hidden
+    toggle.setAttribute('aria-expanded', String(!picker.hidden))
+  })
+
   const options = document.querySelector('#character-options')
   const empty = document.querySelector('#character-empty')
   const upload = document.querySelector('#character-upload')

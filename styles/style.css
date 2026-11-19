@@ -73,6 +73,7 @@ main {
   padding: 0 30px;
 }
 .intro { width: 100%; text-align: center; }
+h1, h2, h3, h4, h5, h6 { font-family: 'VT323', monospace; }
 h1 { margin: 12px 0 4px; font-size: 22px; line-height: 1.35; font-weight: 400; }
 /* Ich blende Meldungen optisch aus und halte sie für Screenreader erreichbar. */
 .sr-only {
@@ -117,6 +118,29 @@ h1 { margin: 12px 0 4px; font-size: 22px; line-height: 1.35; font-weight: 400; }
 
 
 body { min-height: 100dvh; display: flex; flex-direction: column; }
+.footer-skate {
+  /* Der untere Weißraum des PNG liegt unterhalb der Fahrbahn. */
+  --skate-bottom: calc(0px - min(8vw, 34px));
+  flex: none;
+  height: clamp(110px, 37vw, 148px);
+  margin-top: auto;
+  background: url('../assets/footer-skate.png') center bottom var(--skate-bottom) / min(100%, 420px) auto no-repeat;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+html[data-theme="dark"] .footer-skate {
+  filter: invert(1);
+  mix-blend-mode: screen;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .footer-skate { animation: footer-skate-roll 6s linear infinite; }
+}
+@keyframes footer-skate-roll {
+  from { background-position: left -420px bottom var(--skate-bottom); }
+  to { background-position: right -420px bottom var(--skate-bottom); }
+}
+
 /* Ich richte die Fußzeile als Raster ein, damit Links, Einstellungen und die Konto-Meldung eigene Plätze haben. */
 .site-footer {
   display: grid;
@@ -124,7 +148,7 @@ body { min-height: 100dvh; display: flex; flex-direction: column; }
   justify-content: center;
   align-items: center;
   column-gap: min(1.2vw, 16px);
-  margin-top: auto;
+  border-top: 1px solid var(--line);
   padding: 10px min(2vw, 40px);
   font-size: min(2.4vw, 14px);
 }
@@ -137,7 +161,7 @@ body { min-height: 100dvh; display: flex; flex-direction: column; }
 .footer-links, .footer-account { flex-wrap: wrap; justify-content: center; }
 .footer-account > button { border: 0; padding: 8px 0; }
 .site-footer a { color: inherit; text-decoration: none; }
-.legal-page a, .home-help a { color: inherit; text-underline-offset: 4px; }
+.legal-page a { color: inherit; text-underline-offset: 4px; }
 .footer-controls { grid-column: 2; grid-row: 1; display: flex; align-items: center; gap: min(1vw, 12px); }
 .footer-languages { align-items: center; gap: min(.4vw, 3px); }
 .footer-languages button { min-height: 44px; padding-inline: 0; font-size: inherit; }
@@ -149,7 +173,13 @@ body { min-height: 100dvh; display: flex; flex-direction: column; }
   margin: 48px auto;
 }
 
-.home-help { width: 100%; }
+.home-help {
+  width: 100%;
+  padding: clamp(16px, 4vw, 24px);
+  border-radius: 9px;
+  background: color-mix(in srgb, var(--bg) 68%, transparent);
+}
+.home-help h2 { margin-block-start: 0; }
 
 /* Ich blende im Hilfe-Bereich den englischen Abschnitt bei Deutsch aus und den deutschen Abschnitt bei Englisch. */
 html:lang(de) .help-en,
@@ -298,8 +328,6 @@ html:lang(en) .help-de { display: none; }
 
 .home-level { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: stretch; gap: 24px; width: 100%; font-family: 'VT323', monospace; font-size: 20px; }
 
-.level-link { color: inherit; text-decoration: none; }
-.level-summary, .level-games { width: 100%; }
 .level-summary, .level-character-settings {
   display: grid;
   align-content: start;
@@ -310,7 +338,21 @@ html:lang(en) .help-de { display: none; }
   border-radius: 9px;
 }
 .level-summary { position: relative; }
-.level-character-settings #level-character { justify-self: start; }
+.level-character-profile {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+  align-items: center;
+  gap: 12px;
+}
+.character-toggle {
+  justify-self: start;
+  min-width: 0;
+  max-width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+.character-toggle img { max-width: 100%; vertical-align: top; }
 @media (max-width: 480px) {
   .home-level { grid-template-columns: minmax(0, 1fr); }
 }
@@ -332,17 +374,6 @@ html:lang(en) .help-de { display: none; }
 #level-share:disabled { opacity: .55; cursor: wait; }
 #level-share-status { margin: 0; }
 #level-share-status:empty { display: none; }
-.level-games { list-style: none; margin: 0; padding: 0; }
-.level-games li + li { border-top: 1px solid var(--line); }
-.level-games a {
-  display: flex;
-  justify-content: space-between;
-  gap: 8px;
-  padding: 14px 0;
-  color: inherit;
-  text-underline-offset: 4px;
-}
-.level-games a:hover { background: var(--related); }
 
 .level-name { display: grid; gap: 6px; width: 100%; }
 .level-name input {
@@ -461,8 +492,8 @@ html:lang(en) .help-de { display: none; }
 /* Die hellen Linien der Vorlage lassen die Theme-Farbe durch. */
 .home-page { isolation: isolate; }
 
-.home-page::before,
-.home-page::after {
+html[data-theme="dark"] .home-page::before,
+html[data-theme="dark"] .home-page::after {
   content: '';
   position: fixed;
   inset: 0 auto auto 0;
@@ -472,7 +503,7 @@ html:lang(en) .help-de { display: none; }
   pointer-events: none;
 }
 
-.home-page::before {
+html[data-theme="dark"] .home-page::before {
   background-color: var(--ink);
   mask-image: url('../assets/home-web.jpg');
   mask-mode: luminance;
@@ -481,7 +512,7 @@ html:lang(en) .help-de { display: none; }
   opacity: .18;
 }
 
-.home-page::after {
+html[data-theme="dark"] .home-page::after {
   background: url('../assets/home-chains.png') top left / contain no-repeat;
   filter: blur(2px);
 }
@@ -491,18 +522,26 @@ html:lang(en) .help-de { display: none; }
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: clamp(12px, 3vw, 22px);
-  width: min(92%, 390px);
+  width: min(100%, 450px);
   list-style: none;
   margin: 0;
   padding: 0;
 }
-.home-tiles a {
+.home-tiles li { position: relative; min-width: 0; }
+.home-tile-caption { display: flex; align-items: center; justify-content: center; gap: 4px; }
+.home-tile-link { color: inherit; text-decoration: none; }
+.home-tile-link::after { content: ''; position: absolute; inset: 0; }
+.home-info {
+  position: relative;
   display: grid;
-  gap: 8px;
-  color: inherit;
-  text-align: center;
-  text-decoration: none;
+  place-items: center;
+  width: 26px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  background: transparent;
 }
+.home-info { font: 400 13px/1 Georgia, serif; }
 .home-tile-image {
   display: block;
   aspect-ratio: 1;
@@ -513,7 +552,7 @@ html:lang(en) .help-de { display: none; }
   background-repeat: no-repeat;
   background-size: contain;
 }
-.home-tiles a:hover .home-tile-image { border-color: var(--ink); }
+.home-tiles li:has(.home-tile-link:hover, .home-tile-link:focus-visible) .home-tile-image { border-color: var(--ink); }
 
 .home-tile-image[data-tile="sudoku"] {
   background-image: url('../assets/sudoku.png');

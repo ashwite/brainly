@@ -10,6 +10,7 @@
   const progress = typeof levelProgress === 'undefined' ? {} : levelProgress;
   const { saveKey, restoreSave } = hasGame ? gameApp : progress;
   const autosaveInterval = 15_000;
+  const autoloadInterval = 20_000;
 
   // Sudoku speichert seine Eingaben bereits direkt im Browser.
   const localSaveKey = hasGame && saveKey !== 'sudokuSave' ? `brainly:${saveKey}` : null;
@@ -36,18 +37,17 @@
 
   // Mit querySelector suche ich Elemente anhand ihrer ID. Das # steht für eine ID im HTML.
   const footerStatus = document.querySelector('#footer-account-status');
-  // Ich zeige denselben Hinweis im Menü und unten auf der Seite an, etwa nach dem Speichern.
+  // Konto-Meldungen erscheinen im Footer.
   function showStatus(text) {
     footerStatus.textContent = text;
   }
 
   // Hier hole ich die Buttons aus dem HTML, damit ich später festlegen kann, was ein Klick auslöst.
   const footerSignIn = document.querySelector('#footer-sign-in');
-  const footerLoad = document.querySelector('#footer-load');
   const footerProfile = document.querySelector('#footer-profile');
   const signUp = document.querySelector('#footer-sign-up');
   // In dieser Liste sammle ich alle Konto-Buttons. So kann ich sie bei einer laufenden Aktion gemeinsam sperren.
-  const controls = [footerProfile, signUp, footerSignIn, footerLoad];
+  const controls = [footerProfile, signUp, footerSignIn];
   // Ich übergebe deutschen und englischen Text. Der Ausdruck mit ? wählt anhand der Seitensprache einen davon.
   const message = (de, en) => document.documentElement.lang === 'en' ? en : de;
 
@@ -108,20 +108,16 @@
       const signedIn = Boolean(clerk.user);
       signUp.hidden = signedIn;
       footerSignIn.hidden = false;
-      footerLoad.hidden = false;
       footerSignIn.dataset.text = signedIn ? 'accountSignOut' : 'accountSignIn';
       footerSignIn.textContent = translate(footerSignIn.dataset.text);
       footerProfile.hidden = !signedIn;
     }
 
-    // Ich verwende denselben Ablauf für Laden und Abmelden.
-    // Ohne Anmeldung öffne ich zuerst das Anmeldefenster. Danach muss man die Aktion erneut anklicken.
-    // In finally schalte ich die Buttons auch nach Fehlern oder einem vorzeitigen Ende wieder frei.
+    // Der Footer-Button öffnet die Anmeldung oder meldet die aktive Sitzung ab.
     let accountActionRunning = false;
-    let syncRunning = false;
     function run(action) {
       return async () => {
-        if (accountActionRunning || syncRunning) return;
+        if (accountActionRunning) return;
         accountActionRunning = true;
         controls.forEach(button => { button.disabled = true; });
         showStatus('');
@@ -145,71 +141,87 @@
     footerProfile.onclick = () => openAccountDialog(() => clerk.openUserProfile());
     // Über den Footer-Button öffne ich die Anmeldung oder melde eine aktive Sitzung ab.
     footerSignIn.onclick = run(() => clerk.signOut());
-    let syncedUser;
+    let activeUserId;
+    let remoteGame;
     let savedLevel;
-    async function syncProgress() {
-      const user = clerk.user;
-      if (!user || syncRunning || accountActionRunning) return;
-      const game = hasGame ? gameApp.captureSave() : null;
-      if (syncedUser === user.id && game === savedGame && progress.captureSave() === savedLevel) return;
+    let syncQueue = Promise.resolve();
+    let syncError = '';
 
-      syncRunning = true;
+    async function syncProgress(user, load) {
+      if (accountActionRunning || clerk.user?.id !== user.id) return;
       try {
+        const game = hasGame ? gameApp.captureSave() : null;
+        if (!load && savedLevel !== undefined && game === savedGame &&
+            progress.captureSave() === savedLevel) return;
+
         await user.reload();
-        if (clerk.user?.id !== user.id) return;
-        const remote = user.unsafeMetadata;
-        const remoteLevel = remote[progress.saveKey];
-        if (typeof remoteLevel === 'string' && !progress.restoreSave(remoteLevel)) {
+        if (accountActionRunning || clerk.user?.id !== user.id) return;
+
+        const metadata = user.unsafeMetadata;
+        const onlineLevel = metadata[progress.saveKey];
+        if (typeof onlineLevel === 'string' && !progress.restoreSave(onlineLevel)) {
           throw new Error('Invalid online XP');
         }
-
         const level = progress.captureSave();
-        const updates = {};
-        if (level !== remoteLevel) updates[progress.saveKey] = level;
-        if (hasGame && game !== remote[saveKey] &&
-            (game !== savedGame || typeof remote[saveKey] !== 'string')) {
-          updates[saveKey] = game;
+        const onlineGame = metadata[saveKey];
+        const currentGame = hasGame ? gameApp.captureSave() : null;
+
+        if (load) {
+          // Ein Abruf darf weder lokale Spielzüge noch eine noch nicht bestätigte Worteingabe ersetzen.
+          if (hasGame && typeof onlineGame === 'string' && onlineGame !== remoteGame &&
+              currentGame === game && currentGame === savedGame &&
+              !document.querySelector('#ladder-input')?.value) {
+            if (onlineGame !== currentGame && !restoreSave(onlineGame)) throw new Error('Invalid online game');
+            remoteGame = onlineGame;
+            savedGame = gameApp.captureSave();
+          }
+        } else {
+          const updates = {};
+          if (level !== onlineLevel) updates[progress.saveKey] = level;
+          if (hasGame && currentGame !== onlineGame &&
+              (currentGame !== savedGame || typeof onlineGame !== 'string')) {
+            updates[saveKey] = currentGame;
+          }
+          if (Object.keys(updates).length) await user.updateMetadata({ unsafeMetadata: updates });
+          if (clerk.user?.id !== user.id) return;
+          savedLevel = level;
+          if (updates[saveKey] !== undefined || currentGame === onlineGame) {
+            remoteGame = currentGame;
+            savedGame = currentGame;
+          }
         }
-        if (Object.keys(updates).length) await user.updateMetadata({ unsafeMetadata: updates });
-        syncedUser = user.id;
-        savedLevel = level;
-        savedGame = game;
+
+        if (syncError && footerStatus.textContent === syncError) showStatus('');
+        syncError = '';
       } catch {
-        showStatus(message('Automatisches Speichern fehlgeschlagen. Erneuter Versuch in 15 Sekunden.',
-          'Autosave failed. Retrying in 15 seconds.'));
-      } finally {
-        syncRunning = false;
+        syncError = message('Online-Spielstand konnte nicht synchronisiert werden.',
+          'Could not sync online progress.');
+        showStatus(syncError);
       }
     }
-    setInterval(syncProgress, autosaveInterval);
 
-    footerLoad.onclick = run(async () => {
+    function scheduleSync(load) {
       const user = clerk.user;
-      await user.reload();
-      // Ich prüfe nach dem Warten, ob noch dasselbe Konto aktiv ist. Bei einem Wechsel breche ich ab.
-      if (clerk.user?.id !== user.id) return;
-      // Ich lese den gespeicherten Text vom Konto. Ohne einen Text gibt es hier keinen Online-Spielstand zum Laden.
-      const snapshot = user.unsafeMetadata[saveKey];
-      if (typeof snapshot !== 'string') {
-        showStatus(message('Kein Online-Spielstand vorhanden.', 'No online save found.'));
-        return;
-      }
-      const prompt = hasGame
-        ? message('Den aktuellen Spielstand ersetzen?', 'Replace the current game?')
-        : message('Den Online-XP-Stand mit dem lokalen Fortschritt zusammenführen?',
-          'Merge online XP with your local progress?');
-      if (!confirm(prompt)) return;
-      // Ich verwende die Spiellogik, um den gespeicherten Stand zu prüfen und wiederherzustellen.
-      if (!restoreSave(snapshot)) throw new Error('Invalid game save');
-      if (hasGame) savedGame = gameApp.captureSave();
-      showStatus(message('Online-Spielstand geladen.', 'Online save loaded.'));
-    });
-    // Ich lasse die Oberfläche erneut aktualisieren, wenn Clerk eine Änderung bei der Anmeldung meldet.
-    clerk.addListener(render);
-    render();
+      if (user) syncQueue = syncQueue.then(() => syncProgress(user, load));
+    }
+
+    function updateSession() {
+      render();
+      const userId = clerk.user?.id;
+      if (userId === activeUserId) return;
+      activeUserId = userId;
+      remoteGame = undefined;
+      savedLevel = undefined;
+      scheduleSync(true);
+    }
+
+    clerk.addListener(updateSession);
+    updateSession();
+    setInterval(() => scheduleSync(false), autosaveInterval);
+    setInterval(() => scheduleSync(true), autoloadInterval);
   }
 
-  // Wenn beim Start etwas schiefgeht, blende ich die Konto-Buttons aus und zeige im Menü eine Meldung.
+  // Wenn beim Start etwas schiefgeht, blende ich die Konto-Buttons aus und zeige im Footer eine Meldung.
   initialize().catch(() => {
     controls.forEach(button => { button.hidden = true; });
     showStatus(message('Anmeldung derzeit nicht verfügbar.', 'Sign-in is currently unavailable.'));

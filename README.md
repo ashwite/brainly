@@ -34,7 +34,7 @@ Mit **Zug zurück** kannst du den letzten Schritt rückgängig machen. Über die
 
 ## Level und Charakter
 
-Öffne **Level** im Footer. Auf der [Startseite im Level-Bereich](pages/home.html#level) siehst du deine Gesamt-XP, die XP pro Spiel und den Fortschritt zum nächsten Level.
+Auf der [Startseite im Level-Bereich](pages/home.html#level) siehst du deine Gesamt-XP und den Fortschritt zum nächsten Level.
 
 | Abschluss | Belohnung |
 | --- | --- |
@@ -43,7 +43,7 @@ Mit **Zug zurück** kannst du den letzten Schritt rückgängig machen. Über die
 
 Jedes Rätsel bringt einmal XP. Du startest auf Level 1 und steigst alle **1.000 XP** ein Level auf.
 
-Unter **Dein Name** kannst du zum Beispiel **Anni** eintragen. Darunter wählst du deinen Charakter. Mein Hund Max ist vorausgewählt. Über **+** kannst du ein eigenes PNG auswählen, das in deinem Browser gespeichert wird. Nach einem gelösten Rätsel erscheint dein Charakter kurz in der Bildschirmmitte, zum Beispiel mit **„Super Anni!“** darüber.
+Unter **Dein Name** kannst du zum Beispiel **Anni** eintragen. Klicke auf das Charakterbild, um die Charakterauswahl zu öffnen. Mein Hund Max ist vorausgewählt. Über **+** kannst du ein eigenes PNG auswählen, das in deinem Browser gespeichert wird. Nach einem gelösten Rätsel erscheint dein Charakter kurz in der Bildschirmmitte, zum Beispiel mit **„Super Anni!“** darüber.
 
 Mit **Level als PNG teilen** erstellst du ein Bild mit deinem Level, deinen XP und deinem Charakter. Wenn du einen Namen eingetragen hast, erscheint er ebenfalls auf dem Bild. Je nach Browser öffnet sich das Teilen-Menü oder du kannst das PNG herunterladen.
 
@@ -51,10 +51,10 @@ Mit **Level als PNG teilen** erstellst du ein Bild mit deinem Level, deinen XP u
 
 Dein Level-Fortschritt bleibt direkt im Browser gespeichert. Sudoku speichert Eingaben sofort. Mudoku und Wordle sichern ihren Rätselstand alle 15 Sekunden und beim Verlassen der Seite. Name und Charakterauswahl bleiben ebenfalls im Browser.
 
-Wenn du angemeldet bist, sichert brainly deinen Level-Fortschritt und den geöffneten Rätselstand alle 15 Sekunden automatisch im Konto. Unter **Laden** kannst du auf Spielseiten den Online-Stand des jeweiligen Spiels wiederherstellen. Auf der Startseite führt **Laden** deine lokalen und online gespeicherten XP zusammen.
+Wenn du angemeldet bist, sichert brainly deinen Level-Fortschritt und den geöffneten Rätselstand alle 15 Sekunden automatisch im Konto. Beim Anmelden und danach alle 20 Sekunden wird der Online-Stand im Hintergrund abgerufen. XP werden zusammengeführt. Ein neuerer Online-Rätselstand wird übernommen, sobald keine ungesicherten lokalen Eingaben vorliegen.
 
 ## Sprache, Farben und Hilfe
 
 Im Footer kannst du zwischen Deutsch und Englisch wechseln. Oben rechts schaltest du zwischen Hell- und Dunkelmodus um. Diese Einstellungen gelten für alle drei Spiele und die Startseite.
 
-Weitere Erklärungen zu den Spielen findest du unter [Hilfe](pages/home.html#hilfe). [Datenschutz](pages/datenschutz.html) ist ebenfalls im Footer verlinkt.
+Über das **i** neben einem Spiel auf der [Startseite](pages/home.html) öffnest du die passende Anleitung. [Datenschutz](pages/datenschutz.html) ist ebenfalls im Footer verlinkt.
