@@ -30,7 +30,7 @@ const englishFirstCase = {
   explanation: 'Ben was in the lab, the third room. Mira was immediately to his left in the waiting room. Emil was at reception, the first room. That leaves Nora in the treatment room.',
 }
 
-// Ich ordne die Räume im Flurplan von links nach rechts an und hinterlege unter person die richtige Zuordnung.
+// Die Reihenfolge im Array entspricht A bis D. person enthält die richtige Zuordnung.
 const legacyCases = {
   easy: { de: firstCase, en: englishFirstCase },
   medium: {

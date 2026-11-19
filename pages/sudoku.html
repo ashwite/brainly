@@ -4,12 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#fff">
-  <meta name="description" content="Denken statt scrollen. Sudoku mit drei Schwierigkeitsstufen und automatischem Spielstand.">
+  <meta name="description" content="Sudoku mit automatischer Schwierigkeit und automatischem Spielstand.">
   <link rel="icon" type="image/png" sizes="32x32" href="../assets/miffy.png">
-  <title>Sudoku · Denken statt scrollen</title>
+  <title>Sudoku · brainly</title>
 
-  <!-- Ich wende die gespeicherten Farben früh an, damit die Standardfarben nicht kurz aufblitzen. -->
-  <!-- Ich lese die gespeicherten Einstellungen so früh, dass die Seite gleich in den passenden Farben erscheint. -->
+  <!-- Gespeicherte Sprache und Hell-Dunkel-Modus vor dem Rendern anwenden. -->
   <script>
     try {
       document.documentElement.lang = localStorage.getItem('sudoku-language') === 'en' ? 'en' : 'de';
@@ -22,21 +21,18 @@
   <!-- Im Stylesheet sammle ich gemeinsame Regeln und ergänze für jedes Spiel eigene Regeln. -->
   <link rel="stylesheet" href="../styles/style.css?v=85">
   <!-- Ich lade zuerst die Spiellogik und dann die Konto-Funktionen. defer wartet mit der Ausführung, bis das HTML eingelesen ist. -->
-  <script src="../scripts/text.js?v=24" defer></script>
+  <script src="../scripts/text.js?v=29" defer></script>
   <script src="../scripts/site-shell.js?v=20" defer></script>
   <script src="../scripts/navigation.js?v=5" defer></script>
   <script src="../scripts/characters.js?v=10" defer></script>
   <script src="../scripts/levels.js?v=11" defer></script>
-  <script src="../scripts/app.js?v=13" defer></script>
+  <script src="../scripts/app.js?v=15" defer></script>
   <script src="../scripts/account.js?v=9" data-publishable-key="pk_test_d2FybS1wYW5kYS00MjY1LmNsZXJrLmFjY291bnRzLmRldiQ" defer></script>
 </head>
 <body data-game="sudoku">
 
   <!-- Hier baue ich die Spielfläche für Sudoku auf. -->
   <main>
-    <section class="intro">
-      <h1 data-text="headline">Denken statt scrollen.</h1>
-    </section>
     <section class="game" data-label="game" aria-label="Sudoku-Spiel">
       <!-- Mit JavaScript ergänze ich hier die 81 Felder und die neun Zahlentasten. -->
       <div class="board-wrap">

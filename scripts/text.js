@@ -1,7 +1,6 @@
 // Hier sammle ich die Übersetzungen für Spiele, Navigation und Level-Bereich.
 // Ich lege Deutsch und Englisch nebeneinander ab. Derselbe Schlüssel steht für denselben Text.
 const uiText = {
-  headline: ["Denken statt scrollen.","Think instead of scrolling."],
   game: ["Sudoku-Spiel","Sudoku game"],
   board: ["Sudoku-Raster","Sudoku grid"],
   numbers: ["Zahlen eingeben","Enter numbers"],
@@ -38,14 +37,11 @@ const uiText = {
   catCharacter: ['Katze', 'Cat'],
   noCharacters: ['Die Charakterbilder sind noch nicht verfügbar.', 'Character images are unavailable.'],
   ladderName: ['Wordle', 'Wordle'],
-  ladderRules: ['Ändere pro Zug genau einen Buchstaben, bis du das Zielwort erreichst.', 'Change exactly one letter per move until you reach the target word.'],
-  ladderPuzzle: ['Rätsel wählen', 'Choose a puzzle'],
   ladderStart: ['Startwort', 'Start word'],
   ladderTarget: ['Zielwort', 'Target word'],
   ladderPath: ['Deine bisherigen Wörter', 'Your words so far'],
   ladderNext: ['Nächstes Wort', 'Next word'],
   ladderCheck: ['Wort prüfen', 'Check word'],
-  ladderUndo: ['Zug zurück', 'Undo move'],
   ladderLength: ['Das Wort muss dieselbe Länge haben.', 'The word must be the same length.'],
   ladderChange: ['Ändere genau einen Buchstaben an seiner Stelle.', 'Change exactly one letter in place.'],
   ladderUnknown: ['Dieses Wort steht nicht in der Wortliste.', 'This word is not in the word list.'],
@@ -60,7 +56,6 @@ const uiText = {
   clues: ['Fallakte', 'Case file'],
   rooms: ['Flurplan', 'Floor plan'],
   rules: ['Die vier Verdächtigen waren zur Tatzeit in vier verschiedenen Räumen. Nur die Person am Tatort war beim Opfer.', 'The four suspects were in four separate rooms at the time of the murder. Only the person at the crime scene was with the victim.'],
-  instructions: ['Für die Hinweise gilt die Reihenfolge A → B → C → D. „Direkt links“ bedeutet direkt davor. Ordne jedem Raum eine Person zu.', 'For the clues, the room order is A → B → C → D. “Immediately to the left” means directly before. Assign one person to each room.'],
   accusation: ['Wer hat die Tat begangen?', 'Who committed the murder?'],
   solve: ['Fall lösen', 'Solve case'],
   reset: ['Zurücksetzen', 'Reset'],

@@ -6,7 +6,7 @@
   <meta name="description" content="Ordne vier Verdächtige ihren Räumen zu und löse den Fall.">
   <title>Mudoku · Der letzte Termin</title>
   <link rel="icon" href="../assets/miffy.png" type="image/png">
-  <!-- Ich lese Sprache und Farben beim Laden, damit die Seite direkt zu den Einstellungen aus Sudoku passt. -->
+  <!-- Gespeicherte Sprache und Hell-Dunkel-Modus vor dem Rendern anwenden. -->
   <meta name="theme-color" content="#fff">
   <script>
     const preferredTheme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
@@ -19,37 +19,33 @@
     }
   </script>
   <!-- Im Stylesheet sammle ich gemeinsame Regeln und ergänze für jedes Spiel eigene Regeln. -->
-  <link rel="stylesheet" href="../styles/style.css?v=90">
-  <script src="../scripts/text.js?v=24" defer></script>
+  <link rel="stylesheet" href="../styles/style.css?v=99">
+  <script src="../scripts/text.js?v=29" defer></script>
   <script src="../scripts/site-shell.js?v=20" defer></script>
   <script src="../scripts/navigation.js?v=5" defer></script>
   <script src="../scripts/cases.js?v=0.8" defer></script>
   <script src="../scripts/characters.js?v=10" defer></script>
   <script src="../scripts/levels.js?v=11" defer></script>
-  <script src="../scripts/app.js?v=13" defer></script>
+  <script src="../scripts/app.js?v=15" defer></script>
   <script src="../scripts/account.js?v=9" data-publishable-key="pk_test_d2FybS1wYW5kYS00MjY1LmNsZXJrLmFjY291bnRzLmRldiQ" defer></script>
 </head>
 <body class="mudoku" data-game="mudoku">
 
   <!-- Hier baue ich die Spielfläche für Mudoku auf. -->
   <main>
-    <div class="intro">
-      <h1 id="case-title"></h1>
-      <p id="case-intro"></p>
-    </div>
-
     <div class="case-layout">
       <section class="panel" aria-labelledby="clue-title">
         <h2 id="clue-title" data-text="clues">Fallakte</h2>
+        <p id="case-intro"></p>
         <p data-text="rules">Die vier Verdächtigen waren zur Tatzeit in vier verschiedenen Räumen. Nur die Person am Tatort war beim Opfer.</p>
         <p id="lie-rule" data-text="lieRule" hidden>Genau eine der Aussagen ist falsch.</p>
         <ol id="clues"></ol>
       </section>
 
-      <!-- In app.js fülle ich die Raumfelder und ergänze bei bestimmten Fällen die Auswahl der falschen Aussage. -->
+      <!-- app.js befüllt die anklickbaren Raumquadrate und aktiviert bei Bedarf die Auswahl einer falschen Aussage. -->
+      <div class="floor-plan-art" aria-hidden="true"></div>
       <form class="panel" id="case-form">
         <h2 data-text="rooms">Flurplan</h2>
-        <p data-text="instructions">Für die Hinweise gilt die Reihenfolge A → B → C → D. „Direkt links“ bedeutet direkt davor. Ordne jedem Raum eine Person zu.</p>
         <ol id="rooms" role="list"></ol>
 
         <label for="suspect" data-text="accusation">Wer hat die Tat begangen?</label>

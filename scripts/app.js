@@ -29,7 +29,6 @@ function startSudoku() {
     [...numberButtons.children].forEach((button, index) => {
       button.setAttribute('aria-label', `${translate('number')} ${index + 1}`);
     });
-    document.title = `Sudoku · ${translate('headline')}`;
     document.querySelector('meta[name="description"]').content = translate('description');
     if (lastMessage) announce(lastMessage);
     if (game) renderBoard();
@@ -347,7 +346,7 @@ function startSudoku() {
     }
   });
 
-  // 6. Beim Start stelle ich die gespeicherten Einstellungen und den Spielstand wieder her.
+  // Beim Start stelle ich den lokalen Spielstand wieder her oder erstelle ein neues Rätsel auf der aktuellen Stufe.
   updateSudokuLanguage();
   if (!loadGame()) {
     startGame();
@@ -356,7 +355,7 @@ function startSudoku() {
     if (game.done) advanceAfterCompletion();
   }
 
-  // Beim Laden aus dem Konto setze ich die Auswahl zurück und zeichne das geladene Raster.
+  // Beim automatischen Abruf aus dem Konto setze ich die Auswahl zurück und zeichne das geladene Raster.
   return {
     translate,
     saveKey: 'sudokuSave',
@@ -515,7 +514,6 @@ function startMudoku() {
     const roomNames = text.roomNames ?? activeCase.rooms.map(room => room.name)
     const english = document.documentElement.lang === 'en'
     document.title = `Mudoku · ${text.title}`
-    document.querySelector('#case-title').textContent = text.title
     document.querySelector('#case-intro').textContent = formatCaseRooms(text.intro, roomNames, english)
     document.querySelector('#solution-text').textContent = formatCaseRooms(text.explanation, roomNames, english)
     clueItems.forEach((item, index) => { item.textContent = formatCaseRooms(text.clues[index], roomNames, english) })
@@ -584,7 +582,7 @@ function startMudoku() {
     const next = nextCase(completed)
     if (!next) return
 
-    // Ich lasse die Auflösung kurz stehen. Ein Wechsel oder Reset bricht das automatische Weitergehen ab.
+    // Die Auflösung bleibt fünf Sekunden sichtbar. Eine geänderte Zuordnung oder ein Reset stoppt den Wechsel.
     nextCaseTimer = setTimeout(() => {
       nextCaseTimer = undefined
       if (activeCase === completed && currentAnswer() === 'solved') startCase(next)

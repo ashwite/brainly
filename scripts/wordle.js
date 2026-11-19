@@ -172,14 +172,12 @@ function startWordLadder() {
     en: new Set('COLD CORD CARD WARD WARM WORD WORM GOLD BOLD HOLD SOLD TOLD FOLD HARD HARM HEAD HEAL TEAL TELL TALL TAIL HAIL HALL HEAR HEAT SEAL DEAL REAL CAT COT DOT DOG COG BAT RAT HAT HOT POT LOT LOG HARE CARE CURE PURE PORE CORE COMB COME DOME HOME HOPE ROPE RIPE PIPE PILE FILE FIRE FIRM FARM FORM FOAM TOLL HELL HILL FILL FULL BULL PULL POLL POLE PALE SALE MALE TALE TAME SAME GAME FAME LAME LIME LIKE LINE MINE NINE WINE WIDE RIDE SIDE SIRE TIRE TILE TIME DIME DINE FINE FIND FOND FOOD FOOL COOL COAL GOAL GOAT COAT BOAT BOLT BELT BELL BALL FALL FAIL FAIR HAIR PAIR PAIL NAIL MAIL MAIN RAIN PAIN PAWN DAWN DOWN TOWN TORN BORN CORN CORP CORK WORK WORN WARN BARN BARK DARK DART DARE DATE GATE LATE MATE RATE RACE PACE FACE FACT FATE FAKE CAKE MAKE BAKE TAKE TAPE TYPE TYRE SURE SAND SEND SENT BENT BEND BOND BAND BANG BANK SANK SINK SING RING KING WING WIND MIND PINE PINT PANT CANT CAST FAST LAST LOST LOFT SOFT SORT FORT FORK PORK PORT POST PAST PEST PETS SETS GETS JETS VETS VEST BEST REST TEST TEXT NEXT NEST NEWS NEAT BEAT SEAT MEAT SELL WELL WELD WILD MILD MILL'.split(' ')),
   }
 
-  const picker = document.querySelector('#ladder-puzzle')
   const start = document.querySelector('#ladder-start')
   const target = document.querySelector('#ladder-target')
   const path = document.querySelector('#ladder-path')
   const form = document.querySelector('#ladder-form')
   const input = document.querySelector('#ladder-input')
   const submit = document.querySelector('#ladder-submit')
-  const undo = document.querySelector('#ladder-undo')
   const status = document.querySelector('#ladder-status')
   const language = () => document.documentElement.lang === 'en' ? 'en' : 'de'
   const initial = (lang, puzzle = 0) => ({ puzzle, path: [puzzles[lang][puzzle][0]] })
@@ -196,7 +194,6 @@ function startWordLadder() {
   const state = () => progress[language()]
   let error = ''
   let nextPuzzleTimer
-  let pickerGroup
 
   // Ich vergleiche die Buchstaben an jeder Stelle. Tauschen oder Anhängen zählt nicht als ein Zug.
   function validateMove(previous, word, visited, lang) {
@@ -218,15 +215,6 @@ function startWordLadder() {
     const lang = language()
     const { puzzle, path: chain } = state()
     const [first, last] = puzzles[lang][puzzle]
-    const level = levelProgress.difficulty('wordle')
-    const group = `${lang}:${level}:${puzzle}`
-    if (pickerGroup !== group) {
-      picker.replaceChildren(...puzzles[lang].flatMap(([a, b, difficulty], index) =>
-        (difficulty === level || index === puzzle) ? [new Option(`${a} → ${b}`, String(index))] : []
-      ))
-      pickerGroup = group
-    }
-    picker.value = String(puzzle)
     start.textContent = first
     target.textContent = last
     path.replaceChildren(...chain.map(word => {
@@ -237,7 +225,6 @@ function startWordLadder() {
     const solved = chain.at(-1) === last
     input.disabled = submit.disabled = solved
     input.maxLength = first.length
-    undo.disabled = chain.length < 2
     document.title = `${translate('ladderName')} · brainly`
     showStatus(solved)
   }
@@ -252,7 +239,7 @@ function startWordLadder() {
     nextPuzzleTimer = undefined
   }
 
-  // Ich lasse die Erfolgsmeldung kurz stehen und öffne danach das nächste ungelöste Rätsel.
+  // Nach drei Sekunden folgt das nächste ungelöste Rätsel der aktuellen Stufe in derselben Sprache.
   function queueNextPuzzle() {
     const lang = language()
     const completed = state()
@@ -274,7 +261,6 @@ function startWordLadder() {
     render()
   }
 
-  picker.addEventListener('change', () => openPuzzle(Number(picker.value)))
   form.addEventListener('submit', event => {
     event.preventDefault()
     if (input.disabled) return
@@ -301,13 +287,6 @@ function startWordLadder() {
     error = ''
     showStatus(false)
   })
-  undo.addEventListener('click', () => {
-    stopNextPuzzle()
-    if (state().path.length > 1) state().path.pop()
-    clearInput()
-    render()
-    input.focus()
-  })
   form.addEventListener('reset', event => {
     event.preventDefault()
     stopNextPuzzle()
@@ -328,7 +307,7 @@ function startWordLadder() {
   })
   render()
 
-  // Ich speichere beide Sprachstände. Beim Laden prüfe ich jeden Schritt vor der Übernahme.
+  // Der Spielstand enthält beide Sprachversionen. Beim Wiederherstellen prüfe ich jeden gespeicherten Zug.
   return {
     translate,
     saveKey: 'wordLadderSave',

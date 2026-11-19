@@ -29,7 +29,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
 /* Wenn ich mit der Tastatur unterwegs bin, zeigt der Rahmen, welches Element gerade den Fokus hat. */
 button:focus-visible, a:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
 
-/* Ich gestalte die gemeinsame Kopfzeile mit Logo, Spielname und Menü. */
+/* Gemeinsame Kopfzeile mit Logo und Hell-Dunkel-Schalter. */
 header {
   position: relative;
   z-index: 50;
@@ -97,7 +97,7 @@ h1 { margin: 12px 0 4px; font-size: 22px; line-height: 1.35; font-weight: 400; }
   h1 { font-size: 20px; margin: 8px 0 0; }
 }
 
-/* Ich animiere Kopfzeile und Titel. */
+/* Kopfzeile und Einleitungsblöcke erscheinen mit einer kurzen Animation. */
 @media (prefers-reduced-motion: no-preference) {
   header { animation: header-arrive .25s ease-out both; }
   .intro { animation: content-arrive .3s cubic-bezier(.2,.7,.3,1) both; }
@@ -245,14 +245,19 @@ html:lang(en) .help-de { display: none; }
 
 .mudoku .case-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 14px;
+  grid-template-columns: clamp(44px, 16vw, 152px) minmax(0, 1fr);
+  gap: 14px clamp(12px, 5vw, 48px);
   width: 100%;
   align-items: start;
 }
-
-@media (min-width: 701px) {
-  .mudoku .case-layout { grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); }
+.mudoku .case-layout > section { grid-column: 1 / -1; }
+.mudoku .floor-plan-art {
+  align-self: center;
+  aspect-ratio: 7 / 10;
+  background: url('../assets/mudoku-flurplan.png?v=2') 54% 44% / 185% auto no-repeat;
+}
+html[data-theme="dark"] .mudoku .floor-plan-art {
+  filter: invert(1);
 }
 
 /* Ich rahme Fallakte, Flurplan und Auflösung mit denselben Theme-Farben ein. */
@@ -263,9 +268,10 @@ html:lang(en) .help-de { display: none; }
 .mudoku .panel li + li { margin-top: 8px; }
 .mudoku .panel label { display: block; margin-bottom: 4px; }
 
-/* Der Flurplan zeigt die vier Räume in einer Reihe. */
+/* Die vier Raumquadrate zeigen Buchstabe und gewählte Person. Das Auswahlfeld bedeckt das ganze Quadrat. */
 .mudoku #rooms {
   display: grid;
+  width: min(92%, 218px);
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: clamp(4px, 1vw, 8px);
   padding: 4px;
@@ -331,28 +337,49 @@ html:lang(en) .help-de { display: none; }
 }
 
 .word-ladder .ladder-game label { display: block; margin-bottom: 4px; }
-.word-ladder .ladder-game input,
-.word-ladder .ladder-game select,
-.word-ladder .ladder-actions button {
+.word-ladder .ladder-entry input {
+  width: 100%;
   min-height: 44px;
   padding: 6px 10px;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  text-transform: uppercase;
+}
+.word-ladder .ladder-entry input[aria-invalid="true"] { text-decoration: underline wavy; }
+.word-ladder .ladder-words {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+}
+.word-ladder .ladder-words::before {
+  content: '';
+  grid-area: 1 / 2;
+  width: clamp(54px, 16vw, 92px);
+  aspect-ratio: 1;
+  background: url('../assets/wordle-heart.png') center / contain no-repeat;
+}
+.word-ladder .ladder-words > :first-child { grid-area: 1 / 1; }
+.word-ladder .ladder-words > :last-child { grid-area: 1 / 3; text-align: end; }
+.word-ladder .ladder-words dd { margin: 0; font: 400 1.75rem/1.15 'VT323', monospace; letter-spacing: .08em; }
+.word-ladder #ladder-path { padding-inline-start: 1.5rem; letter-spacing: .08em; }
+.word-ladder .ladder-entry {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
   border: 1px solid var(--line);
   border-radius: 7px;
   background: var(--bg);
-  color: var(--ink);
-  font: inherit;
 }
-.word-ladder .ladder-game input,
-.word-ladder .ladder-game select { width: 100%; }
-.word-ladder .ladder-game input { text-transform: uppercase; }
-.word-ladder .ladder-game input[aria-invalid="true"] { border-color: var(--ink); text-decoration: underline wavy; }
-.word-ladder .ladder-game input:focus-visible,
-.word-ladder .ladder-game select:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
-.word-ladder .ladder-words { display: flex; justify-content: space-between; gap: 12px; }
-.word-ladder .ladder-words dd { margin: 0; font-size: 1.35rem; letter-spacing: .1em; }
-.word-ladder #ladder-path { padding-inline-start: 1.5rem; letter-spacing: .08em; }
-.word-ladder .ladder-actions { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 12px; }
-.word-ladder .ladder-actions button:disabled { opacity: .55; cursor: default; }
+.word-ladder .ladder-entry:has(input:focus-visible) { outline: 2px solid var(--ink); outline-offset: 3px; }
+.word-ladder .ladder-entry:has(input[aria-invalid="true"]) { border-color: var(--ink); }
+.word-ladder .ladder-entry button { display: grid; place-items: center; width: 44px; min-height: 44px; padding: 0; border: 0; background: transparent; }
+.word-ladder #ladder-submit { justify-items: end; padding-inline-end: 6px; }
+.word-ladder #ladder-reset { justify-items: start; padding-inline-start: 6px; }
+.word-ladder .ladder-entry button:disabled { opacity: .55; cursor: default; }
 
 .home-level { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: stretch; gap: 24px; width: 100%; font-family: 'VT323', monospace; font-size: 20px; }
 
@@ -528,7 +555,7 @@ html:lang(en) .help-de { display: none; }
   }
 }
 
-/* Die hellen Linien der Vorlage lassen die Theme-Farbe durch. */
+/* Spinnennetz und Ketten bleiben auf allen Seiten im Dunkelmodus oben links fixiert. */
 .home-page, html[data-theme="dark"] body { isolation: isolate; }
 
 html[data-theme="dark"] body::before,

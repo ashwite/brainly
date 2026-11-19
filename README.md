@@ -6,7 +6,7 @@ Drei Minispiele für zwischendurch. Löse ein Sudoku, kläre einen Kriminalfall 
 
 Öffne die [Startseite](pages/home.html) im Browser und wähle [Sudoku](pages/sudoku.html), [Mudoku](pages/mudoku.html) oder [Wordle](pages/wordle.html). Über **Home** im Footer kommst du zurück zur Spielauswahl. Die Schwierigkeit steigt in jedem Spiel separat. Nach fünf verschiedenen gelösten Rätseln startet die mittlere Stufe, nach zehn die höchste. Bereits begonnene Rätsel kannst du zu Ende spielen.
 
-Wenn du die Spiele auf deinem Computer für dich allein öffnest und den XP-Stand zwischen allen drei Spielen teilen möchtest, kannst du sie über einen lokalen Server öffnen. Dafür brauchst du Node.js mit npm und Python 3. Führe im Projektordner diesen Befehl aus.
+Zum lokalen Start brauchst du Node.js mit npm und Python 3. Führe im Projektordner diesen Befehl aus.
 
 ```sh
 npm run dev
@@ -22,15 +22,15 @@ Wähle ein freies Feld und tippe auf eine Zahl unter dem Raster oder drücke sie
 
 ## Mudoku
 
-Lies die Fallakte und ordne die vier Verdächtigen den vier Räumen zu. Wähle dann die Person aus, die am Tatort war. Bei manchen Fällen musst du zusätzlich angeben, welche Aussage falsch ist.
+Lies die Fallakte und klicke auf die Raumquadrate **A**, **B**, **C** und **D**, um jeweils eine Person auszuwählen. Der gewählte Name erscheint im Quadrat. Die Hinweise beziehen sich auf die Reihenfolge **A → B → C → D**. „Direkt links“ bedeutet direkt davor. Wähle dann die Person aus, die am Tatort war. Bei manchen Fällen musst du zusätzlich die falsche Aussage angeben.
 
-Falsche Zuordnungen werden wellig unterstrichen. Sobald alle Antworten stimmen, erscheint die Auflösung. Falls es einen weiteren ungelösten Fall auf deiner aktuellen Stufe gibt, öffnet er sich nach einer kurzen Pause.
+Falsche Zuordnungen werden wellig unterstrichen. Mit **Fall lösen** kannst du deine Eingaben prüfen. Sobald alle Antworten stimmen, erscheint die Auflösung. Nach fünf Sekunden öffnet sich der nächste ungelöste Fall deiner aktuellen Stufe, sofern einer verfügbar ist.
 
 ## Wordle
 
 Erreiche das Zielwort, indem du pro Zug genau einen Buchstaben austauschst. Jeder Zug muss ein gültiges Wort aus der Wortliste ergeben. Du kannst keine Buchstaben hinzufügen, entfernen oder umstellen und darfst ein Wort nur einmal pro Runde verwenden.
 
-Mit **Zug zurück** kannst du den letzten Schritt rückgängig machen. Über die Rätselauswahl kannst du jederzeit ein anderes Rätsel öffnen.
+Mit **✓** oder Enter prüfst du das eingegebene Wort. Mit **↺** daneben startest du das aktuelle Rätsel neu. Drei Sekunden nach der Lösung öffnet sich das nächste ungelöste Rätsel deiner aktuellen Stufe, sofern eines verfügbar ist.
 
 ## Level und Charakter
 
@@ -43,18 +43,18 @@ Auf der [Startseite im Level-Bereich](pages/home.html#level) siehst du deine Ges
 
 Jedes Rätsel bringt einmal XP. Du startest auf Level 1 und steigst alle **1.000 XP** ein Level auf.
 
-Unter **Dein Name** kannst du zum Beispiel **Anni** eintragen. Klicke auf das Charakterbild, um die Charakterauswahl zu öffnen. Mein Hund Max ist vorausgewählt. Über **+** kannst du ein eigenes PNG auswählen, das in deinem Browser gespeichert wird. Nach einem gelösten Rätsel erscheint dein Charakter kurz in der Bildschirmmitte, zum Beispiel mit **„Super Anni!“** darüber.
+Unter **Dein Name** kannst du zum Beispiel **Anni** eintragen. Klicke auf das Charakterbild, um die Charakterauswahl zu öffnen. Du kannst Max, den Dino oder die Katze wählen. Max ist vorausgewählt. Über **+** kannst du ein eigenes PNG auswählen, das in deinem Browser gespeichert wird. Nach einem gelösten Rätsel erscheint dein Charakter kurz in der Bildschirmmitte, zum Beispiel mit **„Super Anni!“** darüber.
 
 Mit **Level als PNG teilen** erstellst du ein Bild mit deinem Level, deinen XP und deinem Charakter. Wenn du einen Namen eingetragen hast, erscheint er ebenfalls auf dem Bild. Je nach Browser öffnet sich das Teilen-Menü oder du kannst das PNG herunterladen.
 
-## Speichern und Laden
+## Automatische Spielstände
 
 Dein Level-Fortschritt bleibt direkt im Browser gespeichert. Sudoku speichert Eingaben sofort. Mudoku und Wordle sichern ihren Rätselstand alle 15 Sekunden und beim Verlassen der Seite. Name und Charakterauswahl bleiben ebenfalls im Browser.
 
-Wenn du angemeldet bist, sichert brainly deinen Level-Fortschritt und den geöffneten Rätselstand alle 15 Sekunden automatisch im Konto. Beim Anmelden und danach alle 20 Sekunden wird der Online-Stand im Hintergrund abgerufen. XP werden zusammengeführt. Ein neuerer Online-Rätselstand wird übernommen, sobald keine ungesicherten lokalen Eingaben vorliegen.
+Unter dem Namensfeld auf der Startseite findest du **Anmelden**. Wenn du angemeldet bist, sichert brainly deinen Level-Fortschritt und den geöffneten Rätselstand alle 15 Sekunden automatisch im Konto. Beim Anmelden und danach alle 20 Sekunden wird der Online-Stand im Hintergrund abgerufen. XP werden zusammengeführt. Ein geänderter Online-Rätselstand kann übernommen werden, sobald keine ungesicherten lokalen Eingaben vorliegen.
 
-## Sprache, Farben und Hilfe
+## Sprache, Darstellung und Hilfe
 
 Im Footer kannst du zwischen Deutsch und Englisch wechseln. Oben rechts schaltest du zwischen Hell- und Dunkelmodus um. Diese Einstellungen gelten für alle drei Spiele und die Startseite.
 
-Über das **i** neben einem Spiel auf der [Startseite](pages/home.html) öffnest du die passende Anleitung. [Datenschutz](pages/datenschutz.html) ist ebenfalls im Footer verlinkt.
+Über das **i** neben einem Spiel auf der [Startseite](pages/home.html) öffnest du die passende Anleitung zwischen Spielauswahl und Level. Sie schließt sich nach sieben Sekunden oder nach einem weiteren Klick auf das **i**. [Datenschutz](pages/datenschutz.html) ist ebenfalls im Footer verlinkt.

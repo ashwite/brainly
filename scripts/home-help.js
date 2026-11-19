@@ -1,5 +1,6 @@
 (() => {
   const buttons = document.querySelectorAll('.home-info')
+  // Jede neu geöffnete Anleitung erhält einen eigenen Sieben-Sekunden-Timer.
   let closeTimer
 
   function showHelp(selected) {

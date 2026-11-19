@@ -1,9 +1,7 @@
-// Ich verwende dieselbe Anmeldung für alle Spiele und speichere ihre Online-Spielstände getrennt.
-// Hier kümmere ich mich um Anmeldung, Konto und Online-Spielstände.
-// Die äußere Funktion starte ich sofort. Ihre Variablen bleiben in dieser Datei gekapselt.
+// Clerk-Anmeldung und automatische Synchronisierung von XP und den getrennten Rätselständen.
 (() => {
   // Ich lese den öffentlichen Schlüssel aus dem Script-Tag der geöffneten Spielseite.
-  // Clerk weiß damit, zu welchem Anmeldeprojekt diese Seite gehört. Fehlt der Schlüssel, höre ich hier auf.
+  // Der Schlüssel bestimmt das Clerk-Projekt. Lokale Spielstände funktionieren auch ohne Clerk.
   const key = document.currentScript.dataset.publishableKey;
   // Ich verwende für jedes Spiel einen eigenen Schlüssel und behalte für Sudoku den bisherigen bei.
   const hasGame = typeof gameApp !== 'undefined';
@@ -195,6 +193,7 @@
       }
     }
 
+    // Abrufe und Speicherläufe werden nacheinander ausgeführt, wenn ihre Timer zusammentreffen.
     function scheduleSync(load) {
       const user = clerk.user;
       if (user) syncQueue = syncQueue.then(() => syncProgress(user, load));

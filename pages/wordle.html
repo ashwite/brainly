@@ -6,7 +6,7 @@
   <meta name="description" content="Ändere pro Zug einen Buchstaben und erreiche das Zielwort.">
   <title>Wordle · brainly</title>
   <link rel="icon" href="../assets/miffy.png" type="image/png">
-  <!-- Ich lese Sprache und Farben beim Laden, damit die Seite direkt zu den Einstellungen aus Sudoku passt. -->
+  <!-- Gespeicherte Sprache und Hell-Dunkel-Modus vor dem Rendern anwenden. -->
   <meta name="theme-color" content="#fff">
   <script>
     const preferredTheme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
@@ -19,27 +19,21 @@
     }
   </script>
   <!-- Im Stylesheet sammle ich gemeinsame Regeln und ergänze für jedes Spiel eigene Regeln. -->
-  <link rel="stylesheet" href="../styles/style.css?v=85">
-  <script src="../scripts/text.js?v=24" defer></script>
+  <link rel="stylesheet" href="../styles/style.css?v=107">
+  <script src="../scripts/text.js?v=29" defer></script>
   <script src="../scripts/site-shell.js?v=20" defer></script>
   <script src="../scripts/navigation.js?v=5" defer></script>
-  <script src="../scripts/wordle.js?v=7" defer></script>
+  <script src="../scripts/wordle.js?v=9" defer></script>
   <script src="../scripts/characters.js?v=10" defer></script>
   <script src="../scripts/levels.js?v=11" defer></script>
-  <script src="../scripts/app.js?v=13" defer></script>
+  <script src="../scripts/app.js?v=15" defer></script>
   <script src="../scripts/account.js?v=9" data-publishable-key="pk_test_d2FybS1wYW5kYS00MjY1LmNsZXJrLmFjY291bnRzLmRldiQ" defer></script>
 </head>
 <body class="word-ladder" data-game="wordle">
 
-  <!-- Wordle: Ich zeige Start, Ziel und die bisher gespielten Wörter. -->
+  <!-- Wordle zeigt Startwort, Zielwort und die bisher geprüften gültigen Wörter. -->
   <main>
-    <div class="intro">
-      <h1 data-text="ladderName">Wordle</h1>
-      <p data-text="ladderRules">Ändere pro Zug genau einen Buchstaben, bis du das Zielwort erreichst.</p>
-    </div>
-    <section class="ladder-game" aria-labelledby="ladder-puzzle-label">
-      <label id="ladder-puzzle-label" for="ladder-puzzle" data-text="ladderPuzzle">Rätsel wählen</label>
-      <select id="ladder-puzzle"></select>
+    <section class="ladder-game" data-label="ladderName" aria-label="Wordle">
       <dl class="ladder-words">
         <div><dt data-text="ladderStart">Startwort</dt><dd id="ladder-start"></dd></div>
         <div><dt data-text="ladderTarget">Zielwort</dt><dd id="ladder-target"></dd></div>
@@ -47,11 +41,20 @@
       <ol id="ladder-path" data-label="ladderPath"></ol>
       <form id="ladder-form">
         <label for="ladder-input" data-text="ladderNext">Nächstes Wort</label>
-        <input id="ladder-input" type="text" spellcheck="false" autocomplete="off" autocapitalize="characters" required>
-        <div class="ladder-actions">
-          <button id="ladder-submit" type="submit" data-text="ladderCheck">Wort prüfen</button>
-          <button id="ladder-undo" type="button" data-text="ladderUndo">Zug zurück</button>
-          <button id="ladder-reset" type="reset" data-text="reset">Zurücksetzen</button>
+        <div class="ladder-entry">
+          <input id="ladder-input" type="text" spellcheck="false" autocomplete="off" autocapitalize="characters" required>
+          <button id="ladder-submit" type="submit" data-label="ladderCheck" aria-label="Wort prüfen">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
+              stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="m5 12 4 4L19 6"/>
+            </svg>
+          </button>
+          <button id="ladder-reset" type="reset" data-label="reset" aria-label="Zurücksetzen">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
+              stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M4 11a8 8 0 1 1 2.34 6.66M4 5v6h6"/>
+            </svg>
+          </button>
         </div>
       </form>
       <p id="ladder-status" role="status"></p>
