@@ -1,39 +1,50 @@
-// Ich verwende dieselbe Anmeldung für alle Spiele und speichere ihre Online-Spielstände getrennt.
-// Hier kümmere ich mich um Anmeldung, Konto und Online-Spielstände.
-// Die äußere Funktion starte ich sofort. Ihre Variablen bleiben in dieser Datei gekapselt.
+// Clerk-Anmeldung und automatische Synchronisierung von XP und den getrennten Rätselständen.
 (() => {
   // Ich lese den öffentlichen Schlüssel aus dem Script-Tag der geöffneten Spielseite.
-  // Clerk weiß damit, zu welchem Anmeldeprojekt diese Seite gehört. Fehlt der Schlüssel, höre ich hier auf.
+  // Der Schlüssel bestimmt das Clerk-Projekt. Lokale Spielstände funktionieren auch ohne Clerk.
   const key = document.currentScript.dataset.publishableKey;
-  if (!key) return;
   // Ich verwende für jedes Spiel einen eigenen Schlüssel und behalte für Sudoku den bisherigen bei.
   const hasGame = typeof gameApp !== 'undefined';
   const progress = typeof levelProgress === 'undefined' ? {} : levelProgress;
-  const { saveKey, captureSave, restoreSave } = hasGame ? gameApp : progress;
+  const { saveKey, restoreSave } = hasGame ? gameApp : progress;
+  const autosaveInterval = 15_000;
+  const autoloadInterval = 20_000;
+
+  // Sudoku speichert seine Eingaben bereits direkt im Browser.
+  const localSaveKey = hasGame && saveKey !== 'sudokuSave' ? `brainly:${saveKey}` : null;
+  if (localSaveKey) {
+    const saveLocally = () => {
+      try {
+        localStorage.setItem(localSaveKey, gameApp.captureSave());
+      } catch {
+        // Bei blockiertem Browserspeicher bleibt der Spielstand im Tab.
+      }
+    };
+    try {
+      const snapshot = localStorage.getItem(localSaveKey);
+      if (snapshot !== null) restoreSave(snapshot);
+    } catch {
+      // Das Spiel startet mit seiner normalen Voreinstellung.
+    }
+    setInterval(saveLocally, autosaveInterval);
+    window.addEventListener('pagehide', saveLocally);
+  }
+  let savedGame = hasGame ? gameApp.captureSave() : null;
+  if (!key) return;
   const translate = hasGame ? gameApp.translate : window.translate;
 
   // Mit querySelector suche ich Elemente anhand ihrer ID. Das # steht für eine ID im HTML.
-  const status = document.querySelector('#account-status');
   const footerStatus = document.querySelector('#footer-account-status');
-  // Ich zeige denselben Hinweis im Menü und unten auf der Seite an, etwa nach dem Speichern.
+  // Konto-Meldungen erscheinen im Footer.
   function showStatus(text) {
-    status.textContent = text;
     footerStatus.textContent = text;
   }
 
   // Hier hole ich die Buttons aus dem HTML, damit ich später festlegen kann, was ein Klick auslöst.
-  const signIn = document.querySelector('#account-sign-in');
-  const footerSignIn = document.querySelector('#footer-sign-in');
-  const footerSave = document.querySelector('#footer-save');
-  const footerLoad = document.querySelector('#footer-load');
+  const sessionButton = document.querySelector('#account-session');
   const footerProfile = document.querySelector('#footer-profile');
-  const profile = document.querySelector('#account-profile');
-  const signUp = document.querySelector('#account-sign-up');
-  const save = document.querySelector('#account-save');
-  const load = document.querySelector('#account-load');
-  const signOut = document.querySelector('#account-sign-out');
   // In dieser Liste sammle ich alle Konto-Buttons. So kann ich sie bei einer laufenden Aktion gemeinsam sperren.
-  const controls = [profile, footerProfile, signIn, signUp, save, load, signOut, footerSignIn, footerSave, footerLoad].filter(Boolean);
+  const controls = [footerProfile, sessionButton];
   // Ich übergebe deutschen und englischen Text. Der Ausdruck mit ? wählt anhand der Seitensprache einen davon.
   const message = (de, en) => document.documentElement.lang === 'en' ? en : de;
 
@@ -84,27 +95,24 @@
       }
     }
 
-    // Hier öffne ich das fertige Anmeldefenster von Clerk. openSignUp öffnet entsprechend die Registrierung.
     const openSignIn = () => openAccountDialog(() => clerk.openSignIn());
-    const openSignUp = () => openAccountDialog(() => clerk.openSignUp());
 
     // Ich erkenne die aktive Anmeldung an clerk.user.
     // Je nach Anmeldung zeige ich die passenden Konto-Buttons.
     function render() {
       const signedIn = Boolean(clerk.user);
-      signIn.hidden = signUp.hidden = signedIn;
-      footerSignIn.hidden = false;
-      for (const button of [save, load, footerSave, footerLoad].filter(Boolean)) button.hidden = false;
-      footerSignIn.dataset.text = signedIn ? 'accountSignOut' : 'accountSignIn';
-      footerSignIn.textContent = translate(footerSignIn.dataset.text);
-      profile.hidden = footerProfile.hidden = signOut.hidden = !signedIn;
+      sessionButton.hidden = false;
+      sessionButton.dataset.text = signedIn ? 'accountSignOut' : 'accountSignIn';
+      sessionButton.textContent = translate(sessionButton.dataset.text);
+      footerProfile.hidden = !signedIn;
     }
 
-    // Ich verwende denselben Ablauf für Speichern, Laden und Abmelden.
-    // Ohne Anmeldung öffne ich zuerst das Anmeldefenster. Danach muss man die Aktion erneut anklicken.
-    // In finally schalte ich die Buttons auch nach Fehlern oder einem vorzeitigen Ende wieder frei.
+    // Der Konto-Button öffnet die Anmeldung oder meldet die aktive Sitzung ab.
+    let accountActionRunning = false;
     function run(action) {
       return async () => {
+        if (accountActionRunning) return;
+        accountActionRunning = true;
         controls.forEach(button => { button.disabled = true; });
         showStatus('');
         try {
@@ -116,64 +124,98 @@
         } catch {
           showStatus(message('Vorgang fehlgeschlagen. Bitte erneut versuchen.', 'Action failed. Please try again.'));
         } finally {
+          accountActionRunning = false;
           controls.forEach(button => { button.disabled = false; });
           render();
         }
       };
     }
 
-    signIn.onclick = openSignIn;
-    signUp.onclick = openSignUp;
-    profile.onclick = footerProfile.onclick = () => openAccountDialog(() => clerk.openUserProfile());
-    const endSession = run(() => clerk.signOut());
-    signOut.onclick = endSession;
-    // Über den Footer-Button öffne ich die Anmeldung oder melde eine aktive Sitzung ab.
-    footerSignIn.onclick = endSession;
-    if (save && footerSave) {
-      save.onclick = footerSave.onclick = run(async () => {
-        const user = clerk.user;
-        // Ich verwandle den aktuellen Spielstand in JSON. Das ist eine Textform, die sich speichern und später wieder einlesen lässt.
-        const snapshot = captureSave();
+    footerProfile.onclick = () => openAccountDialog(() => clerk.openUserProfile());
+    // Über den Konto-Button öffne ich die Anmeldung oder melde eine aktive Sitzung ab.
+    sessionButton.onclick = run(() => clerk.signOut());
+    let activeUserId;
+    let remoteGame;
+    let savedLevel;
+    let syncQueue = Promise.resolve();
+    let syncError = '';
+
+    async function syncProgress(user, load) {
+      if (accountActionRunning || clerk.user?.id !== user.id) return;
+      try {
+        const game = hasGame ? gameApp.captureSave() : null;
+        if (!load && savedLevel !== undefined && game === savedGame &&
+            progress.captureSave() === savedLevel) return;
+
         await user.reload();
-        // Ich prüfe nach dem Warten, ob noch dasselbe Konto aktiv ist. Bei einem Wechsel breche ich ab.
-        if (clerk.user?.id !== user.id) return;
-        if (user.unsafeMetadata[saveKey] && !confirm(message(
-          'Den bisherigen Online-Spielstand ersetzen?', 'Replace the previous online save?'
-        ))) return;
-        // Ich lege den Spielstand beim Clerk-Konto unter dem Schlüssel des aktuellen Spiels ab.
-        // unsafeMetadata kann vom Browser aus geändert werden. Ich nutze es hier für den Spielstand.
-        await user.updateMetadata({ unsafeMetadata: { [saveKey]: snapshot } });
-        showStatus(message('Online gespeichert.', 'Saved online.'));
-      });
-    }
-    if (load && footerLoad) {
-      load.onclick = footerLoad.onclick = run(async () => {
-        const user = clerk.user;
-        await user.reload();
-        // Ich prüfe nach dem Warten, ob noch dasselbe Konto aktiv ist. Bei einem Wechsel breche ich ab.
-        if (clerk.user?.id !== user.id) return;
-        // Ich lese den gespeicherten Text vom Konto. Ohne einen Text gibt es hier keinen Online-Spielstand zum Laden.
-        const snapshot = user.unsafeMetadata[saveKey];
-        if (typeof snapshot !== 'string') {
-          showStatus(message('Kein Online-Spielstand vorhanden.', 'No online save found.'));
-          return;
+        if (accountActionRunning || clerk.user?.id !== user.id) return;
+
+        const metadata = user.unsafeMetadata;
+        const onlineLevel = metadata[progress.saveKey];
+        if (typeof onlineLevel === 'string' && !progress.restoreSave(onlineLevel)) {
+          throw new Error('Invalid online XP');
         }
-        const prompt = hasGame
-          ? message('Den aktuellen Spielstand ersetzen?', 'Replace the current game?')
-          : message('Den Online-XP-Stand mit dem lokalen Fortschritt zusammenführen?',
-            'Merge online XP with your local progress?');
-        if (!confirm(prompt)) return;
-        // Ich verwende die Spiellogik, um den gespeicherten Stand zu prüfen und wiederherzustellen.
-        if (!restoreSave(snapshot)) throw new Error('Invalid game save');
-        showStatus(message('Online-Spielstand geladen.', 'Online save loaded.'));
-      });
+        const level = progress.captureSave();
+        const onlineGame = metadata[saveKey];
+        const currentGame = hasGame ? gameApp.captureSave() : null;
+
+        if (load) {
+          // Ein Abruf darf weder lokale Spielzüge noch eine noch nicht bestätigte Worteingabe ersetzen.
+          if (hasGame && typeof onlineGame === 'string' && onlineGame !== remoteGame &&
+              currentGame === game && currentGame === savedGame &&
+              !document.querySelector('#ladder-input')?.value) {
+            if (onlineGame !== currentGame && !restoreSave(onlineGame)) throw new Error('Invalid online game');
+            remoteGame = onlineGame;
+            savedGame = gameApp.captureSave();
+          }
+        } else {
+          const updates = {};
+          if (level !== onlineLevel) updates[progress.saveKey] = level;
+          if (hasGame && currentGame !== onlineGame &&
+              (currentGame !== savedGame || typeof onlineGame !== 'string')) {
+            updates[saveKey] = currentGame;
+          }
+          if (Object.keys(updates).length) await user.updateMetadata({ unsafeMetadata: updates });
+          if (clerk.user?.id !== user.id) return;
+          savedLevel = level;
+          if (updates[saveKey] !== undefined || currentGame === onlineGame) {
+            remoteGame = currentGame;
+            savedGame = currentGame;
+          }
+        }
+
+        if (syncError && footerStatus.textContent === syncError) showStatus('');
+        syncError = '';
+      } catch {
+        syncError = message('Online-Spielstand konnte nicht synchronisiert werden.',
+          'Could not sync online progress.');
+        showStatus(syncError);
+      }
     }
-    // Ich lasse die Oberfläche erneut aktualisieren, wenn Clerk eine Änderung bei der Anmeldung meldet.
-    clerk.addListener(render);
-    render();
+
+    // Abrufe und Speicherläufe werden nacheinander ausgeführt, wenn ihre Timer zusammentreffen.
+    function scheduleSync(load) {
+      const user = clerk.user;
+      if (user) syncQueue = syncQueue.then(() => syncProgress(user, load));
+    }
+
+    function updateSession() {
+      render();
+      const userId = clerk.user?.id;
+      if (userId === activeUserId) return;
+      activeUserId = userId;
+      remoteGame = undefined;
+      savedLevel = undefined;
+      scheduleSync(true);
+    }
+
+    clerk.addListener(updateSession);
+    updateSession();
+    setInterval(() => scheduleSync(false), autosaveInterval);
+    setInterval(() => scheduleSync(true), autoloadInterval);
   }
 
-  // Wenn beim Start etwas schiefgeht, blende ich die Konto-Buttons aus und zeige im Menü eine Meldung.
+  // Wenn beim Start etwas schiefgeht, blende ich die Konto-Buttons aus und zeige im Footer eine Meldung.
   initialize().catch(() => {
     controls.forEach(button => { button.hidden = true; });
     showStatus(message('Anmeldung derzeit nicht verfügbar.', 'Sign-in is currently unavailable.'));

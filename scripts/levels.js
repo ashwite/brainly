@@ -23,16 +23,26 @@ const levelProgress = (() => {
     return awards
   }
 
+  function difficulty(game) {
+    const gamePrefix = `${prefix}${game}:`
+    const solved = [...readAwards().keys()].filter(key => key.startsWith(gamePrefix)).length
+    if (solved >= 10) return 'hard'
+    if (solved >= 5) return 'medium'
+    return 'easy'
+  }
+
+  function isSolved(game, puzzle) {
+    return readAwards().has(`${prefix}${game}:${puzzle}`)
+  }
+
   function render() {
     const progress = document.querySelector('#level-progress')
     if (!progress) return
 
-    const totals = { sudoku: 0, mudoku: 0, wordle: 0 }
+    let total = 0
     for (const [key, xp] of readAwards()) {
-      const game = key.split(':')[1]
-      if (Object.hasOwn(totals, game)) totals[game] += xp
+      if (games.includes(key.split(':')[1])) total += xp
     }
-    const total = games.reduce((sum, game) => sum + totals[game], 0)
     const level = 1 + Math.floor(total / xpPerLevel)
     const number = new Intl.NumberFormat(document.documentElement.lang)
     const label = `Level ${number.format(level)} · ${number.format(total)} XP`
@@ -40,16 +50,10 @@ const levelProgress = (() => {
       if (status.textContent !== label) status.textContent = label
     }
 
-    document.querySelector('#level-rules').textContent = document.documentElement.lang === 'en'
-      ? `Earn ${xpWithHelp} XP per puzzle solved with a hint, or ${xpWithoutHelp} XP without one.`
-      : `Mit Hilfestellung gibt es ${xpWithHelp} XP pro gelöstem Rätsel, ohne Hilfestellung ${xpWithoutHelp} XP.`
     progress.max = xpPerLevel
     progress.value = total % xpPerLevel
     document.querySelector('#level-next').textContent =
       `${number.format(progress.value)} / ${number.format(xpPerLevel)} XP → Level ${number.format(level + 1)}`
-    for (const game of games) {
-      document.querySelector(`[data-game-xp="${game}"]`).textContent = `${number.format(totals[game])} XP`
-    }
   }
 
   function award(game, puzzle, usedHelp = false) {
@@ -122,5 +126,5 @@ const levelProgress = (() => {
     if (event.key === null || event.key.startsWith(prefix)) render()
   })
   render()
-  return { award, saveKey: 'levelProgressSave', captureSave, restoreSave }
+  return { award, difficulty, isSolved, saveKey: 'levelProgressSave', captureSave, restoreSave }
 })()
