@@ -378,7 +378,6 @@ function startMudoku() {
   const form = document.querySelector('#case-form')
   const suspect = document.querySelector('#suspect')
   const falseClue = document.querySelector('#false-clue')
-  const picker = document.querySelector('#case-picker')
   const feedback = document.querySelector('#feedback')
   const fieldErrors = document.querySelector('#field-errors')
   const solution = document.querySelector('#solution')
@@ -428,13 +427,16 @@ function startMudoku() {
       const item = document.createElement('li')
       const label = document.createElement('label')
       const select = document.createElement('select')
+      const person = document.createElement('span')
+      person.className = 'room-person'
+      person.setAttribute('aria-hidden', 'true')
       select.id = `room-${index + 1}`
       select.required = true
       label.htmlFor = select.id
       addPeople(select)
-      item.append(label, select)
+      item.append(label, person, select)
       rooms.append(item)
-      return { label, select }
+      return { label, person, select }
     })
 
     addPeople(suspect)
@@ -456,9 +458,23 @@ function startMudoku() {
     return document.documentElement.lang === 'en' ? entry.en : entry.de
   }
 
-  // Die Namen der Räume übersetze ich. Die Reihenfolge und die richtige Zuordnung bleiben gleich.
   function roomName(index) {
-    return caseText().roomNames?.[index] ?? activeCase.rooms[index].name
+    return 'ABCD'[index]
+  }
+
+  // Die Falltexte verwenden dieselben Raumkürzel wie der Flurplan.
+  function formatCaseRooms(value, names, english) {
+    const escapedNames = names.map(name => name.replace(/[.*+?^$(){}|[\]\\]/g, '\\$&'))
+    const name = '(' + escapedNames.join('|') + ')'
+    const prefix = english ? '(the )?' : '(im Raum [„"]?|(?:im|am) |Raum [„"]?)?'
+    const suffix = english ? '(?![\\p{L}])' : '(?![\\p{L}])[“"]?'
+    const pattern = new RegExp('(?<![\\p{L}])' + prefix + name + suffix, 'giu')
+    return value.replace(pattern, (_, before, matched) => {
+      const index = names.findIndex(room => room.toLowerCase() === matched.toLowerCase())
+      const code = roomName(index)
+      if (english) return 'Room ' + code
+      return (before && /^(im|am) /i.test(before) ? 'im Raum ' : 'Raum ') + code
+    })
   }
 
   // Ich merke mir den Schlüssel der Rückmeldung, damit sie sich beim Sprachwechsel mitübersetzt.
@@ -472,6 +488,9 @@ function startMudoku() {
 
   // Wie beim Sudoku markiere ich eine falsche Eingabe sofort. Leere Felder zählen nicht als Fehler.
   function updateErrors() {
+    for (const { person, select } of roomFields) {
+      person.textContent = select.value
+    }
     const fields = roomFields.map(({ select }, index) => [select, activeCase.rooms[index].person])
     fields.push([suspect, activeCase.rooms.find(room => room.crimeScene).person])
     if (activeCase.falseClue) fields.push([falseClue, String(activeCase.falseClue)])
@@ -493,11 +512,13 @@ function startMudoku() {
   // Ich tausche nur die Beschriftungen aus. Die Werte in den Auswahllisten bleiben erhalten.
   function renderCaseLanguage() {
     const text = caseText()
+    const roomNames = text.roomNames ?? activeCase.rooms.map(room => room.name)
+    const english = document.documentElement.lang === 'en'
     document.title = `Mudoku · ${text.title}`
     document.querySelector('#case-title').textContent = text.title
-    document.querySelector('#case-intro').textContent = text.intro
-    document.querySelector('#solution-text').textContent = text.explanation
-    clueItems.forEach((item, index) => { item.textContent = text.clues[index] })
+    document.querySelector('#case-intro').textContent = formatCaseRooms(text.intro, roomNames, english)
+    document.querySelector('#solution-text').textContent = formatCaseRooms(text.explanation, roomNames, english)
+    clueItems.forEach((item, index) => { item.textContent = formatCaseRooms(text.clues[index], roomNames, english) })
     roomFields.forEach(({ label, select }, index) => {
       label.textContent = roomName(index)
       select.options[0].textContent = translate('choose')
@@ -507,23 +528,11 @@ function startMudoku() {
     for (let index = 1; index < falseClue.options.length; index++) {
       falseClue.options[index].textContent = translate('statement').replace('{number}', index)
     }
-    const entries = caseCatalog.filter(entry => entry.level === levelProgress.difficulty('mudoku'))
-    if (!entries.includes(activeCase)) entries.unshift(activeCase)
-    picker.replaceChildren(...entries.map(entry => {
-      const title = caseText(entry).title
-      return new Option(typeof entry.id === 'number' ? `${entry.id} · ${title}` : title, String(entry.id))
-    }))
-    picker.value = String(activeCase.id)
     showResult(result)
     updateErrors()
   }
 
   document.addEventListener('game-language-change', renderCaseLanguage)
-  // Der Wert im Auswahlfeld ist die Fallnummer. Damit finde ich den passenden Fall wieder.
-  picker.addEventListener('change', () => {
-    const entry = caseCatalog.find(candidate => String(candidate.id) === picker.value)
-    if (entry && entry !== activeCase) startCase(entry)
-  })
   startCase(nextCase() ?? caseCatalog.find(entry => entry.level === levelProgress.difficulty('mudoku')))
 
   form.addEventListener('change', () => {

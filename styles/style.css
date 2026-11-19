@@ -245,13 +245,14 @@ html:lang(en) .help-de { display: none; }
 
 .mudoku .case-layout {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 14px;
   width: 100%;
   align-items: start;
 }
 
 @media (min-width: 701px) {
-  .mudoku .case-layout { grid-template-columns: 1fr 1fr; }
+  .mudoku .case-layout { grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); }
 }
 
 /* Ich rahme Fallakte, Flurplan und Auflösung mit denselben Theme-Farben ein. */
@@ -261,6 +262,43 @@ html:lang(en) .help-de { display: none; }
 .mudoku .panel ol { padding-left: 1.35rem; }
 .mudoku .panel li + li { margin-top: 8px; }
 .mudoku .panel label { display: block; margin-bottom: 4px; }
+
+/* Der Flurplan zeigt die vier Räume in einer Reihe. */
+.mudoku #rooms {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(4px, 1vw, 8px);
+  padding: 4px;
+  margin: 8px -4px 12px;
+  list-style: none;
+}
+.mudoku #rooms > li {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  aspect-ratio: 1;
+  margin: 0;
+  min-width: 0;
+  padding: clamp(4px, 1vw, 8px);
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: var(--bg);
+}
+.mudoku #rooms label, .mudoku .room-person { overflow-wrap: anywhere; }
+.mudoku .room-person { font-size: .875rem; line-height: 1.1; }
+.mudoku #rooms select {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+.mudoku #rooms > li:has(select:focus-visible) { outline: 2px solid var(--ink); outline-offset: 2px; }
+.mudoku #rooms > li:has(select.incorrect) { border-color: var(--ink); }
+.mudoku #rooms > li:has(select.incorrect) .room-person { text-decoration: underline wavy; }
 
 /* Ich gestalte die Auswahllisten und Aktionsbuttons für die Raumzuordnung. */
 .mudoku .panel select, .mudoku .actions button {
@@ -281,18 +319,7 @@ html:lang(en) .help-de { display: none; }
 .mudoku .solution { width: 100%; border-color: var(--strong-line); }
 
 
-/* Ich gestalte die Fallauswahl und die Auswahl der falschen Aussage. */
-.mudoku .case-selection { margin: 12px auto 0; max-width: 470px; }
-.mudoku .case-selection label { display: block; margin-bottom: 4px; }
-.mudoku .case-selection select { width: 100%; }
-.mudoku .case-selection select, .mudoku #false-clue { min-height: 44px; font: inherit; }
-.mudoku .case-selection select {
-  padding: 6px 10px;
-  border: 1px solid var(--line);
-  border-radius: 7px;
-  background: var(--bg);
-  color: var(--ink);
-}
+.mudoku #false-clue { min-height: 44px; font: inherit; }
 .mudoku #lie-field { margin-top: 12px; }
 /* Ich markiere falsche Auswahlen direkt im Feld mit einer welligen Linie. */
 .mudoku .panel select.incorrect { border-color: var(--ink); text-decoration: underline wavy; text-underline-offset: 3px; }
