@@ -577,20 +577,20 @@ html[data-theme="dark"] .mudoku .palette-swatch {
 .home-tiles a:hover .home-tile-image { border-color: var(--ink); }
 
 .home-tile-image[data-tile="level"] {
-  background-image: url('../assets/home/level.png');
+  background-image: url('../assets/level.png');
   background-size: 225%;
 }
 
 .home-tile-image[data-tile="sudoku"] {
-  background-image: url('../assets/home/sudoku.png');
+  background-image: url('../assets/sudoku.png');
 }
 
 .home-tile-image[data-tile="mudoku"] {
-  background-image: url('../assets/home/mudoku.png');
+  background-image: url('../assets/mudoku.png');
   background-size: 109%;
 }
 
 .home-tile-image[data-tile="wordle"] {
-  background-image: url('../assets/home/wordle.png');
+  background-image: url('../assets/wordle.png');
   background-size: 112%;
 }

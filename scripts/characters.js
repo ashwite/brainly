@@ -7,7 +7,7 @@
   const documentScript = document.currentScript.src
   function imagePath(number) {
     if (number === customCharacter) return localStorage.getItem(customImageKey)
-    return new URL(`../assets/characters/character-${number}.png`, documentScript).href
+    return new URL(`../assets/character-${number}.png`, documentScript).href
   }
 
   function selectedCharacter() {

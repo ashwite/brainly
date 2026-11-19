@@ -6,10 +6,10 @@ Drei Minispiele für zwischendurch. Löse ein Sudoku, kläre einen Kriminalfall 
 
 Öffne die [Startseite](pages/home.html) im Browser und wähle [Sudoku](pages/sudoku.html), [Mudoku](pages/mudoku.html) oder [Wordle](pages/wordle.html). Oben rechts findest du das Menü. Unter **Spiel wechseln** kannst du jederzeit zu einem anderen Spiel wechseln. Unter **Schwierigkeit** wählst du zwischen **Leicht**, **Mittel** und **Schwer**.
 
-Wenn du die Spiele auf deinem Computer für dich allein öffnest und den XP-Stand zwischen allen drei Spielen teilen möchtest, kannst du sie über einen lokalen Server öffnen. Öffne dafür ein Terminal im Projektordner und führe diesen Befehl aus. Dafür muss Python 3 installiert sein.
+Wenn du die Spiele auf deinem Computer für dich allein öffnest und den XP-Stand zwischen allen drei Spielen teilen möchtest, kannst du sie über einen lokalen Server öffnen. Dafür brauchst du Node.js mit npm und Python 3. Führe im Projektordner diesen Befehl aus.
 
 ```sh
-python3 -m http.server 4173 --bind 127.0.0.1
+npm run dev
 ```
 
 Lass das Terminal geöffnet und ruf [Kleine Denkpause im Browser](http://localhost:4173/) auf.

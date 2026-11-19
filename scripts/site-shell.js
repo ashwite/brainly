@@ -12,8 +12,8 @@
   <header>
     <a class="brand" href="${base}pages/home.html" data-label="home" aria-label="Startseite">
       <span class="brand-icon">
-        <img class="logo-light" src="${base}assets/logo/logo-light.png" alt="">
-        <img class="logo-dark" src="${base}assets/logo/logo-dark.png" alt="">
+        <img class="logo-light" src="${base}assets/logo-light.png" alt="">
+        <img class="logo-dark" src="${base}assets/logo-dark.png" alt="">
       </span>
       <span class="brand-wordmark">brainly</span>
     </a>
