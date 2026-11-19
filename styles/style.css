@@ -502,10 +502,10 @@ html:lang(en) .help-de { display: none; }
 }
 
 /* Die hellen Linien der Vorlage lassen die Theme-Farbe durch. */
-.home-page { isolation: isolate; }
+.home-page, html[data-theme="dark"] body { isolation: isolate; }
 
-html[data-theme="dark"] .home-page::before,
-html[data-theme="dark"] .home-page::after {
+html[data-theme="dark"] body::before,
+html[data-theme="dark"] body::after {
   content: '';
   position: fixed;
   inset: 0 auto auto 0;
@@ -515,7 +515,7 @@ html[data-theme="dark"] .home-page::after {
   pointer-events: none;
 }
 
-html[data-theme="dark"] .home-page::before {
+html[data-theme="dark"] body::before {
   background-color: var(--ink);
   mask-image: url('../assets/home-web.jpg');
   mask-mode: luminance;
@@ -524,7 +524,7 @@ html[data-theme="dark"] .home-page::before {
   opacity: .18;
 }
 
-html[data-theme="dark"] .home-page::after {
+html[data-theme="dark"] body::after {
   background: url('../assets/home-chains.png') top left / contain no-repeat;
   filter: blur(2px);
 }
