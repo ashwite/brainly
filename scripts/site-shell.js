@@ -2,6 +2,8 @@
   // Ich verwende dieselbe Kopf- und Fußzeile auf allen Seiten.
   const base = new URL('../', document.currentScript.src).href
   document.body.insertAdjacentHTML('afterbegin', `
+  <div class="light-butterflies" aria-hidden="true"></div>
+  <div class="light-motif-center" aria-hidden="true"></div>
   <header>
     <a class="brand" href="${base}pages/home.html" data-label="home" aria-label="Startseite">
       <span class="brand-icon">
