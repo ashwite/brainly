@@ -1,4 +1,4 @@
-# Kleine Denkpause
+# brainly
 
 Drei Minispiele für zwischendurch. Löse ein Sudoku, kläre einen Kriminalfall oder finde einen Weg von einem Wort zum nächsten. In allen drei Spielen sammelst du XP für dasselbe Level.
 
@@ -12,7 +12,7 @@ Wenn du die Spiele auf deinem Computer für dich allein öffnest und den XP-Stan
 npm run dev
 ```
 
-Lass das Terminal geöffnet und ruf [Kleine Denkpause im Browser](http://localhost:4173/) auf.
+Lass das Terminal geöffnet und ruf [brainly im Browser](http://localhost:4173/) auf.
 
 ## Sudoku
 

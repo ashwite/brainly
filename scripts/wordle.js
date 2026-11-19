@@ -235,7 +235,7 @@ function startWordLadder() {
     input.disabled = submit.disabled = solved
     input.maxLength = first.length
     undo.disabled = chain.length < 2
-    document.title = `${translate('ladderName')} · Kleine Denkpause`
+    document.title = `${translate('ladderName')} · brainly`
     showStatus(solved)
   }
 

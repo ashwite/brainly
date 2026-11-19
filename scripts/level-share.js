@@ -37,7 +37,7 @@
     context.font = `52px ${font}`
     context.fillText(title.textContent, 400, name ? 685 : 650, 700)
     context.font = `26px ${font}`
-    context.fillText('Kleine Denkpause', 400, name ? 735 : 704)
+    context.fillText('brainly', 400, name ? 735 : 704)
 
     return new Promise((resolve, reject) => {
       canvas.toBlob(blob => blob ? resolve(blob) : reject(new Error('PNG export failed')), 'image/png')
@@ -66,7 +66,7 @@
     showStatus('')
     try {
       const blob = await createLevelImage()
-      const file = new File([blob], 'kleine-denkpause-level.png', { type: 'image/png' })
+      const file = new File([blob], 'brainly-level.png', { type: 'image/png' })
       const shareData = { files: [file] }
       try {
         if (navigator.share && navigator.canShare?.(shareData)) {
