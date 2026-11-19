@@ -3,7 +3,7 @@
   const customImageKey = 'level-custom-character'
   const customCharacter = 'custom'
   const defaultCharacter = '6'
-  const characters = [defaultCharacter, '1', '2', '3', '4', '5']
+  const characters = [defaultCharacter, '1', '5']
   const documentScript = document.currentScript.src
   function imagePath(number) {
     if (number === customCharacter) return localStorage.getItem(customImageKey)
@@ -75,7 +75,7 @@
   function characterName(number) {
     if (number === defaultCharacter) return translate('dogCharacter')
     if (number === customCharacter) return translate('ownCharacter')
-    return translate('characterName').replace('{number}', number)
+    return translate(number === '1' ? 'dinoCharacter' : 'catCharacter')
   }
 
   function showCharacter(number) {

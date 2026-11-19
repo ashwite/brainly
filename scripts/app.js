@@ -16,7 +16,6 @@ function startSudoku() {
   const DIGITS = [1, 2, 3, 4, 5, 6, 7, 8, 9];
   const boardElement = document.querySelector('#board');
   const numberButtons = document.querySelector('#numbers');
-  const levelButtons = document.querySelectorAll('[data-level]');
   let game;
   // Hier merke ich mir das gewählte Feld. Die Felder zählen von 0 bis 80, also steht -1 für keine Auswahl.
   let selectedCell = -1;
@@ -119,7 +118,7 @@ function startSudoku() {
 
   // Ich starte mit einer kompletten Lösung. Daraus mache ich die Vorgabe und eine eigene Kopie für die Eingaben.
   // Ich entferne Zahlen in zufälliger Reihenfolge, bis ich die gewünschte Anzahl erreiche oder alle Felder geprüft habe.
-  function startGame(level = 'easy') {
+  function startGame(level = levelProgress.difficulty('sudoku')) {
     const solved = createSolution();
     const given = [...solved];
     const positions = shuffle(Array.from({ length: 81 }, (_, index) => index));
@@ -189,11 +188,6 @@ function startSudoku() {
       // Innerhalb des Rasters wechsle ich das Feld mit den Pfeiltasten.
       button.tabIndex = selectedCell === index || (selectedCell === -1 && index === 0) ? 0 : -1;
     });
-    levelButtons.forEach(button => {
-      const active = button.dataset.level === game.level;
-      button.classList.toggle('active', active);
-      button.setAttribute('aria-pressed', String(active));
-    });
   }
 
   function selectCell(index) {
@@ -260,7 +254,7 @@ function startSudoku() {
     const completedGame = game;
     // Ich lasse das gelöste Raster kurz sichtbar.
     setTimeout(() => {
-      if (game === completedGame && game.done) startGame(game.level);
+      if (game === completedGame && game.done) startGame();
     }, 2300);
   }
 
@@ -313,27 +307,6 @@ function startSudoku() {
     }
   }
 
-  // 5. Ich verarbeite die Schwierigkeitswahl und Tastatureingaben.
-  function mayReplaceGame() {
-    return game.done || game.values.every((value, index) => value === game.given[index]) ||
-      confirm(translate('replace'));
-  }
-
-  levelButtons.forEach(button => {
-    button.onclick = () => {
-      const level = button.dataset.level;
-      if (game && level !== game.level) {
-        // Vor einem Wechsel der Schwierigkeit vergleiche ich Eingaben und Vorgaben.
-        // Wenn das laufende Rätsel eigene Eingaben enthält, frage ich vor dem Ersetzen nach.
-        if (mayReplaceGame()) startGame(level);
-      }
-      if (!menu.hidden) {
-        setMenu(false);
-        menuToggle.focus();
-      }
-    };
-  });
-
   // Ich erstelle Zahlentasten für dieselben Eingaben, die ich über die Tastatur annehme.
   for (const digit of DIGITS) {
     const button = document.createElement('button');
@@ -346,7 +319,7 @@ function startSudoku() {
   // Für das Raster übernehme ich Zahlen, Löschtasten und Pfeiltasten.
   document.addEventListener('keydown', event => {
     if (event.defaultPrevented || event.target.closest?.('input, textarea, select, [contenteditable], [role=dialog]')) return;
-    if (!menu.hidden || event.ctrlKey || event.metaKey || event.altKey) return;
+    if (event.ctrlKey || event.metaKey || event.altKey) return;
     if (event.target.closest?.('button, a') &&
         !boardElement.contains(event.target) && !numberButtons.contains(event.target)) return;
     if (/^[1-9]$/.test(event.key)) {
@@ -376,19 +349,11 @@ function startSudoku() {
 
   // 6. Beim Start stelle ich die gespeicherten Einstellungen und den Spielstand wieder her.
   updateSudokuLanguage();
-  const url = new URL(window.location.href);
-  const requestedDifficulty = url.searchParams.get('difficulty');
-  const hasRequestedDifficulty = Object.hasOwn(CLUE_COUNTS, requestedDifficulty);
-  if (!loadGame() || (hasRequestedDifficulty && game.level !== requestedDifficulty && mayReplaceGame())) {
-    startGame(hasRequestedDifficulty ? requestedDifficulty : undefined);
+  if (!loadGame()) {
+    startGame();
   } else {
     renderBoard();
     if (game.done) advanceAfterCompletion();
-  }
-
-  if (hasRequestedDifficulty) {
-    url.searchParams.delete('difficulty');
-    window.history.replaceState(window.history.state, '', url);
   }
 
   // Beim Laden aus dem Konto setze ich die Auswahl zurück und zeichne das geladene Raster.
@@ -417,7 +382,6 @@ function startMudoku() {
   const feedback = document.querySelector('#feedback')
   const fieldErrors = document.querySelector('#field-errors')
   const solution = document.querySelector('#solution')
-  const levelButtons = document.querySelectorAll('[data-level]')
   let activeCase
   let result = ''
   let nextCaseTimer
@@ -432,7 +396,11 @@ function startMudoku() {
     people: texts.de.people,
     rooms: texts.de.rooms,
   }))
-  const firstCaseByLevel = level => caseCatalog.find(entry => entry.level === level)
+  function nextCase(exclude) {
+    const level = levelProgress.difficulty('mudoku')
+    return caseCatalog.find(entry =>
+      entry !== exclude && entry.level === level && !levelProgress.isSolved('mudoku', entry.id))
+  }
 
   // Ich setze einen leeren Eintrag an den Anfang und ergänze danach die Personen des aktuellen Falls.
   function addPeople(select) {
@@ -480,11 +448,6 @@ function startMudoku() {
       clueItems.forEach((_, index) => falseClue.add(new Option('', String(index + 1))))
     }
 
-    for (const button of levelButtons) {
-      const selected = button.dataset.level === entry.level
-      button.classList.toggle('active', selected)
-      button.setAttribute('aria-pressed', String(selected))
-    }
     renderCaseLanguage()
   }
 
@@ -544,7 +507,7 @@ function startMudoku() {
     for (let index = 1; index < falseClue.options.length; index++) {
       falseClue.options[index].textContent = translate('statement').replace('{number}', index)
     }
-    const entries = caseCatalog.filter(entry => entry.level === activeCase.level)
+    const entries = caseCatalog.filter(entry => entry.level === levelProgress.difficulty('mudoku'))
     if (!entries.includes(activeCase)) entries.unshift(activeCase)
     picker.replaceChildren(...entries.map(entry => {
       const title = caseText(entry).title
@@ -561,16 +524,7 @@ function startMudoku() {
     const entry = caseCatalog.find(candidate => String(candidate.id) === picker.value)
     if (entry && entry !== activeCase) startCase(entry)
   })
-  for (const button of levelButtons) {
-    button.addEventListener('click', () => {
-      if (activeCase.level !== button.dataset.level) startCase(firstCaseByLevel(button.dataset.level))
-      if (!menu.hidden) {
-        setMenu(false)
-        menuToggle.focus()
-      }
-    })
-  }
-  startCase(firstCaseByLevel('easy'))
+  startCase(nextCase() ?? caseCatalog.find(entry => entry.level === levelProgress.difficulty('mudoku')))
 
   form.addEventListener('change', () => {
     updateErrors()
@@ -606,16 +560,19 @@ function startMudoku() {
     nextCaseTimer = undefined
   }
 
-  // Ich zeige die Auflösung und suche den nächsten Fall derselben Schwierigkeitsstufe.
+  // Nach der Auflösung öffne ich den nächsten ungelösten Fall der aktuellen Stufe.
   function finishCase() {
     if (result === 'solved') return
     showResult('solved')
     levelProgress.award('mudoku', activeCase.id)
+    queueNextCase()
+  }
+
+  function queueNextCase() {
     if (nextCaseTimer !== undefined) return
 
     const completed = activeCase
-    const next = caseCatalog.find(entry => entry.level === completed.level &&
-      (typeof completed.id !== 'number' || entry.id > completed.id))
+    const next = nextCase(completed)
     if (!next) return
 
     // Ich lasse die Auflösung kurz stehen. Ein Wechsel oder Reset bricht das automatische Weitergehen ab.
@@ -673,6 +630,7 @@ function startMudoku() {
     falseClue.value = statement
     if (saved.solved === true && checkSolution(saved.assignments, saved.suspect, statement) === 'solved') {
       showResult('solved')
+      queueNextCase()
     }
     updateErrors()
     return true

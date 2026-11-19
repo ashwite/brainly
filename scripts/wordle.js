@@ -173,7 +173,6 @@ function startWordLadder() {
   }
 
   const picker = document.querySelector('#ladder-puzzle')
-  const levelButtons = document.querySelectorAll('[data-level]')
   const start = document.querySelector('#ladder-start')
   const target = document.querySelector('#ladder-target')
   const path = document.querySelector('#ladder-path')
@@ -184,8 +183,16 @@ function startWordLadder() {
   const status = document.querySelector('#ladder-status')
   const language = () => document.documentElement.lang === 'en' ? 'en' : 'de'
   const initial = (lang, puzzle = 0) => ({ puzzle, path: [puzzles[lang][puzzle][0]] })
-  const firstPuzzle = (lang, difficulty) => puzzles[lang].findIndex(([, , level]) => level === difficulty)
-  const progress = { de: initial('de', firstPuzzle('de', 'easy')), en: initial('en', firstPuzzle('en', 'easy')) }
+  function nextPuzzle(lang, exclude = -1) {
+    const level = levelProgress.difficulty('wordle')
+    return puzzles[lang].findIndex(([first, last, difficulty], index) =>
+      index !== exclude && difficulty === level && !levelProgress.isSolved('wordle', `${lang}:${first}:${last}`))
+  }
+  function startingPuzzle(lang) {
+    const next = nextPuzzle(lang)
+    return next === -1 ? puzzles[lang].findIndex(([, , level]) => level === levelProgress.difficulty('wordle')) : next
+  }
+  const progress = { de: initial('de', startingPuzzle('de')), en: initial('en', startingPuzzle('en')) }
   const state = () => progress[language()]
   let error = ''
   let nextPuzzleTimer
@@ -210,20 +217,16 @@ function startWordLadder() {
   function render() {
     const lang = language()
     const { puzzle, path: chain } = state()
-    const [first, last, level] = puzzles[lang][puzzle]
-    const group = `${lang}:${level}`
+    const [first, last] = puzzles[lang][puzzle]
+    const level = levelProgress.difficulty('wordle')
+    const group = `${lang}:${level}:${puzzle}`
     if (pickerGroup !== group) {
       picker.replaceChildren(...puzzles[lang].flatMap(([a, b, difficulty], index) =>
-        difficulty === level ? [new Option(`${a} → ${b}`, String(index))] : []
+        (difficulty === level || index === puzzle) ? [new Option(`${a} → ${b}`, String(index))] : []
       ))
       pickerGroup = group
     }
     picker.value = String(puzzle)
-    for (const button of levelButtons) {
-      const active = button.dataset.level === level
-      button.classList.toggle('active', active)
-      button.setAttribute('aria-pressed', String(active))
-    }
     start.textContent = first
     target.textContent = last
     path.replaceChildren(...chain.map(word => {
@@ -249,15 +252,13 @@ function startWordLadder() {
     nextPuzzleTimer = undefined
   }
 
-  // Ich lasse die Erfolgsmeldung kurz stehen und bleibe danach in derselben Stufe.
+  // Ich lasse die Erfolgsmeldung kurz stehen und öffne danach das nächste ungelöste Rätsel.
   function queueNextPuzzle() {
     const lang = language()
     const completed = state()
-    const [, targetWord, level] = puzzles[lang][completed.puzzle]
+    const [, targetWord] = puzzles[lang][completed.puzzle]
     if (completed.path.at(-1) !== targetWord) return
-    const next = puzzles[lang].findIndex(([, , difficulty], index) =>
-      index > completed.puzzle && difficulty === level
-    )
+    const next = nextPuzzle(lang, completed.puzzle)
     if (next === -1) return
     nextPuzzleTimer = setTimeout(() => {
       nextPuzzleTimer = undefined
@@ -274,17 +275,6 @@ function startWordLadder() {
   }
 
   picker.addEventListener('change', () => openPuzzle(Number(picker.value)))
-  for (const button of levelButtons) {
-    button.addEventListener('click', () => {
-      const lang = language()
-      const level = button.dataset.level
-      if (puzzles[lang][state().puzzle][2] !== level) openPuzzle(firstPuzzle(lang, level))
-      if (!menu.hidden) {
-        setMenu(false)
-        menuToggle.focus()
-      }
-    })
-  }
   form.addEventListener('submit', event => {
     event.preventDefault()
     if (input.disabled) return
@@ -328,8 +318,13 @@ function startWordLadder() {
   })
   document.addEventListener('game-language-change', () => {
     stopNextPuzzle()
+    const lang = language()
+    if (state().path.length === 1 && puzzles[lang][state().puzzle][2] !== levelProgress.difficulty('wordle')) {
+      progress[lang] = initial(lang, startingPuzzle(lang))
+    }
     clearInput()
     render()
+    queueNextPuzzle()
   })
   render()
 
@@ -361,6 +356,7 @@ function startWordLadder() {
       progress.en = saved.en
       clearInput()
       render()
+      queueNextPuzzle()
       return true
     },
   }

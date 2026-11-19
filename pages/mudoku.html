@@ -14,21 +14,20 @@
     try {
       document.documentElement.lang = localStorage.getItem('sudoku-language') === 'en' ? 'en' : 'de';
       document.documentElement.dataset.theme = localStorage.getItem('sudoku-theme') || preferredTheme;
-      document.documentElement.dataset.palette = localStorage.getItem('sudoku-palette') || 'mono';
     } catch {
       // Wenn der Browser den Speicher blockiert, verwende ich die Systemeinstellung.
     }
   </script>
   <!-- Im Stylesheet sammle ich gemeinsame Regeln und ergänze für jedes Spiel eigene Regeln. -->
-  <link rel="stylesheet" href="../styles/style.css?v=24">
-  <script src="../scripts/text.js?v=9" defer></script>
-  <script src="../scripts/site-shell.js?v=2" defer></script>
-  <script src="../scripts/navigation.js?v=2" defer></script>
+  <link rel="stylesheet" href="../styles/style.css?v=53">
+  <script src="../scripts/text.js?v=18" defer></script>
+  <script src="../scripts/site-shell.js?v=11" defer></script>
+  <script src="../scripts/navigation.js?v=5" defer></script>
   <script src="../scripts/cases.js?v=0.8" defer></script>
-  <script src="../scripts/characters.js?v=7" defer></script>
-  <script src="../scripts/levels.js?v=8" defer></script>
-  <script src="../scripts/app.js?v=8" defer></script>
-  <script src="../scripts/account.js?v=3" data-publishable-key="pk_test_d2FybS1wYW5kYS00MjY1LmNsZXJrLmFjY291bnRzLmRldiQ" defer></script>
+  <script src="../scripts/characters.js?v=9" defer></script>
+  <script src="../scripts/levels.js?v=10" defer></script>
+  <script src="../scripts/app.js?v=10" defer></script>
+  <script src="../scripts/account.js?v=5" data-publishable-key="pk_test_d2FybS1wYW5kYS00MjY1LmNsZXJrLmFjY291bnRzLmRldiQ" defer></script>
 </head>
 <body class="mudoku" data-game="mudoku">
 
