@@ -555,6 +555,59 @@ html[data-theme="dark"] .mudoku .floor-plan-art {
   }
 }
 
+/* Der Zahlenstern liegt im Hellmodus hinter dem Seiteninhalt. */
+html[data-theme="light"] body {
+  position: relative;
+  isolation: isolate;
+}
+html[data-theme="light"] body::before,
+html[data-theme="light"] body::after,
+html[data-theme="light"] .light-motif-center {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  width: clamp(138px, 30vw, 328px);
+  aspect-ratio: 1;
+  background: url('../assets/light-overlay.jpg?v=2') center 25% / 100% auto no-repeat;
+  mix-blend-mode: multiply;
+  opacity: .56;
+  pointer-events: none;
+}
+html[data-theme="light"] body::before { inset: 0 auto auto 0; }
+html[data-theme="light"] body::after {
+  inset: auto 0 0 auto;
+  transform: scaleX(-1);
+}
+
+.light-motif-center { display: none; }
+html[data-theme="light"] .light-motif-center {
+  display: block;
+  inset: 50% auto auto 50%;
+  width: clamp(235px, 51vw, 545px);
+  translate: -50% -50%;
+  rotate: -20deg;
+}
+
+.light-butterflies { display: none; }
+html[data-theme="light"] .light-butterflies {
+  --butterfly: url('../assets/light-butterfly.jpg');
+  display: block;
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image: var(--butterfly), var(--butterfly), var(--butterfly), var(--butterfly);
+  background-position: 82% 7%, 7% 36%, 93% 66%, 19% 94%;
+  background-size: clamp(90px, 17vw, 210px) auto,
+    clamp(100px, 19vw, 235px) auto,
+    clamp(88px, 15vw, 190px) auto,
+    clamp(102px, 18vw, 225px) auto;
+  background-repeat: no-repeat;
+  background-blend-mode: multiply;
+  mix-blend-mode: multiply;
+  opacity: .38;
+  pointer-events: none;
+}
+
 /* Spinnennetz und Ketten bleiben auf allen Seiten im Dunkelmodus oben links fixiert. */
 .home-page, html[data-theme="dark"] body { isolation: isolate; }
 
