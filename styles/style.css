@@ -134,26 +134,20 @@ body {
   grid-template-rows: minmax(min-content, 1fr) auto minmax(min-content, 1fr);
 }
 body > header { align-self: start; }
-.footer-area { align-self: end; }
+.footer-area { position: relative; z-index: 1; align-self: end; }
 .footer-skate {
-  /* Der untere Weißraum des PNG liegt unterhalb der Fahrbahn. */
-  --skate-bottom: calc(0px - min(8vw, 34px));
   height: clamp(110px, 37vw, 148px);
-  background: url('../assets/footer-skate.png') center bottom var(--skate-bottom) / min(100%, 420px) auto no-repeat;
-  mix-blend-mode: multiply;
+  background: url('../assets/footer-skate-cutout.png') center bottom -2px / auto 100% no-repeat;
   pointer-events: none;
 }
-html[data-theme="dark"] .footer-skate {
-  filter: invert(1);
-  mix-blend-mode: screen;
-}
+html[data-theme="dark"] .footer-skate { filter: invert(1); }
 
 @media (prefers-reduced-motion: no-preference) {
   .footer-skate { animation: footer-skate-roll 6s linear infinite; }
 }
 @keyframes footer-skate-roll {
-  from { background-position: left -420px bottom var(--skate-bottom); }
-  to { background-position: right -420px bottom var(--skate-bottom); }
+  from { background-position: left -110px bottom -2px; }
+  to { background-position: right -110px bottom -2px; }
 }
 
 /* Die Fußnavigation verteilt alle Einträge mit einem gemeinsamen Abstand. */
@@ -182,11 +176,14 @@ html[data-theme="dark"] .footer-skate {
 #footer-account-status { display: block; text-align: center; }
 .legal-page { align-items: stretch; max-width: 640px; }
 
+.game-help, .level-summary, .level-character-settings {
+  --panel-surface: color-mix(in srgb, var(--same), #000 22%);
+  background: color-mix(in srgb, var(--panel-surface) 20%, transparent);
+}
 .game-help {
   width: 100%;
   padding: clamp(16px, 4vw, 24px);
   border-radius: 9px;
-  background: color-mix(in srgb, var(--bg) 68%, transparent);
 }
 .game-help h2 { margin-block-start: 0; }
 
@@ -397,7 +394,6 @@ html[data-theme="dark"] .mudoku .floor-plan-art {
   gap: 12px;
   min-width: 0;
   padding: 20px;
-  border: 1px solid var(--line);
   border-radius: 9px;
 }
 .level-summary { position: relative; }
@@ -563,14 +559,14 @@ html[data-theme="dark"] .mudoku .floor-plan-art {
   }
 }
 
-/* Der Zahlenstern liegt im Hellmodus hinter dem Seiteninhalt. */
-html[data-theme="light"] body {
+/* Beide Modi teilen die Anordnung der Hintergrundmotive. */
+body {
   position: relative;
   isolation: isolate;
 }
-html[data-theme="light"] body::before,
-html[data-theme="light"] body::after,
-html[data-theme="light"] .light-motif-center {
+body::before,
+body::after,
+.background-motif-center {
   content: '';
   position: absolute;
   z-index: -1;
@@ -581,25 +577,21 @@ html[data-theme="light"] .light-motif-center {
   opacity: .56;
   pointer-events: none;
 }
-html[data-theme="light"] body::before { inset: 0 auto auto 0; }
-html[data-theme="light"] body::after {
+body::before { inset: 0 auto auto 0; }
+body::after {
   inset: auto 0 0 auto;
   transform: scaleX(-1);
 }
 
-.light-motif-center { display: none; }
-html[data-theme="light"] .light-motif-center {
-  display: block;
+.background-motif-center {
   inset: 50% auto auto 50%;
   width: clamp(235px, 51vw, 545px);
   translate: -50% -50%;
   rotate: -20deg;
 }
 
-.light-butterflies { display: none; }
-html[data-theme="light"] .light-butterflies {
+.background-butterflies {
   --butterfly: url('../assets/light-butterfly.jpg');
-  display: block;
   position: absolute;
   inset: 0;
   z-index: -1;
@@ -616,30 +608,10 @@ html[data-theme="light"] .light-butterflies {
   pointer-events: none;
 }
 
-/* Spinnennetz und Ketten bleiben auf allen Seiten im Dunkelmodus oben links fixiert. */
-.home-page, html[data-theme="dark"] body { isolation: isolate; }
-
 html[data-theme="dark"] body::before,
-html[data-theme="dark"] body::after {
-  content: '';
-  position: fixed;
-  inset: 0 auto auto 0;
-  z-index: -1;
-  width: min(100%, 736px);
-  aspect-ratio: 1;
-  pointer-events: none;
-}
-
-html[data-theme="dark"] body::before {
-  background-color: var(--ink);
-  mask-image: url('../assets/home-web.jpg');
-  mask-mode: luminance;
-  mask-size: contain;
-  mask-repeat: no-repeat;
-  opacity: .18;
-}
-
-html[data-theme="dark"] body::after {
-  background: url('../assets/home-chains.png') top left / contain no-repeat;
-  filter: blur(2px);
+html[data-theme="dark"] body::after,
+html[data-theme="dark"] .background-motif-center,
+html[data-theme="dark"] .background-butterflies {
+  filter: invert(1);
+  mix-blend-mode: screen;
 }

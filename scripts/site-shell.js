@@ -5,8 +5,8 @@
   const game = document.body.dataset.game
   const gameName = games[game]
   document.body.insertAdjacentHTML('afterbegin', `
-  <div class="light-butterflies" aria-hidden="true"></div>
-  <div class="light-motif-center" aria-hidden="true"></div>
+  <div class="background-butterflies" aria-hidden="true"></div>
+  <div class="background-motif-center" aria-hidden="true"></div>
   <header>
     <a class="brand" href="${base}pages/home.html" data-label="home" aria-label="Startseite">
       <span class="brand-icon">
