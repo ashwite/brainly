@@ -1,5 +1,6 @@
 // Hier sammle ich die Übersetzungen für Spiele, Navigation und Level-Bereich.
 // Ich lege Deutsch und Englisch nebeneinander ab. Derselbe Schlüssel steht für denselben Text.
+// Ich verwende kurze Schlüssel wie home, damit HTML und JavaScript den passenden Text auf Deutsch und Englisch finden.
 const uiText = {
   game: ["Sudoku-Spiel","Sudoku game"],
   board: ["Sudoku-Raster","Sudoku grid"],

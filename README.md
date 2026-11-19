@@ -24,7 +24,7 @@ Wähle ein freies Feld und tippe auf eine Zahl unter dem Raster oder drücke sie
 
 Lies die Fallakte und klicke auf die Raumquadrate **A**, **B**, **C** und **D**, um jeweils eine Person auszuwählen. Der gewählte Name erscheint im Quadrat. Die Hinweise beziehen sich auf die Reihenfolge **A → B → C → D**. „Direkt links“ bedeutet direkt davor. Wähle dann die Person aus, die am Tatort war. Bei manchen Fällen musst du zusätzlich die falsche Aussage angeben.
 
-Falsche Zuordnungen werden wellig unterstrichen. Mit **Fall lösen** kannst du deine Eingaben prüfen. Sobald alle Antworten stimmen, erscheint die Auflösung. Nach fünf Sekunden öffnet sich der nächste ungelöste Fall deiner aktuellen Stufe, sofern einer verfügbar ist.
+Falsche Zuordnungen werden wellig unterstrichen. Mit dem Haken **✓** prüfst du deine Eingaben. Der Reset-Pfeil **↺** leert die Auswahl. Sobald alle Antworten stimmen, erscheint die Auflösung. Nach fünf Sekunden öffnet sich der nächste ungelöste Fall deiner aktuellen Stufe, sofern einer verfügbar ist.
 
 ## Wordle
 
@@ -58,3 +58,15 @@ Unter dem Namensfeld auf der Startseite findest du **Anmelden**. Wenn du angemel
 Im Footer kannst du zwischen Deutsch und Englisch wechseln. Oben rechts schaltest du zwischen Hell- und Dunkelmodus um. Diese Einstellungen gelten für alle drei Spiele und die Startseite.
 
 Über das **i** links neben dem Hell-Dunkel-Schalter öffnest du die Anleitung oben auf der jeweiligen Spielseite. Sie schließt sich nach sieben Sekunden oder nach einem weiteren Klick auf das **i**. [Datenschutz](pages/datenschutz.html) ist ebenfalls im Footer verlinkt.
+
+## Quellcode lesen
+
+Ich beginne in `pages/home.html`. HTML legt fest, welche Überschriften, Bilder und Felder auf der Seite vorkommen. Ein Element mit einer `id` hat eine eindeutige Kennung. Darüber können CSS und JavaScript es wiederfinden.
+
+- In `styles/style.css` ändere ich Farben, Schriftgrößen und Abstände. Ein Abschnitt mit `@media` enthält Regeln für bestimmte Bildschirmbreiten oder Browsereinstellungen.
+- In `scripts/site-shell.js` finde ich die gemeinsame Kopf- und Fußzeile. `navigation.js` wechselt zwischen Sprachen und Farben. `text.js` enthält die Texte in beiden Sprachen.
+- In `scripts/app.js` finde ich die Regeln für Sudoku und Mudoku. Die Falltexte stehen in `cases.js`. Die Wortpaare und Spielregeln für Wordle stehen in `wordle.js`.
+- In `scripts/levels.js` zähle ich gelöste Rätsel und XP. `account.js` gleicht Spielstände mit dem Konto ab. `characters.js` verwaltet die Bilder, `level-share.js` erstellt das teilbare PNG und `game-help.js` öffnet und schließt die Anleitungen.
+- In `package.json` lege ich fest, welcher Befehl hinter `npm run dev` steckt. Die Datei nutzt JSON, ein Textformat für Daten, das keine Kommentare erlaubt.
+
+JavaScript reagiert auf Ereignisse wie einen Klick. `localStorage` ist der Speicher des Browsers für Daten, die beim nächsten Öffnen wieder verfügbar sein sollen. Das Online-Konto speichert Spielstände zusätzlich bei Clerk.

@@ -1,4 +1,5 @@
 // Wordle: Pro Zug ändere ich einen Buchstaben. Die kleine Wortliste gilt pro Sprache.
+// Ich lade Wortpaare, prüfe Eingaben und speichere den Weg vom Start- zum Zielwort.
 function startWordLadder() {
   // Ich behalte die Nummern der ersten drei Rätsel bei, damit ich ältere Spielstände weiterhin laden kann.
   const puzzles = {
@@ -167,6 +168,7 @@ function startWordLadder() {
       ['COMB', 'LOFT', 'hard'],
     ],
   }
+  // Ich halte pro Sprache eine Wortliste bereit. Ein eingegebenes Wort muss in dieser Liste stehen.
   const words = {
     de: new Set('HAUS MAUS LAUS LAUT RAUS HAUT HAUE RAND RIND HAND KIND LAND BAND SAND WAND RANG MUND HUND FUND BUND HART HALT KALT HALL HELL FELL FELS BALL BELL BILD WILD HALM KALK TANK BANK GANG SANG LANG SANK KANN DANN MANN HANG FANG FAND WIND MILD GELD GELB HELD FELD HELM HOLM BART WERT WORT ORTS WURM WURF WIRF WIRR IHRE EHRE ERBE ERDE EINE EILE MEIN DEIN SEIN BEIN WEIN REST FEST NEST TEST RAST LAST FAST ROST MOST MAST MIST MUSS KUSS NUSS PASS FASS MASS MATT SATT RAUT KAUT BAUT BUNT RUND MARK MARS MALT HALS WALD RING DING WUND HAHN BAHN SONG HASE NASE BASE VASE RASE RAUE TAUB LAUB LAUF KAUF RAUF RUFE LUFT DUFT DORN DORF DOOF TORF TORE TOTE NOTE ROSE DOSE HOSE HOLE HOHL KOHL KÜHL'.split(' ')),
     en: new Set('COLD CORD CARD WARD WARM WORD WORM GOLD BOLD HOLD SOLD TOLD FOLD HARD HARM HEAD HEAL TEAL TELL TALL TAIL HAIL HALL HEAR HEAT SEAL DEAL REAL CAT COT DOT DOG COG BAT RAT HAT HOT POT LOT LOG HARE CARE CURE PURE PORE CORE COMB COME DOME HOME HOPE ROPE RIPE PIPE PILE FILE FIRE FIRM FARM FORM FOAM TOLL HELL HILL FILL FULL BULL PULL POLL POLE PALE SALE MALE TALE TAME SAME GAME FAME LAME LIME LIKE LINE MINE NINE WINE WIDE RIDE SIDE SIRE TIRE TILE TIME DIME DINE FINE FIND FOND FOOD FOOL COOL COAL GOAL GOAT COAT BOAT BOLT BELT BELL BALL FALL FAIL FAIR HAIR PAIR PAIL NAIL MAIL MAIN RAIN PAIN PAWN DAWN DOWN TOWN TORN BORN CORN CORP CORK WORK WORN WARN BARN BARK DARK DART DARE DATE GATE LATE MATE RATE RACE PACE FACE FACT FATE FAKE CAKE MAKE BAKE TAKE TAPE TYPE TYRE SURE SAND SEND SENT BENT BEND BOND BAND BANG BANK SANK SINK SING RING KING WING WIND MIND PINE PINT PANT CANT CAST FAST LAST LOST LOFT SOFT SORT FORT FORK PORK PORT POST PAST PEST PETS SETS GETS JETS VETS VEST BEST REST TEST TEXT NEXT NEST NEWS NEAT BEAT SEAT MEAT SELL WELL WELD WILD MILD MILL'.split(' ')),
@@ -181,6 +183,7 @@ function startWordLadder() {
   const status = document.querySelector('#ladder-status')
   const language = () => document.documentElement.lang === 'en' ? 'en' : 'de'
   const initial = (lang, puzzle) => ({ puzzle, path: [puzzles[lang][puzzle][0]] })
+  // Ich suche ein ungelöstes Rätsel in der gewählten Sprache auf der aktuellen Schwierigkeitsstufe.
   function nextPuzzle(lang, exclude = -1) {
     const level = levelProgress.difficulty('wordle')
     return puzzles[lang].findIndex(([first, last, difficulty], index) =>
@@ -190,6 +193,7 @@ function startWordLadder() {
     const next = nextPuzzle(lang)
     return next === -1 ? puzzles[lang].findIndex(([, , level]) => level === levelProgress.difficulty('wordle')) : next
   }
+  // Ich merke mir pro Sprache die Nummer des Rätsels und die Wörter, die schon gespielt wurden.
   const progress = { de: initial('de', startingPuzzle('de')), en: initial('en', startingPuzzle('en')) }
   const state = () => progress[language()]
   let error = ''
@@ -211,6 +215,7 @@ function startWordLadder() {
     else input.removeAttribute('aria-invalid')
   }
 
+  // Ich zeige Start, Ziel und Wortweg an. Nach der Lösung sperre ich die Eingabe bis zum nächsten Rätsel.
   function render() {
     const lang = language()
     const { puzzle, path: chain } = state()
@@ -261,6 +266,7 @@ function startWordLadder() {
     render()
   }
 
+  // Ich prüfe das Wort beim Haken oder bei Enter. Nur einen gültigen Zug füge ich dem Wortweg hinzu.
   form.addEventListener('submit', event => {
     event.preventDefault()
     if (input.disabled) return
@@ -287,6 +293,7 @@ function startWordLadder() {
     error = ''
     showStatus(false)
   })
+  // Ich starte dasselbe Rätsel beim Reset-Pfeil wieder mit dem Startwort.
   form.addEventListener('reset', event => {
     event.preventDefault()
     stopNextPuzzle()
