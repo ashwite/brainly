@@ -180,7 +180,7 @@ function startWordLadder() {
   const submit = document.querySelector('#ladder-submit')
   const status = document.querySelector('#ladder-status')
   const language = () => document.documentElement.lang === 'en' ? 'en' : 'de'
-  const initial = (lang, puzzle = 0) => ({ puzzle, path: [puzzles[lang][puzzle][0]] })
+  const initial = (lang, puzzle) => ({ puzzle, path: [puzzles[lang][puzzle][0]] })
   function nextPuzzle(lang, exclude = -1) {
     const level = levelProgress.difficulty('wordle')
     return puzzles[lang].findIndex(([first, last, difficulty], index) =>

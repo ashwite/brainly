@@ -19,20 +19,30 @@
     }
   </script>
   <!-- Im Stylesheet sammle ich gemeinsame Regeln und ergänze für jedes Spiel eigene Regeln. -->
-  <link rel="stylesheet" href="../styles/style.css?v=122">
-  <script src="../scripts/text.js?v=29" defer></script>
-  <script src="../scripts/site-shell.js?v=22" defer></script>
+  <link rel="stylesheet" href="../styles/style.css?v=141">
+  <script src="../scripts/text.js?v=32" defer></script>
+  <script src="../scripts/site-shell.js?v=26" defer></script>
   <script src="../scripts/navigation.js?v=5" defer></script>
-  <script src="../scripts/wordle.js?v=9" defer></script>
+  <script src="../scripts/game-help.js?v=1" defer></script>
+  <script src="../scripts/wordle.js?v=10" defer></script>
   <script src="../scripts/characters.js?v=10" defer></script>
   <script src="../scripts/levels.js?v=11" defer></script>
-  <script src="../scripts/app.js?v=15" defer></script>
+  <script src="../scripts/app.js?v=16" defer></script>
   <script src="../scripts/account.js?v=9" data-publishable-key="pk_test_d2FybS1wYW5kYS00MjY1LmNsZXJrLmFjY291bnRzLmRldiQ" defer></script>
 </head>
 <body class="word-ladder" data-game="wordle">
 
   <!-- Wordle zeigt Startwort, Zielwort und die bisher geprüften gültigen Wörter. -->
   <main>
+    <section id="hilfe-wordle" class="game-help" aria-labelledby="hilfe-wordle-title" hidden>
+      <h2 id="hilfe-wordle-title">Wordle</h2>
+      <div class="help-de" lang="de">
+        <p>Ändere pro Zug genau einen Buchstaben des aktuellen Worts. Deine Eingabe muss in der Wortliste stehen und darf in dieser Runde noch nicht vorkommen. Prüfe sie mit ✓ oder Enter. Das Rätsel endet, sobald du das Zielwort erreichst. Nach drei Sekunden öffnet sich das nächste ungelöste Rätsel deiner aktuellen Stufe, sofern eines verfügbar ist. Mit ↺ startest du das aktuelle Rätsel neu.</p>
+      </div>
+      <div class="help-en" lang="en">
+        <p>Change exactly one letter of the current word each turn. Each entry must be in the word list and can only be used once per round. Check it with ✓ or Enter. The puzzle ends when you reach the target word. After three seconds, the next unsolved puzzle at your current difficulty opens if one is available. Use ↺ to restart the current puzzle.</p>
+      </div>
+    </section>
     <section class="ladder-game" data-label="ladderName" aria-label="Wordle">
       <dl class="ladder-words">
         <div><dt data-text="ladderStart">Startwort</dt><dd id="ladder-start"></dd></div>

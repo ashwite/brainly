@@ -16,87 +16,17 @@
       // Wenn der Browser den Speicher blockiert, verwende ich die Vorgaben.
     }
   </script>
-  <link rel="stylesheet" href="../styles/style.css?v=122">
-  <script src="../scripts/text.js?v=29" defer></script>
-  <script src="../scripts/site-shell.js?v=22" defer></script>
+  <link rel="stylesheet" href="../styles/style.css?v=141">
+  <script src="../scripts/text.js?v=32" defer></script>
+  <script src="../scripts/site-shell.js?v=26" defer></script>
   <script src="../scripts/navigation.js?v=5" defer></script>
-  <script src="../scripts/home-help.js?v=2" defer></script>
   <script src="../scripts/characters.js?v=10" defer></script>
   <script src="../scripts/levels.js?v=11" defer></script>
   <script src="../scripts/level-share.js?v=1" defer></script>
   <script src="../scripts/account.js?v=9" data-publishable-key="pk_test_d2FybS1wYW5kYS00MjY1LmNsZXJrLmFjY291bnRzLmRldiQ" defer></script>
 </head>
-<body class="home-page">
+<body>
   <main>
-    <ul class="home-tiles">
-      <li>
-        <span class="home-tile-image" data-tile="sudoku" aria-hidden="true"></span>
-        <div class="home-tile-caption">
-          <a class="home-tile-link" href="sudoku.html">Sudoku</a>
-          <button class="home-info" type="button" aria-expanded="false" aria-controls="hilfe-sudoku"
-            data-label="helpSudoku" aria-label="Anleitung zu Sudoku">i</button>
-        </div>
-      </li>
-      <li>
-        <span class="home-tile-image" data-tile="mudoku" aria-hidden="true"></span>
-        <div class="home-tile-caption">
-          <a class="home-tile-link" href="mudoku.html">Mudoku</a>
-          <button class="home-info" type="button" aria-expanded="false" aria-controls="hilfe-mudoku"
-            data-label="helpMudoku" aria-label="Anleitung zu Mudoku">i</button>
-        </div>
-      </li>
-      <li>
-        <span class="home-tile-image" data-tile="wordle" aria-hidden="true"></span>
-        <div class="home-tile-caption">
-          <a class="home-tile-link" href="wordle.html">Wordle</a>
-          <button class="home-info" type="button" aria-expanded="false" aria-controls="hilfe-wordle"
-            data-label="helpWordle" aria-label="Anleitung zu Wordle">i</button>
-        </div>
-      </li>
-    </ul>
-    <section id="hilfe-sudoku" class="home-help" aria-labelledby="hilfe-sudoku-title" hidden>
-      <h2 id="hilfe-sudoku-title">Sudoku</h2>
-      <div class="help-de" lang="de">
-        <p>Fülle das Raster so, dass jede Zahl von 1 bis 9 in jeder Zeile, Spalte und jedem 3×3-Block genau einmal vorkommt.</p>
-        <p>Wähle ein freies Feld und tippe eine Zahl an oder drücke 1 bis 9. Mit Rücktaste, Entf oder einem zweiten Tipp auf das gewählte Feld löschst du deine Eingabe.</p>
-        <p>Eine wellige Unterstreichung zeigt eine falsche Zahl an. Sie verschwindet beim Korrigieren oder Löschen.</p>
-        <p>Wenn du nicht weiterkommst, tippe auf die kleine Glühbirne rechts neben den Zahlentasten. Sie markiert eine falsche Eingabe oder wählt ein freies Feld aus und zeigt dir, welche Zahlen dort infrage kommen. Du trägst die Zahl selbst ein. Nach der Lösung startet automatisch ein neues Rätsel.</p>
-      </div>
-      <div class="help-en" lang="en">
-        <p>Fill the grid so that each number from 1 to 9 appears exactly once in every row, column and 3×3 box.</p>
-        <p>Select an empty cell and tap a number or press 1 to 9. Press Backspace or Delete, or tap the selected cell again, to clear your entry.</p>
-        <p>A wavy underline marks an incorrect number. It disappears when you correct or clear the entry.</p>
-        <p>If you get stuck, tap the small light bulb to the right of the number buttons. It highlights an incorrect entry or selects an empty cell and shows which numbers could fit there. You enter the number yourself. Once you solve the grid, a new puzzle starts automatically.</p>
-      </div>
-    </section>
-    <section id="hilfe-mudoku" class="home-help" aria-labelledby="hilfe-mudoku-title" hidden>
-      <h2 id="hilfe-mudoku-title">Mudoku</h2>
-      <div class="help-de" lang="de">
-        <p>In Mudoku löst du einen Kriminalfall. Vier Verdächtige waren zur Tatzeit in vier verschiedenen Räumen. Finde heraus, wer am Tatort war.</p>
-        <p>Lies zuerst die Hinweise in der <strong>Fallakte</strong>. Im <strong>Flurplan</strong> gilt die Reihenfolge A → B → C → D. „Direkt links“ bedeutet direkt davor.</p>
-        <p>Klicke auf ein Raumquadrat, um eine Person auszuwählen. Der Name erscheint im Quadrat. Jede Person gehört in genau einen Raum.</p>
-        <p>Wähle unter <strong>Wer hat die Tat begangen?</strong> die Person aus, die du dem Tatort zugeordnet hast. Mit <strong>Fall lösen</strong> kannst du deine Eingaben prüfen. Sobald alles stimmt, erscheint die Auflösung. Nach fünf Sekunden öffnet sich der nächste ungelöste Fall, sofern es einen gibt.</p>
-        <p>In manchen schweren Fällen ist genau eine Aussage falsch. Dann musst du zusätzlich diese Aussage auswählen.</p>
-        <p>Eine wellige Unterstreichung markiert eine falsche Eingabe. Die Fehleranzeige zählt die aktuell falschen Felder. Bei einer falschen Antwort kannst du weiter umsortieren. Mit <strong>Zurücksetzen</strong> leerst du alle Auswahlen.</p>
-      </div>
-      <div class="help-en" lang="en">
-        <p>In Mudoku, you solve a murder mystery. Four suspects were in four different rooms at the time of the murder. Find out who was at the crime scene.</p>
-        <p>Read the clues in the <strong>Case file</strong> first. In the <strong>Floor plan</strong>, the room order is A → B → C → D. “Immediately to the left” means directly before.</p>
-        <p>Select a room square to choose a person. Their name appears inside the square. Each person belongs in exactly one room.</p>
-        <p>Under <strong>Who committed the murder?</strong>, choose the person you assigned to the crime scene. Use <strong>Solve case</strong> to check your answers. As soon as everything is correct, the solution appears. After five seconds, the next unsolved case opens if there is one.</p>
-        <p>In some hard cases, exactly one statement is false. Select that statement as part of your answer.</p>
-        <p>A wavy underline marks an incorrect choice. The error count shows how many fields are currently incorrect. If an answer is wrong, you can keep rearranging your choices. Use <strong>Reset</strong> to clear all selections.</p>
-      </div>
-    </section>
-    <section id="hilfe-wordle" class="home-help" aria-labelledby="hilfe-wordle-title" hidden>
-      <h2 id="hilfe-wordle-title">Wordle</h2>
-      <div class="help-de" lang="de">
-        <p>Ändere pro Zug genau einen Buchstaben des aktuellen Worts. Deine Eingabe muss in der Wortliste stehen und darf in dieser Runde noch nicht vorkommen. Prüfe sie mit ✓ oder Enter. Das Rätsel endet, sobald du das Zielwort erreichst. Nach drei Sekunden öffnet sich das nächste ungelöste Rätsel deiner aktuellen Stufe, sofern eines verfügbar ist. Mit ↺ startest du das aktuelle Rätsel neu.</p>
-      </div>
-      <div class="help-en" lang="en">
-        <p>Change exactly one letter of the current word each turn. Each entry must be in the word list and can only be used once per round. Check it with ✓ or Enter. The puzzle ends when you reach the target word. After three seconds, the next unsolved puzzle at your current difficulty opens if one is available. Use ↺ to restart the current puzzle.</p>
-      </div>
-    </section>
     <section id="level" class="home-level" aria-labelledby="level-title" tabindex="-1">
       <section class="level-summary" aria-labelledby="level-title">
         <button id="level-share" type="button" data-label="shareLevel" aria-label="Level als PNG teilen">
