@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="de">
+<!-- Ich definiere im Kopfbereich den Tab-Titel und lade das Design und die Skripte für diese Seite. -->
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -16,18 +17,21 @@
       // Wenn der Browser den Speicher blockiert, verwende ich die Vorgaben.
     }
   </script>
-  <link rel="stylesheet" href="../styles/style.css?v=141">
+  <link rel="stylesheet" href="../styles/style.css?v=158">
+  <!-- Ich lade Übersetzungen und gemeinsame Bedienelemente zuerst. defer wartet, bis die Seite eingelesen ist. -->
   <script src="../scripts/text.js?v=32" defer></script>
-  <script src="../scripts/site-shell.js?v=26" defer></script>
+  <script src="../scripts/site-shell.js?v=27" defer></script>
   <script src="../scripts/navigation.js?v=5" defer></script>
-  <script src="../scripts/characters.js?v=10" defer></script>
+  <script src="../scripts/characters.js?v=11" defer></script>
   <script src="../scripts/levels.js?v=11" defer></script>
   <script src="../scripts/level-share.js?v=1" defer></script>
   <script src="../scripts/account.js?v=9" data-publishable-key="pk_test_d2FybS1wYW5kYS00MjY1LmNsZXJrLmFjY291bnRzLmRldiQ" defer></script>
 </head>
 <body>
+  <!-- Ich zeige hier den Fortschritt und das Charakterprofil. Die Spiel-Links kommen aus der gemeinsamen Fußzeile. -->
   <main>
     <section id="level" class="home-level" aria-labelledby="level-title" tabindex="-1">
+      <!-- Ich fülle die Level-Anzeige mit den XP aus levels.js. Der Teilen-Button startet die PNG-Erstellung. -->
       <section class="level-summary" aria-labelledby="level-title">
         <button id="level-share" type="button" data-label="shareLevel" aria-label="Level als PNG teilen">
           <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -51,6 +55,7 @@
             <button id="account-session" type="button" data-text="accountSignIn" hidden>Anmelden</button>
           </div>
         </div>
+        <!-- Ich lasse die Auswahl eingeklappt, bis jemand das Charakterbild anklickt. -->
         <fieldset id="character-picker" class="character-picker" hidden>
           <legend class="sr-only" data-text="chooseCharacter">Charakter wählen</legend>
           <div class="character-choices">

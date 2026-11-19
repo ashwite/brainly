@@ -5,6 +5,7 @@
 const games = { sudoku: startSudoku, mudoku: startMudoku, wordle: () => startWordLadder() };
 const gameApp = games[document.body.dataset.game]();
 
+// Ich halte die Spiellogik von Sudoku und Mudoku hier zusammen. Wordle startet über seine eigene Datei.
 function startSudoku() {
   // Sudoku: Ich erzeuge Rätsel, prüfe Zahlen und verwalte die Sudoku-Bedienung.
 
@@ -117,6 +118,7 @@ function startSudoku() {
 
   // Ich starte mit einer kompletten Lösung. Daraus mache ich die Vorgabe und eine eigene Kopie für die Eingaben.
   // Ich entferne Zahlen in zufälliger Reihenfolge, bis ich die gewünschte Anzahl erreiche oder alle Felder geprüft habe.
+  // Ich leite die Schwierigkeit aus gelösten Sudokus ab. Auf höheren Stufen starte ich mit weniger Vorgaben.
   function startGame() {
     const level = levelProgress.difficulty('sudoku');
     const solved = createSolution();
@@ -395,6 +397,7 @@ function startMudoku() {
     people: texts.de.people,
     rooms: texts.de.rooms,
   }))
+  // Ich suche den ersten ungelösten Fall der aktuellen Stufe und lasse den gerade geöffneten Fall aus.
   function nextCase(exclude) {
     const level = levelProgress.difficulty('mudoku')
     return caseCatalog.find(entry =>
@@ -421,6 +424,7 @@ function startMudoku() {
       return item
     })
 
+    // Ich lege für jeden Raum ein Quadrat an. Ein unsichtbares Auswahlfeld darüber öffnet beim Antippen die Personenliste.
     const rooms = document.querySelector('#rooms')
     rooms.replaceChildren()
     roomFields = entry.rooms.map((_, index) => {
@@ -459,6 +463,7 @@ function startMudoku() {
 
   // Die Falltexte verwenden dieselben Raumkürzel wie der Flurplan.
   function formatCaseRooms(value, names, english) {
+    // Ich behandle alte Raumnamen als wörtlichen Text. Ein Suchmuster findet sie in den Hinweisen und ersetzt sie durch A bis D.
     const escapedNames = names.map(name => name.replace(/[.*+?^$(){}|[\]\\]/g, '\\$&'))
     const name = '(' + escapedNames.join('|') + ')'
     const prefix = english ? '(the )?' : '(im Raum [„"]?|(?:im|am) |Raum [„"]?)?'

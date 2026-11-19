@@ -1,4 +1,5 @@
 // Hier steuere ich Sprache und Hell-Dunkel-Modus.
+// Ich verwende das oberste HTML-Element als gemeinsame Stelle für Sprache und Hell-Dunkel-Modus.
 const appearance = document.documentElement
 const themeToggles = document.querySelectorAll('.theme-toggle')
 
@@ -35,6 +36,7 @@ for (const button of themeToggles) {
 // Ich übersetze sichtbare Texte und Screenreader-Beschriftungen, ohne Auswahlen im Spiel zu löschen.
 function updateLanguage() {
   for (const element of document.querySelectorAll('[data-text]')) {
+    // Ich lese den Übersetzungsschlüssel aus data-text und setze den sichtbaren Text in der gewählten Sprache ein.
     element.textContent = translate(element.dataset.text)
   }
   for (const element of document.querySelectorAll('[data-label]')) {
@@ -44,6 +46,7 @@ function updateLanguage() {
     button.setAttribute('aria-pressed', String(button.dataset.language === appearance.lang))
   }
   updateAppearance()
+  // Ich sende den Spielen ein Signal, damit sie ihre selbst erzeugten Texte ebenfalls neu anzeigen.
   document.dispatchEvent(new Event('game-language-change'))
 }
 

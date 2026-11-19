@@ -1,3 +1,4 @@
+// Ich erstelle ein teilbares PNG mit Charakter, Name, Level und XP.
 (() => {
   const button = document.querySelector('#level-share')
   const status = document.querySelector('#level-share-status')
@@ -13,6 +14,7 @@
 
   async function createLevelImage() {
     await portrait.decode()
+    // Ich zeichne das Bild auf einer unsichtbaren Fläche. canvas ist die Fläche selbst, context enthält die Zeichenbefehle.
     const canvas = document.createElement('canvas')
     canvas.width = canvas.height = 800
     const context = canvas.getContext('2d')
@@ -22,6 +24,7 @@
     context.fillStyle = theme.getPropertyValue('--bg').trim()
     context.fillRect(0, 0, 800, 800)
 
+    // Ich passe das Charakterbild proportional in den vorgesehenen Bereich ein.
     const scale = 480 / Math.max(portrait.naturalWidth, portrait.naturalHeight)
     const width = portrait.naturalWidth * scale
     const height = portrait.naturalHeight * scale
@@ -39,11 +42,13 @@
     context.font = `26px ${font}`
     context.fillText('brainly', 400, name ? 735 : 704)
 
+    // Ich warte, bis der Browser die Zeichenfläche in eine PNG-Datei umgewandelt hat.
     return new Promise((resolve, reject) => {
       canvas.toBlob(blob => blob ? resolve(blob) : reject(new Error('PNG export failed')), 'image/png')
     })
   }
 
+  // Ich erstelle kurzzeitig eine Adresse für die Datei und verwende sie für den Download.
   function download(file) {
     const url = URL.createObjectURL(file)
     const link = document.createElement('a')
@@ -62,6 +67,7 @@
       return
     }
 
+    // Ich sperre den Button während der Erstellung. Danach versuche ich, das Teilen-Menü zu öffnen.
     button.disabled = true
     showStatus('')
     try {

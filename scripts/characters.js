@@ -1,13 +1,16 @@
+// Ich verwalte die Charakterauswahl, eigene PNGs und den Glückwunsch nach einem gelösten Rätsel.
 (() => {
   const storageKey = 'level-character'
   const customImageKey = 'level-custom-character'
   const customCharacter = 'custom'
   const defaultCharacter = '6'
   const characters = [defaultCharacter, '1', '5']
+  // Ich behalte die alten Nummern im Browserspeicher, damit gespeicherte Auswahlen mit den neuen Dateinamen funktionieren.
+  const characterImages = { '6': 'max.png', '1': 'dino.png', '5': 'cat.png' }
   const documentScript = document.currentScript.src
   function imagePath(number) {
     if (number === customCharacter) return localStorage.getItem(customImageKey)
-    return new URL(`../assets/character-${number}.png`, documentScript).href
+    return new URL(`../assets/${characterImages[number]}`, documentScript).href
   }
 
   function selectedCharacter() {
@@ -25,6 +28,7 @@
     image.src = imagePath(number)
   }
 
+  // Ich erkenne die Startseite am Charakterbild. Auf Spielseiten bereite ich stattdessen den Glückwunsch vor.
   const portrait = document.querySelector('#level-character')
   if (!portrait) {
     const celebration = document.createElement('div')
@@ -43,6 +47,7 @@
       celebration.hidden = true
     }
     celebration.addEventListener('animationend', hideCelebration)
+    // Ich reagiere auf das Signal des Spiels, zeige Namen und Bild und blende den Glückwunsch nach kurzer Zeit wieder aus.
     document.addEventListener('puzzle-solved', () => {
       let name = ''
       try {
@@ -62,6 +67,7 @@
 
   const toggle = document.querySelector('#character-toggle')
   const picker = document.querySelector('#character-picker')
+  // Ich klappe die Auswahl beim Antippen des aktuellen Bildes auf oder zu und melde den Zustand an Screenreader.
   toggle.addEventListener('click', () => {
     picker.hidden = !picker.hidden
     toggle.setAttribute('aria-expanded', String(!picker.hidden))
@@ -91,6 +97,7 @@
     portrait.hidden = false
   }
 
+  // Ich warte auf das Bild und erstelle danach eine beschriftete, auswählbare Option.
   function createOption(number, source = imagePath(number)) {
     return new Promise(resolve => {
       const image = new Image(56, 56)
@@ -127,6 +134,7 @@
     showCharacter(current.number)
   }
 
+  // Ich erkenne ein PNG an seinen ersten Bytes und verkleinere große Bilder auf einer Zeichenfläche im Browser.
   async function readPng(file) {
     const bytes = new Uint8Array(await file.slice(0, 8).arrayBuffer())
     const signature = [137, 80, 78, 71, 13, 10, 26, 10]
@@ -148,6 +156,7 @@
     }
   }
 
+  // Ich lade Max, Dino und Katze sowie ein bereits gespeichertes eigenes Bild. Danach markiere ich die letzte Auswahl.
   async function initializeOptions() {
     const sources = characters.map(number => createOption(number))
     try {
@@ -161,6 +170,7 @@
     upload.disabled = false
   }
 
+  // Ich speichere ein neues eigenes PNG erst nach erfolgreicher Prüfung. Danach ersetzt es die bisherige eigene Option.
   upload.addEventListener('change', async () => {
     const file = upload.files[0]
     if (!file) return

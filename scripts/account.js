@@ -1,4 +1,5 @@
 // Clerk-Anmeldung und automatische Synchronisierung von XP und den getrennten Rätselständen.
+// Ich verbinde die Anmeldung mit Clerk und gleiche Spielstände im Browser und im Konto ab.
 (() => {
   // Ich lese den öffentlichen Schlüssel aus dem Script-Tag der geöffneten Spielseite.
   // Der Schlüssel bestimmt das Clerk-Projekt. Lokale Spielstände funktionieren auch ohne Clerk.
@@ -11,6 +12,7 @@
   const autoloadInterval = 20_000;
 
   // Sudoku speichert seine Eingaben bereits direkt im Browser.
+  // Ich gebe Mudoku und Wordle je einen eigenen Eintrag im Browserspeicher. Sudoku speichert schon direkt bei jeder Eingabe.
   const localSaveKey = hasGame && saveKey !== 'sudokuSave' ? `brainly:${saveKey}` : null;
   if (localSaveKey) {
     const saveLocally = () => {
@@ -134,12 +136,14 @@
     footerProfile.onclick = () => openAccountDialog(() => clerk.openUserProfile());
     // Über den Konto-Button öffne ich die Anmeldung oder melde eine aktive Sitzung ab.
     sessionButton.onclick = run(() => clerk.signOut());
+    // Ich merke mir das aktive Konto und die zuletzt abgeglichenen Spielstände, um Änderungen zu erkennen.
     let activeUserId;
     let remoteGame;
     let savedLevel;
     let syncQueue = Promise.resolve();
     let syncError = '';
 
+    // Ich warte auf den Online-Stand und prüfe danach erneut, ob noch dasselbe Konto angemeldet ist.
     async function syncProgress(user, load) {
       if (accountActionRunning || clerk.user?.id !== user.id) return;
       try {
@@ -150,6 +154,7 @@
         await user.reload();
         if (accountActionRunning || clerk.user?.id !== user.id) return;
 
+        // Ich führe abgeschlossene Rätsel aus beiden Quellen zusammen. Aus diesen Abschlüssen berechnet die Seite ihre XP.
         const metadata = user.unsafeMetadata;
         const onlineLevel = metadata[progress.saveKey];
         if (typeof onlineLevel === 'string' && !progress.restoreSave(onlineLevel)) {
@@ -159,6 +164,7 @@
         const onlineGame = metadata[saveKey];
         const currentGame = hasGame ? gameApp.captureSave() : null;
 
+        // Ich übernehme den Online-Rätselstand nur, wenn seit dem letzten Abgleich keine offenen lokalen Änderungen vorliegen.
         if (load) {
           // Ein Abruf darf weder lokale Spielzüge noch eine noch nicht bestätigte Worteingabe ersetzen.
           if (hasGame && typeof onlineGame === 'string' && onlineGame !== remoteGame &&
@@ -169,6 +175,7 @@
             savedGame = gameApp.captureSave();
           }
         } else {
+          // Ich sammle nur die Felder, deren Inhalt geändert wurde oder online fehlt.
           const updates = {};
           if (level !== onlineLevel) updates[progress.saveKey] = level;
           if (hasGame && currentGame !== onlineGame &&
@@ -194,11 +201,13 @@
     }
 
     // Abrufe und Speicherläufe werden nacheinander ausgeführt, wenn ihre Timer zusammentreffen.
+    // Ich reihe Abrufe und Speichervorgänge hintereinander ein, damit sie sich nicht während des Wartens überholen.
     function scheduleSync(load) {
       const user = clerk.user;
       if (user) syncQueue = syncQueue.then(() => syncProgress(user, load));
     }
 
+    // Ich starte bei einer neuen Anmeldung mit einem Abruf und setze die Vergleichswerte für das Konto zurück.
     function updateSession() {
       render();
       const userId = clerk.user?.id;
@@ -211,6 +220,7 @@
 
     clerk.addListener(updateSession);
     updateSession();
+    // Ich lasse den Browser alle 15 Sekunden speichern und alle 20 Sekunden nach Online-Änderungen fragen.
     setInterval(() => scheduleSync(false), autosaveInterval);
     setInterval(() => scheduleSync(true), autoloadInterval);
   }

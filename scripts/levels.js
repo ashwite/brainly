@@ -1,3 +1,4 @@
+// Ich zähle gelöste Rätsel, berechne die Gesamt-XP und bestimme die Schwierigkeit pro Spiel.
 const levelProgress = (() => {
   const prefix = 'puzzle-xp:'
   const xpPerLevel = 1000
@@ -6,6 +7,7 @@ const levelProgress = (() => {
   const games = ['sudoku', 'mudoku', 'wordle']
   const sessionAwards = new Map()
 
+  // Ich lese gespeicherte Abschlüsse und ergänze die dieses Tabs. Die Kennung eines Rätsels dient als Schlüssel.
   function readAwards() {
     const awards = new Map(sessionAwards)
     try {
@@ -23,6 +25,7 @@ const levelProgress = (() => {
     return awards
   }
 
+  // Ich steigere die Schwierigkeit nach fünf und nach zehn verschiedenen gelösten Rätseln derselben Kategorie.
   function difficulty(game) {
     const gamePrefix = `${prefix}${game}:`
     const solved = [...readAwards().keys()].filter(key => key.startsWith(gamePrefix)).length
@@ -43,6 +46,7 @@ const levelProgress = (() => {
     for (const [key, xp] of readAwards()) {
       if (games.includes(key.split(':')[1])) total += xp
     }
+    // Ich teile die Gesamt-XP durch 1.000. Ganze Tausender erhöhen das Level, der Rest füllt den Fortschrittsbalken.
     const level = 1 + Math.floor(total / xpPerLevel)
     const number = new Intl.NumberFormat(document.documentElement.lang)
     const label = `Level ${number.format(level)} · ${number.format(total)} XP`
@@ -56,6 +60,7 @@ const levelProgress = (() => {
       `${number.format(progress.value)} / ${number.format(xpPerLevel)} XP → Level ${number.format(level + 1)}`
   }
 
+  // Ich melde dem Charaktercode die Lösung. XP vergebe ich pro Rätsel nur einmal.
   function award(game, puzzle, usedHelp = false) {
     document.dispatchEvent(new Event('puzzle-solved'))
     const key = `${prefix}${game}:${puzzle}`
@@ -71,6 +76,7 @@ const levelProgress = (() => {
     render()
   }
 
+  // Ich verwandle die Liste der Abschlüsse in JSON, damit ich sie als Text im Konto speichern kann.
   function captureSave() {
     return JSON.stringify([...readAwards()])
   }
@@ -88,6 +94,7 @@ const levelProgress = (() => {
       (entry[1] === xpWithHelp || entry[1] === xpWithoutHelp)
     )) return false
 
+    // Ich ergänze gültige Online-Abschlüsse, die im Browser noch fehlen. Vorhandene Einträge bleiben erhalten.
     const existing = readAwards()
     for (const [key, xp] of entries) {
       if (existing.has(key)) continue
@@ -103,6 +110,7 @@ const levelProgress = (() => {
     return true
   }
 
+  // Ich speichere auf der Startseite den Namen beim Tippen im Browser.
   const nameInput = document.querySelector('#level-name')
   if (nameInput) {
     const nameKey = 'level-player-name'
