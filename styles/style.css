@@ -140,7 +140,23 @@ body > header { align-self: start; }
   background: url('../assets/footer-skate-cutout.png') center bottom -2px / auto 100% no-repeat;
   pointer-events: none;
 }
-html[data-theme="dark"] .footer-skate { filter: invert(1); }
+html[data-theme="dark"] .footer-skate {
+  position: relative;
+  overflow: hidden;
+  background: none;
+  animation: none;
+}
+html[data-theme="dark"] .footer-skate::before {
+  content: '';
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 100%;
+  width: 170px;
+  background: var(--ink);
+  mask: url('../assets/footer-dark-fairy.jpg') center / contain no-repeat;
+  mask-mode: luminance;
+  animation: footer-fairy-fly 6s linear infinite;
+}
 
 @media (prefers-reduced-motion: no-preference) {
   .footer-skate { animation: footer-skate-roll 6s linear infinite; }
@@ -148,6 +164,10 @@ html[data-theme="dark"] .footer-skate { filter: invert(1); }
 @keyframes footer-skate-roll {
   from { background-position: left -110px bottom -2px; }
   to { background-position: right -110px bottom -2px; }
+}
+@keyframes footer-fairy-fly {
+  from { transform: translateX(0); }
+  to { transform: translateX(calc(-100vw - 100%)); }
 }
 
 /* Die Fußnavigation verteilt alle Einträge mit einem gemeinsamen Abstand. */
