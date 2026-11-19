@@ -43,11 +43,10 @@
   }
 
   // Hier hole ich die Buttons aus dem HTML, damit ich später festlegen kann, was ein Klick auslöst.
-  const footerSignIn = document.querySelector('#footer-sign-in');
+  const sessionButton = document.querySelector('#account-session');
   const footerProfile = document.querySelector('#footer-profile');
-  const signUp = document.querySelector('#footer-sign-up');
   // In dieser Liste sammle ich alle Konto-Buttons. So kann ich sie bei einer laufenden Aktion gemeinsam sperren.
-  const controls = [footerProfile, signUp, footerSignIn];
+  const controls = [footerProfile, sessionButton];
   // Ich übergebe deutschen und englischen Text. Der Ausdruck mit ? wählt anhand der Seitensprache einen davon.
   const message = (de, en) => document.documentElement.lang === 'en' ? en : de;
 
@@ -98,22 +97,19 @@
       }
     }
 
-    // Hier öffne ich das fertige Anmeldefenster von Clerk. openSignUp öffnet entsprechend die Registrierung.
     const openSignIn = () => openAccountDialog(() => clerk.openSignIn());
-    const openSignUp = () => openAccountDialog(() => clerk.openSignUp());
 
     // Ich erkenne die aktive Anmeldung an clerk.user.
     // Je nach Anmeldung zeige ich die passenden Konto-Buttons.
     function render() {
       const signedIn = Boolean(clerk.user);
-      signUp.hidden = signedIn;
-      footerSignIn.hidden = false;
-      footerSignIn.dataset.text = signedIn ? 'accountSignOut' : 'accountSignIn';
-      footerSignIn.textContent = translate(footerSignIn.dataset.text);
+      sessionButton.hidden = false;
+      sessionButton.dataset.text = signedIn ? 'accountSignOut' : 'accountSignIn';
+      sessionButton.textContent = translate(sessionButton.dataset.text);
       footerProfile.hidden = !signedIn;
     }
 
-    // Der Footer-Button öffnet die Anmeldung oder meldet die aktive Sitzung ab.
+    // Der Konto-Button öffnet die Anmeldung oder meldet die aktive Sitzung ab.
     let accountActionRunning = false;
     function run(action) {
       return async () => {
@@ -137,10 +133,9 @@
       };
     }
 
-    signUp.onclick = openSignUp;
     footerProfile.onclick = () => openAccountDialog(() => clerk.openUserProfile());
-    // Über den Footer-Button öffne ich die Anmeldung oder melde eine aktive Sitzung ab.
-    footerSignIn.onclick = run(() => clerk.signOut());
+    // Über den Konto-Button öffne ich die Anmeldung oder melde eine aktive Sitzung ab.
+    sessionButton.onclick = run(() => clerk.signOut());
     let activeUserId;
     let remoteGame;
     let savedLevel;

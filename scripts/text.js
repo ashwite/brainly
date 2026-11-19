@@ -55,7 +55,6 @@ const uiText = {
   language: ['Sprache', 'Language'],
   account: ['Konto', 'Account'],
   accountSignIn: ['Anmelden', 'Sign in'],
-  accountSignUp: ['Konto erstellen', 'Create account'],
   accountSignOut: ['Abmelden', 'Sign out'],
   accountManage: ['Konto verwalten', 'Manage account'],
   clues: ['Fallakte', 'Case file'],

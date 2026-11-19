@@ -20,8 +20,7 @@
     <div class="footer-links">
       <a href="${base}pages/home.html" data-label="home">Home</a>
       <div class="footer-account" role="group" data-label="account" aria-label="Konto">
-        <button id="footer-sign-in" type="button" data-text="accountSignIn" hidden>Anmelden</button>
-        <button id="footer-sign-up" type="button" data-text="accountSignUp" hidden>Konto erstellen</button>
+        ${document.getElementById('account-session') ? '' : '<button id="account-session" type="button" data-text="accountSignIn" hidden>Anmelden</button>'}
         <button id="footer-profile" type="button" data-text="accountManage" hidden>Konto verwalten</button>
       </div>
       <nav aria-label="Rechtliche Informationen" data-label="legal">
