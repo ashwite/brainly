@@ -5,13 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#fff">
   <link rel="icon" type="image/png" sizes="32x32" href="../assets/miffy.png">
-  <title>Hilfe · Kleine Denkpause</title>
+  <title>Hilfe · brainly</title>
   <!-- Ich wende die gespeicherten Farben früh an, damit die Standardfarben nicht kurz aufblitzen. -->
   <!-- Ich lese die gespeicherten Einstellungen so früh, dass die Seite gleich in den passenden Farben erscheint. -->
   <script>
     try {
       document.documentElement.lang = localStorage.getItem('sudoku-language') === 'en' ? 'en' : 'de';
-      if (document.documentElement.lang === 'en') document.title = 'Help · Kleine Denkpause';
+      if (document.documentElement.lang === 'en') document.title = 'Help · brainly';
       document.documentElement.dataset.palette = localStorage.getItem('sudoku-palette') || 'mono';
       document.documentElement.dataset.theme = localStorage.getItem('sudoku-theme') ||
         (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
