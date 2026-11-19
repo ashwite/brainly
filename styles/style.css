@@ -137,7 +137,7 @@ body > header { align-self: start; }
 .footer-area { position: relative; z-index: 1; align-self: end; }
 .footer-skate {
   height: clamp(110px, 37vw, 148px);
-  background: url('../assets/footer-skate-cutout.png') center bottom -2px / auto 100% no-repeat;
+  background: url('../assets/ghost.png') center bottom -2px / auto 100% no-repeat;
   pointer-events: none;
 }
 html[data-theme="dark"] .footer-skate {
@@ -153,7 +153,7 @@ html[data-theme="dark"] .footer-skate::before {
   inset-inline-start: 100%;
   width: 170px;
   background: var(--ink);
-  mask: url('../assets/footer-dark-fairy.jpg') center / contain no-repeat;
+  mask: url('../assets/fee.png') center / contain no-repeat;
   mask-mode: luminance;
   animation: footer-fairy-fly 6s linear infinite;
 }
