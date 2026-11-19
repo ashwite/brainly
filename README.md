@@ -4,7 +4,7 @@ Drei Minispiele für zwischendurch. Löse ein Sudoku, kläre einen Kriminalfall 
 
 ## So geht’s los
 
-Öffne die [Startseite](pages/home.html) im Browser und wähle [Sudoku](pages/sudoku.html), [Mudoku](pages/mudoku.html) oder [Wordle](pages/wordle.html). Über **Home** im Footer kommst du zurück zur Spielauswahl. Die Schwierigkeit steigt in jedem Spiel separat. Nach fünf verschiedenen gelösten Rätseln startet die mittlere Stufe, nach zehn die höchste. Bereits begonnene Rätsel kannst du zu Ende spielen.
+Öffne die [Startseite](pages/home.html) im Browser und wähle im Footer [Sudoku](pages/sudoku.html), [Mudoku](pages/mudoku.html) oder [Wordle](pages/wordle.html). Über **Home** im Footer kommst du zurück zur Startseite. Die Schwierigkeit steigt in jedem Spiel separat. Nach fünf verschiedenen gelösten Rätseln startet die mittlere Stufe, nach zehn die höchste. Bereits begonnene Rätsel kannst du zu Ende spielen.
 
 Zum lokalen Start brauchst du Node.js mit npm und Python 3. Führe im Projektordner diesen Befehl aus.
 
@@ -57,4 +57,4 @@ Unter dem Namensfeld auf der Startseite findest du **Anmelden**. Wenn du angemel
 
 Im Footer kannst du zwischen Deutsch und Englisch wechseln. Oben rechts schaltest du zwischen Hell- und Dunkelmodus um. Diese Einstellungen gelten für alle drei Spiele und die Startseite.
 
-Über das **i** neben einem Spiel auf der [Startseite](pages/home.html) öffnest du die passende Anleitung zwischen Spielauswahl und Level. Sie schließt sich nach sieben Sekunden oder nach einem weiteren Klick auf das **i**. [Datenschutz](pages/datenschutz.html) ist ebenfalls im Footer verlinkt.
+Über das **i** links neben dem Hell-Dunkel-Schalter öffnest du die Anleitung oben auf der jeweiligen Spielseite. Sie schließt sich nach sieben Sekunden oder nach einem weiteren Klick auf das **i**. [Datenschutz](pages/datenschutz.html) ist ebenfalls im Footer verlinkt.

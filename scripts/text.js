@@ -60,6 +60,7 @@ const uiText = {
   solve: ['Fall lösen', 'Solve case'],
   reset: ['Zurücksetzen', 'Reset'],
   solution: ['Auflösung', 'Solution'],
+  footerNavigation: ['Fußnavigation', 'Footer navigation'],
   helpSudoku: ['Anleitung zu Sudoku', 'Sudoku instructions'],
   helpMudoku: ['Anleitung zu Mudoku', 'Mudoku instructions'],
   helpWordle: ['Anleitung zu Wordle', 'Wordle instructions'],
