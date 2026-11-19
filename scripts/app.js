@@ -117,7 +117,8 @@ function startSudoku() {
 
   // Ich starte mit einer kompletten Lösung. Daraus mache ich die Vorgabe und eine eigene Kopie für die Eingaben.
   // Ich entferne Zahlen in zufälliger Reihenfolge, bis ich die gewünschte Anzahl erreiche oder alle Felder geprüft habe.
-  function startGame(level = levelProgress.difficulty('sudoku')) {
+  function startGame() {
+    const level = levelProgress.difficulty('sudoku');
     const solved = createSolution();
     const given = [...solved];
     const positions = shuffle(Array.from({ length: 81 }, (_, index) => index));
@@ -452,11 +453,6 @@ function startMudoku() {
     renderCaseLanguage()
   }
 
-  // Ohne mitgegebenen Fall lese ich die Texte des gerade geöffneten Falls.
-  function caseText(entry = activeCase) {
-    return document.documentElement.lang === 'en' ? entry.en : entry.de
-  }
-
   function roomName(index) {
     return 'ABCD'[index]
   }
@@ -510,9 +506,9 @@ function startMudoku() {
 
   // Ich tausche nur die Beschriftungen aus. Die Werte in den Auswahllisten bleiben erhalten.
   function renderCaseLanguage() {
-    const text = caseText()
-    const roomNames = text.roomNames ?? activeCase.rooms.map(room => room.name)
     const english = document.documentElement.lang === 'en'
+    const text = english ? activeCase.en : activeCase.de
+    const roomNames = text.roomNames ?? activeCase.rooms.map(room => room.name)
     document.title = `Mudoku · ${text.title}`
     document.querySelector('#case-intro').textContent = formatCaseRooms(text.intro, roomNames, english)
     document.querySelector('#solution-text').textContent = formatCaseRooms(text.explanation, roomNames, english)
