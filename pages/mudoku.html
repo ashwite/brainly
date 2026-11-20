@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="de">
+<!-- Ich definiere im Kopfbereich den Tab-Titel und lade das Design und die Skripte für diese Seite. -->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Ordne vier Verdächtige ihren Räumen zu und löse den Fall.">
+  <title>Mudoku · Der letzte Termin</title>
+  <link rel="icon" href="../assets/miffy.png" type="image/png">
+  <!-- Gespeicherte Sprache und Hell-Dunkel-Modus vor dem Rendern anwenden. -->
+  <meta name="theme-color" content="#fff">
+  <script>
+    const preferredTheme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    document.documentElement.dataset.theme = preferredTheme;
+    try {
+      document.documentElement.lang = localStorage.getItem('sudoku-language') === 'en' ? 'en' : 'de';
+      document.documentElement.dataset.theme = localStorage.getItem('sudoku-theme') || preferredTheme;
+    } catch {
+      // Wenn der Browser den Speicher blockiert, verwende ich die Systemeinstellung.
+    }
+  </script>
+  <!-- Im Stylesheet sammle ich gemeinsame Regeln und ergänze für jedes Spiel eigene Regeln. -->
+  <link rel="stylesheet" href="../styles/style.css?v=158">
+  <!-- Ich lade Übersetzungen und gemeinsame Bedienelemente zuerst. defer wartet, bis die Seite eingelesen ist. -->
+  <script src="../scripts/text.js?v=32" defer></script>
+  <script src="../scripts/site-shell.js?v=27" defer></script>
+  <script src="../scripts/navigation.js?v=5" defer></script>
+  <script src="../scripts/game-help.js?v=1" defer></script>
+  <script src="../scripts/cases.js?v=0.8" defer></script>
+  <script src="../scripts/characters.js?v=11" defer></script>
+  <script src="../scripts/levels.js?v=11" defer></script>
+  <script src="../scripts/app.js?v=16" defer></script>
+  <script src="../scripts/account.js?v=9" data-publishable-key="pk_test_d2FybS1wYW5kYS00MjY1LmNsZXJrLmFjY291bnRzLmRldiQ" defer></script>
+</head>
+<body class="mudoku" data-game="mudoku">
+
+  <!-- Hier baue ich die Spielfläche für Mudoku auf. -->
+  <main>
+    <!-- Ich halte die Anleitung anfangs verborgen. Das kleine i öffnet sie. -->
+    <section id="hilfe-mudoku" class="game-help" aria-labelledby="hilfe-mudoku-title" hidden>
+      <h2 id="hilfe-mudoku-title">Mudoku</h2>
+      <div class="help-de" lang="de">
+        <p>In Mudoku löst du einen Kriminalfall. Vier Verdächtige waren zur Tatzeit in vier verschiedenen Räumen. Finde heraus, wer am Tatort war.</p>
+        <p>Lies zuerst die Hinweise in der <strong>Fallakte</strong>. Im <strong>Flurplan</strong> gilt die Reihenfolge A → B → C → D. „Direkt links“ bedeutet direkt davor.</p>
+        <p>Klicke auf ein Raumquadrat, um eine Person auszuwählen. Der Name erscheint im Quadrat. Jede Person gehört in genau einen Raum.</p>
+        <p>Wähle unter <strong>Wer hat die Tat begangen?</strong> die Person aus, die du dem Tatort zugeordnet hast. Mit dem Haken prüfst du deine Eingaben. Sobald alles stimmt, erscheint die Auflösung. Nach fünf Sekunden öffnet sich der nächste ungelöste Fall, sofern es einen gibt.</p>
+        <p>In manchen schweren Fällen ist genau eine Aussage falsch. Dann musst du zusätzlich diese Aussage auswählen.</p>
+        <p>Eine wellige Unterstreichung markiert eine falsche Eingabe. Die Fehleranzeige zählt die aktuell falschen Felder. Bei einer falschen Antwort kannst du weiter umsortieren. Mit dem Reset-Pfeil leerst du alle Auswahlen.</p>
+      </div>
+      <div class="help-en" lang="en">
+        <p>In Mudoku, you solve a murder mystery. Four suspects were in four different rooms at the time of the murder. Find out who was at the crime scene.</p>
+        <p>Read the clues in the <strong>Case file</strong> first. In the <strong>Floor plan</strong>, the room order is A → B → C → D. “Immediately to the left” means directly before.</p>
+        <p>Select a room square to choose a person. Their name appears inside the square. Each person belongs in exactly one room.</p>
+        <p>Under <strong>Who committed the murder?</strong>, choose the person you assigned to the crime scene. Use the checkmark to check your answers. As soon as everything is correct, the solution appears. After five seconds, the next unsolved case opens if there is one.</p>
+        <p>In some hard cases, exactly one statement is false. Select that statement as part of your answer.</p>
+        <p>A wavy underline marks an incorrect choice. The error count shows how many fields are currently incorrect. If an answer is wrong, you can keep rearranging your choices. Use the reset arrow to clear all selections.</p>
+      </div>
+    </section>
+    <!-- Ich stelle die Fallakte über den Flurplan. Auf schmalen Bildschirmen blende ich Enton aus. -->
+    <div class="case-layout">
+      <section class="panel" aria-labelledby="clue-title">
+        <h2 id="clue-title" data-text="clues">Fallakte</h2>
+        <!-- Ich zeige den Fortschritt an, z. B. "5 von 8". -->
+        <p id="puzzle-progress"></p>
+        <p id="case-intro"></p>
+        <p data-text="rules">Die vier Verdächtigen waren zur Tatzeit in vier verschiedenen Räumen. Nur die Person am Tatort war beim Opfer.</p>
+        <p id="lie-rule" data-text="lieRule" hidden>Genau eine der Aussagen ist falsch.</p>
+        <ol id="clues"></ol>
+      </section>
+
+      <!-- app.js befüllt die anklickbaren Raumquadrate und aktiviert bei Bedarf die Auswahl einer falschen Aussage. -->
+      <div class="floor-plan-art" aria-hidden="true"></div>
+      <form class="panel" id="case-form">
+        <h2 data-text="rooms">Flurplan</h2>
+        <ol id="rooms" role="list"></ol>
+
+        <label for="suspect" data-text="accusation">Wer hat die Tat begangen?</label>
+        <select id="suspect" required></select>
+
+        <div id="lie-field" hidden>
+          <label for="false-clue" data-text="falseClue">Welche Aussage ist falsch?</label>
+          <select id="false-clue" disabled></select>
+        </div>
+        <!-- Ich zeige Fehlerzahl, Prüfen und Zurücksetzen nebeneinander. Screenreader erhalten die Button-Namen. -->
+        <div class="actions">
+          <p id="field-errors" role="status"></p>
+          <button type="submit" data-label="solve" aria-label="Fall lösen">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
+              stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="m5 12 4 4L19 6"/>
+            </svg>
+          </button>
+          <button type="reset" data-label="reset" aria-label="Zurücksetzen">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
+              stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M4 11a8 8 0 1 1 2.34 6.66M4 5v6h6"/>
+            </svg>
+          </button>
+        </div>
+        <p id="feedback" role="status"></p>
+      </form>
+    </div>
+
+    <!-- Ich zeige die Auflösung, sobald alle Antworten richtig sind. -->
+    <section id="solution" class="panel solution" aria-labelledby="solution-title" hidden>
+      <h2 id="solution-title" data-text="solution">Auflösung</h2>
+      <p id="solution-text"></p>
+    </section>
+  </main>
+</body>
+</html>
