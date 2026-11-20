@@ -219,6 +219,11 @@ function startWordLadder() {
   function render() {
     const lang = language()
     const { puzzle, path: chain } = state()
+    // Ich zeige die Nummer des aktuellen Rätsels und die Gesamtzahl der Rätsel in derselben Sprache an.
+    const total = puzzles[lang].length
+    document.querySelector('#puzzle-progress').textContent = lang === 'en'
+    ? `Puzzle ${puzzle + 1} of ${total}`
+    : `Rätsel ${puzzle + 1} von ${total}`
     const [first, last] = puzzles[lang][puzzle]
     start.textContent = first
     target.textContent = last

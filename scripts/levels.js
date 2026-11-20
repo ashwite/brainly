@@ -25,14 +25,18 @@ const levelProgress = (() => {
     return awards
   }
 
+  // Ich zähle die Anzahl der gelösten Rätsel derselben Kategorie. Die Kennung eines Rätsels dient als Schlüssel.
+  function solvedCount(game) {
+  const gamePrefix = `${prefix}${game}:`
+  return [...readAwards().keys()].filter(key => key.startsWith(gamePrefix)).length
+}
   // Ich steigere die Schwierigkeit nach fünf und nach zehn verschiedenen gelösten Rätseln derselben Kategorie.
-  function difficulty(game) {
-    const gamePrefix = `${prefix}${game}:`
-    const solved = [...readAwards().keys()].filter(key => key.startsWith(gamePrefix)).length
-    if (solved >= 10) return 'hard'
-    if (solved >= 5) return 'medium'
-    return 'easy'
-  }
+function difficulty(game) {
+  const solved = solvedCount(game)
+  if (solved >= 10) return 'hard'
+  if (solved >= 5) return 'medium'
+  return 'easy'
+}
 
   function isSolved(game, puzzle) {
     return readAwards().has(`${prefix}${game}:${puzzle}`)
@@ -134,5 +138,5 @@ const levelProgress = (() => {
     if (event.key === null || event.key.startsWith(prefix)) render()
   })
   render()
-  return { award, difficulty, isSolved, saveKey: 'levelProgressSave', captureSave, restoreSave }
+  return { award, difficulty, solvedCount, isSolved, saveKey: 'levelProgressSave', captureSave, restoreSave }
 })()

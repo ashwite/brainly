@@ -164,6 +164,11 @@ function startSudoku() {
 
   // Beim Rendern verwende ich dieselben Feld-Buttons, damit der Tastaturfokus erhalten bleibt.
   function renderBoard() {
+    // Ich zeige die Hinweise nur an, wenn das Spiel noch läuft und ein Feld ausgewählt ist.
+    const puzzleKey = `${game.given.join('')}:${game.solved.join('')}`;
+    const counted = game.done && levelProgress.isSolved('sudoku', puzzleKey);
+    const puzzleNumber = levelProgress.solvedCount('sudoku') + (counted ? 0 : 1);
+    document.querySelector('#puzzle-progress').textContent = `Sudoku ${puzzleNumber}`;
     hintButton.disabled = game.done;
     hintMessage.textContent = hint?.game === game
       ? translate(hint.key).replace('{digits}', hint.digits.join(', '))
@@ -512,6 +517,13 @@ function startMudoku() {
   // Ich tausche nur die Beschriftungen aus. Die Werte in den Auswahllisten bleiben erhalten.
   function renderCaseLanguage() {
     const english = document.documentElement.lang === 'en'
+    // Ich zeige die Fallnummer und die Gesamtzahl der Fälle in derselben Sprache an.
+    const caseIndex = caseCatalog.indexOf(activeCase)
+    document.querySelector('#puzzle-progress').textContent = caseIndex >= 0
+    ? (english
+      ? `Case ${caseIndex + 1} of ${caseCatalog.length}`
+      : `Fall ${caseIndex + 1} von ${caseCatalog.length}`)
+    : ''
     const text = english ? activeCase.en : activeCase.de
     const roomNames = text.roomNames ?? activeCase.rooms.map(room => room.name)
     document.title = `Mudoku · ${text.title}`
