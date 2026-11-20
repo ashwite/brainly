@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="de">
+<!-- Ich definiere im Kopfbereich den Tab-Titel und lade das Design und die Skripte für diese Seite. -->
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#fff">
+  <meta name="description" content="Sudoku mit automatischer Schwierigkeit und automatischem Spielstand.">
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/miffy.png">
+  <title>Sudoku · brainly</title>
+
+  <!-- Gespeicherte Sprache und Hell-Dunkel-Modus vor dem Rendern anwenden. -->
+  <script>
+    try {
+      document.documentElement.lang = localStorage.getItem('sudoku-language') === 'en' ? 'en' : 'de';
+      document.documentElement.dataset.theme = localStorage.getItem('sudoku-theme') ||
+        (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    } catch {
+      // Wenn der Browser den Speicher blockiert, verwende ich die Vorgaben.
+    }
+  </script>
+  <!-- Im Stylesheet sammle ich gemeinsame Regeln und ergänze für jedes Spiel eigene Regeln. -->
+  <link rel="stylesheet" href="../styles/style.css?v=158">
+  <!-- Ich lade zuerst die Spiellogik und dann die Konto-Funktionen. defer wartet mit der Ausführung, bis das HTML eingelesen ist. -->
+  <!-- Ich lade Übersetzungen und gemeinsame Bedienelemente zuerst. defer wartet, bis die Seite eingelesen ist. -->
+  <script src="../scripts/text.js?v=32" defer></script>
+  <script src="../scripts/site-shell.js?v=27" defer></script>
+  <script src="../scripts/navigation.js?v=5" defer></script>
+  <script src="../scripts/game-help.js?v=1" defer></script>
+  <script src="../scripts/characters.js?v=11" defer></script>
+  <script src="../scripts/levels.js?v=11" defer></script>
+  <script src="../scripts/app.js?v=16" defer></script>
+  <script src="../scripts/account.js?v=9" data-publishable-key="pk_test_d2FybS1wYW5kYS00MjY1LmNsZXJrLmFjY291bnRzLmRldiQ" defer></script>
+</head>
+<!-- Ich gebe mit data-game an, welche Spiellogik app.js starten soll. -->
+<body data-game="sudoku">
+
+  <!-- Hier baue ich die Spielfläche für Sudoku auf. -->
+  <main>
+    <!-- Ich hinterlege beide Sprachen. Das kleine i öffnet die Anleitung, die zur gewählten Sprache passt. -->
+    <section id="hilfe-sudoku" class="game-help" aria-labelledby="hilfe-sudoku-title" hidden>
+      <h2 id="hilfe-sudoku-title">Sudoku</h2>
+      <div class="help-de" lang="de">
+        <p>Fülle das Raster so, dass jede Zahl von 1 bis 9 in jeder Zeile, Spalte und jedem 3×3-Block genau einmal vorkommt.</p>
+        <p>Wähle ein freies Feld und tippe eine Zahl an oder drücke 1 bis 9. Mit Rücktaste, Entf oder einem zweiten Tipp auf das gewählte Feld löschst du deine Eingabe.</p>
+        <p>Eine wellige Unterstreichung zeigt eine falsche Zahl an. Sie verschwindet beim Korrigieren oder Löschen.</p>
+        <p>Wenn du nicht weiterkommst, tippe auf die kleine Glühbirne rechts neben den Zahlentasten. Sie markiert eine falsche Eingabe oder wählt ein freies Feld aus und zeigt dir, welche Zahlen dort infrage kommen. Du trägst die Zahl selbst ein. Nach der Lösung startet automatisch ein neues Rätsel.</p>
+      </div>
+      <div class="help-en" lang="en">
+        <p>Fill the grid so that each number from 1 to 9 appears exactly once in every row, column and 3×3 box.</p>
+        <p>Select an empty cell and tap a number or press 1 to 9. Press Backspace or Delete, or tap the selected cell again, to clear your entry.</p>
+        <p>A wavy underline marks an incorrect number. It disappears when you correct or clear the entry.</p>
+        <p>If you get stuck, tap the small light bulb to the right of the number buttons. It highlights an incorrect entry or selects an empty cell and shows which numbers could fit there. You enter the number yourself. Once you solve the grid, a new puzzle starts automatically.</p>
+      </div>
+    </section>
+    <section class="game" data-label="game" aria-label="Sudoku-Spiel">
+      <!-- Ich zeige den Fortschritt an, z. B. "5 von 8". -->
+      <p id="puzzle-progress"></p>
+      <!-- Mit JavaScript ergänze ich hier die 81 Felder und die neun Zahlentasten. -->
+      <div class="board-wrap">
+        <div id="board" role="group" data-label="board" aria-label="Sudoku-Raster"></div>
+      </div>
+      <div class="number-row">
+        <div id="numbers" data-label="numbers" aria-label="Zahlen eingeben"></div>
+        <button id="hint-button" type="button" data-label="hint" aria-label="Hinweis">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true">
+            <path d="M9 18h6m-5 3h4m-5-6c0-2-3-3-3-7a6 6 0 0 1 12 0c0 4-3 5-3 7z"/>
+          </svg>
+        </button>
+      </div>
+      <p id="hint-message" role="status"></p>
+      <!-- Ich stelle die Meldungen für Screenreader bereit und blende sie optisch aus. -->
+      <p id="message" class="sr-only" role="status" aria-live="polite"></p>
+    </section>
+  </main>
+</body>
+</html>
