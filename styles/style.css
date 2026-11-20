@@ -141,38 +141,17 @@ body > header { align-self: start; }
 .footer-area { position: relative; z-index: 1; align-self: end; }
 .footer-skate {
   height: clamp(110px, 37vw, 148px);
-  background: url('../assets/ghost.png') center bottom -2px / auto 100% no-repeat;
+  background: url('../assets/miffyroll.png') center bottom -2px / auto 100% no-repeat;
   pointer-events: none;
-}
-html[data-theme="dark"] .footer-skate {
-  position: relative;
-  overflow: hidden;
-  background: none;
-  animation: none;
-}
-/* Ich verwende die Helligkeit des Feenbilds als Maske. Helle Stellen lassen Weiß durch, dunkle Stellen werden durchsichtig. */
-html[data-theme="dark"] .footer-skate::before {
-  content: '';
-  position: absolute;
-  inset-block: 0;
-  inset-inline-start: 100%;
-  width: 170px;
-  background: var(--ink);
-  mask: url('../assets/fee.png') center / contain no-repeat;
-  mask-mode: luminance;
-  animation: footer-fairy-fly 6s linear infinite;
 }
 
 @media (prefers-reduced-motion: no-preference) {
   .footer-skate { animation: footer-skate-roll 6s linear infinite; }
 }
+
 @keyframes footer-skate-roll {
-  from { background-position: left -110px bottom -2px; }
-  to { background-position: right -110px bottom -2px; }
-}
-@keyframes footer-fairy-fly {
-  from { transform: translateX(0); }
-  to { transform: translateX(calc(-100vw - 100%)); }
+  from { background-position: left -150px bottom -2px; }
+  to { background-position: right -150px bottom -2px; }
 }
 
 /* Die Fußnavigation verteilt alle Einträge mit einem gemeinsamen Abstand. */
