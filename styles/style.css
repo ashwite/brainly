@@ -34,15 +34,61 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--ink); outline-o
 header {
   position: relative;
   z-index: 50;
+  width: 100%;
+  max-width: 1320px;
+  margin: 0 auto;
+}
+
+.header-top {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 100%;
-  max-width: 1320px;
   height: 72px;
-  flex-shrink: 0;
-  margin: 0 auto;
   padding: 0 32px;
+}
+
+.header-games {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(6px, 2vw, 14px);
+  width: min(calc(100% - 32px), 360px);
+  margin: 0 auto 12px;
+}
+
+.header-game-link {
+  display: grid;
+  gap: 4px;
+  color: inherit;
+  font-size: clamp(11px, 2.8vw, 14px);
+  text-align: center;
+  text-decoration: none;
+}
+
+.header-game-image {
+  position: relative;
+  display: block;
+  aspect-ratio: 1;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--related);
+}
+
+.header-game-image img {
+  position: absolute;
+  inset: 12%;
+  width: 76%;
+  height: 76%;
+  object-fit: contain;
+}
+
+html[data-theme="dark"] .header-game-image img {
+  filter: invert(1);
+}
+
+.header-game-link:hover .header-game-image,
+.header-game-link:focus-visible .header-game-image {
+  border-color: var(--ink);
 }
 .brand { display: inline-flex; align-items: center; color: var(--ink); text-decoration: none; }
 .brand-icon { display: inline-flex; width: 44px; height: 27px; }
@@ -102,8 +148,7 @@ h1 { margin: 12px 0 4px; font-size: 22px; line-height: 1.35; font-weight: 400; }
 /* Ich passe die Abstände für kleine Bildschirme an. */
 @media (max-width: 700px) {
   html { font-size: 15px; }
-  header { height: 64px; padding: 0 20px; }
-  .brand-wordmark { font-size: 28px; }
+  .header-top { height: 64px; padding: 0 20px; }  .brand-wordmark { font-size: 28px; }
   #game-help-toggle { font-size: 15px; }
   .theme-toggle { font-size: 22px; }
   main { max-width: 510px; gap: 25px; padding: 12px 20px 24px; }
@@ -141,38 +186,17 @@ body > header { align-self: start; }
 .footer-area { position: relative; z-index: 1; align-self: end; }
 .footer-skate {
   height: clamp(110px, 37vw, 148px);
-  background: url('../assets/ghost.png') center bottom -2px / auto 100% no-repeat;
+  background: url('../assets/miffyroll.png') center bottom -2px / auto 100% no-repeat;
   pointer-events: none;
-}
-html[data-theme="dark"] .footer-skate {
-  position: relative;
-  overflow: hidden;
-  background: none;
-  animation: none;
-}
-/* Ich verwende die Helligkeit des Feenbilds als Maske. Helle Stellen lassen Weiß durch, dunkle Stellen werden durchsichtig. */
-html[data-theme="dark"] .footer-skate::before {
-  content: '';
-  position: absolute;
-  inset-block: 0;
-  inset-inline-start: 100%;
-  width: 170px;
-  background: var(--ink);
-  mask: url('../assets/fee.png') center / contain no-repeat;
-  mask-mode: luminance;
-  animation: footer-fairy-fly 6s linear infinite;
 }
 
 @media (prefers-reduced-motion: no-preference) {
   .footer-skate { animation: footer-skate-roll 6s linear infinite; }
 }
+
 @keyframes footer-skate-roll {
-  from { background-position: left -110px bottom -2px; }
-  to { background-position: right -110px bottom -2px; }
-}
-@keyframes footer-fairy-fly {
-  from { transform: translateX(0); }
-  to { transform: translateX(calc(-100vw - 100%)); }
+  from { background-position: left -150px bottom -2px; }
+  to { background-position: right -150px bottom -2px; }
 }
 
 /* Die Fußnavigation verteilt alle Einträge mit einem gemeinsamen Abstand. */

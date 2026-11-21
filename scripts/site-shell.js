@@ -11,6 +11,7 @@
   <div class="background-butterflies" aria-hidden="true"></div>
   <div class="background-motif-center" aria-hidden="true"></div>
   <header>
+      <div class="header-top">
     <a class="brand" href="${base}pages/home.html" data-label="home" aria-label="Startseite">
       <span class="brand-icon">
         <img class="logo-light" src="${base}assets/logo-light.png" alt="">
@@ -25,6 +26,17 @@
         <span aria-hidden="true">☾</span>
       </button>
     </div>
+        </div>
+    <nav class="header-games" aria-label="Home, Sudoku, Mudoku, Wordle">
+      ${Object.entries({ home: 'Home', ...games }).map(([slug, name]) => `
+        <a class="header-game-link" href="${base}pages/${slug}.html">
+          <span class="header-game-image">
+            <img src="${base}assets/nav-${slug}.png" alt="">
+          </span>
+          <span>${name}</span>
+        </a>
+      `).join('')}
+    </nav>
   </header>`)
   // Ich ergänze unten die animierte Figur, die Footer-Links und die Zeile für Konto-Meldungen.
   document.body.insertAdjacentHTML('beforeend', `
