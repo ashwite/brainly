@@ -6,6 +6,7 @@ const games = { sudoku: startSudoku, mudoku: startMudoku, wordle: () => startWor
 const gameApp = games[document.body.dataset.game]();
 
 // Ich halte die Spiellogik von Sudoku und Mudoku hier zusammen. Wordle startet über seine eigene Datei.
+// Ich initialisiere Sudoku mit seinen Bedienelementen, dem Raster und dem gespeicherten Spielstand.
 function startSudoku() {
   // Sudoku: Ich erzeuge Rätsel, prüfe Zahlen und verwalte die Sudoku-Bedienung.
 
@@ -379,6 +380,7 @@ function startSudoku() {
   };
 }
 
+// Ich initialisiere Mudoku mit der Fallauswahl, dem Flurplan und der Prüfung der Zuordnung.
 function startMudoku() {
   // Mudoku: Ich zeige den Fall an, prüfe die Eingaben und starte den nächsten Fall.
   // Ich hole die Bedienelemente über ihre IDs aus mudoku.html. # steht für eine ID.
@@ -466,7 +468,7 @@ function startMudoku() {
     return 'ABCD'[index]
   }
 
-  // Die Falltexte verwenden dieselben Raumkürzel wie der Flurplan.
+  // Ich verwende in den Falltexten dieselben Raumkürzel wie im Flurplan.
   function formatCaseRooms(value, names, english) {
     // Ich behandle alte Raumnamen als wörtlichen Text. Ein Suchmuster findet sie in den Hinweisen und ersetzt sie durch A bis D.
     const escapedNames = names.map(name => name.replace(/[.*+?^$(){}|[\]\\]/g, '\\$&'))
@@ -595,7 +597,7 @@ function startMudoku() {
     const next = nextCase(completed)
     if (!next) return
 
-    // Die Auflösung bleibt fünf Sekunden sichtbar. Eine geänderte Zuordnung oder ein Reset stoppt den Wechsel.
+    // Ich lasse die Auflösung fünf Sekunden sichtbar und breche den Wechsel bei einer neuen Zuordnung oder einem Reset ab.
     nextCaseTimer = setTimeout(() => {
       nextCaseTimer = undefined
       if (activeCase === completed && currentAnswer() === 'solved') startCase(next)

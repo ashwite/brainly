@@ -1,4 +1,4 @@
-// Ich verwalte die Charakterauswahl, eigene PNGs und den Glückwunsch nach einem gelösten Rätsel.
+// Ich verwalte die Charakterauswahl, eigene PNGs und die kurze Rückmeldung nach Rätseln oder Minispielrunden.
 (() => {
   const storageKey = 'level-character'
   const customImageKey = 'level-custom-character'
@@ -8,11 +8,13 @@
   // Ich behalte die alten Nummern im Browserspeicher, damit gespeicherte Auswahlen mit den neuen Dateinamen funktionieren.
   const characterImages = { '6': 'max.png', '1': 'dino.png', '5': 'cat.png' }
   const documentScript = document.currentScript.src
+  // Ich lese eigene Bilder aus dem Browserspeicher und löse mitgelieferte Bilder relativ zum Skript auf.
   function imagePath(number) {
     if (number === customCharacter) return localStorage.getItem(customImageKey)
     return new URL(`../assets/${characterImages[number]}`, documentScript).href
   }
 
+  // Ich verwende die gespeicherte Auswahl, wenn das Bild verfügbar ist. Sonst zeige ich Max.
   function selectedCharacter() {
     try {
       const saved = localStorage.getItem(storageKey)
@@ -23,6 +25,7 @@
     }
   }
 
+  // Ich setze das Bild und seine Kennung, damit CSS bei Bedarf die passende Größe anwenden kann.
   function setCharacter(image, number) {
     image.dataset.character = number
     image.src = imagePath(number)
@@ -42,12 +45,22 @@
     document.body.append(celebration)
 
     let hideTimer
+    // Ich blende die Meldung am Ende der Animation oder nach dem Ablauf des Timers aus.
     function hideCelebration() {
       clearTimeout(hideTimer)
       celebration.hidden = true
     }
     celebration.addEventListener('animationend', hideCelebration)
-    // Ich reagiere auf das Signal des Spiels, zeige Namen und Bild und blende den Glückwunsch nach kurzer Zeit wieder aus.
+    // Ich zeige den ausgewählten Charakter für beide Meldungen mit derselben Animation.
+    function showCelebration(text) {
+      message.textContent = text
+      setCharacter(image, selectedCharacter())
+      celebration.hidden = false
+      for (const animation of celebration.getAnimations()) animation.currentTime = 0
+      clearTimeout(hideTimer)
+      hideTimer = setTimeout(hideCelebration, 2200)
+    }
+
     document.addEventListener('puzzle-solved', () => {
       let name = ''
       try {
@@ -55,12 +68,12 @@
       } catch {
         // Ohne Browserspeicher zeige ich den Glückwunsch ohne Namen.
       }
-      message.textContent = name ? `Super ${name}!` : 'Super!'
-      setCharacter(image, selectedCharacter())
-      celebration.hidden = false
-      for (const animation of celebration.getAnimations()) animation.currentTime = 0
-      clearTimeout(hideTimer)
-      hideTimer = setTimeout(hideCelebration, 2200)
+      showCelebration(name ? `Super ${name}!` : 'Super!')
+    })
+
+    // Ich zeige am Ende eines Minispiels nur die XP, die in dieser Runde dazugekommen sind.
+    document.addEventListener('minigame-finished', event => {
+      showCelebration(`+${new Intl.NumberFormat(document.documentElement.lang).format(event.detail.xp)} XP`)
     })
     return
   }
@@ -80,6 +93,7 @@
   let statusKey = ''
   let available = []
 
+  // Ich halte den Meldungsschlüssel fest, damit ich denselben Status nach einem Sprachwechsel übersetzen kann.
   function showUploadStatus(key) {
     statusKey = key
     status.textContent = key ? translate(key) : ''
@@ -125,6 +139,7 @@
     })
   }
 
+  // Ich zeige nur geladene Bilder und markiere die zuletzt gewählte Figur, sofern sie verfügbar ist.
   function renderOptions(selected) {
     empty.hidden = available.length > 0
     options.replaceChildren(...available.map(({ label }) => label))

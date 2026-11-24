@@ -19,6 +19,7 @@ const firstCase = {
   explanation: 'Ben war im Labor auf Platz 3. Mira war direkt links von ihm, also auf Platz 2 im Wartezimmer. Emil war am Empfang auf Platz 1. Für Nora bleibt Platz 4, das Behandlungszimmer.',
 }
 
+// Ich speichere die englische Fassung des ersten Falls mit derselben Raumzuordnung.
 const englishFirstCase = {
   title: 'The Last Appointment',
   intro: 'After closing time, Dr. Winter is found dead in the treatment room. Who was with him at the time of the murder?',
@@ -31,7 +32,7 @@ const englishFirstCase = {
   explanation: 'Ben was in the lab, the third room. Mira was immediately to his left in the waiting room. Emil was at reception, the first room. That leaves Nora in the treatment room.',
 }
 
-// Die Reihenfolge im Array entspricht A bis D. person enthält die richtige Zuordnung.
+// Ich ordne die Einträge im Array den Räumen A bis D zu und speichere die richtige Person in person.
 const legacyCases = {
   easy: { de: firstCase, en: englishFirstCase },
   medium: {

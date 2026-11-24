@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#fff">
+  <title>Spark · brainly</title>
+
+  <!-- Ich übernehme Sprache und Farbschema vor dem ersten Rendern. -->
+  <script>
+    const page = document.documentElement
+    page.dataset.theme = matchMedia('(prefers-color-scheme: dark)').matches
+      ? 'dark'
+      : 'light'
+
+    try {
+      page.dataset.theme = localStorage.getItem('sudoku-theme') || page.dataset.theme
+      page.lang = localStorage.getItem('sudoku-language') === 'en' ? 'en' : 'de'
+    } catch {
+      // Ich behalte die Vorgaben bei, wenn der Browser seinen Speicher blockiert.
+    }
+  </script>
+
+  <!-- Ich lade das gemeinsame Design und lasse die Skripte mit defer nach dem Einlesen des HTML laufen. -->
+  <link rel="stylesheet" href="../styles/style.css?v=164">
+  <script src="../scripts/text.js?v=35" defer></script>
+  <script src="../scripts/site-shell.js?v=37" defer></script>
+  <script src="../scripts/navigation.js?v=5" defer></script>
+  <script src="../scripts/game-help.js?v=1" defer></script>
+  <!-- Ich lade das Levelsystem und die Charakteranzeige vor dem Spielskript. -->
+  <script src="../scripts/levels.js?v=14" defer></script>
+  <script src="../scripts/characters.js?v=12" defer></script>
+  <script src="../scripts/spark.js?v=11" defer></script>
+  <style>
+    /* Ich lasse das Spiel den gesamten Platz zwischen Spieleauswahl und Fußnavigation füllen. */
+    body[data-game="spark"] {
+      grid-template-rows: auto minmax(240px, 1fr) auto;
+    }
+
+    body[data-game="spark"] > main.spark-main {
+      display: block;
+      max-width: none;
+      padding: 0;
+      border-top: 2px solid var(--ink);
+    }
+
+    /* Ich verwende für beide Trennlinien dieselbe Stärke und Theme-Farbe wie bei Rune. */
+    body[data-game="spark"] .site-footer {
+      border-top: 2px solid var(--ink);
+    }
+
+    /* Ich zeichne auf einem transparenten Canvas, damit die Seitenmotive sichtbar bleiben. */
+    #field {
+      position: absolute;
+      inset: 0;
+      display: block;
+      width: 100%;
+      height: 100%;
+      background: transparent;
+      touch-action: none;
+    }
+
+    #field:focus-visible {
+      outline: 2px solid var(--ink);
+      outline-offset: -2px;
+    }
+
+    /* Ich zeige den Countdown über dem Feld und lasse Eingaben zum Spielfeld durch. */
+    .spark-controls {
+      position: relative;
+      text-align: center;
+      pointer-events: none;
+    }
+
+    /* Ich positioniere die Anleitung oberhalb der Spielfläche und verwende den durchscheinenden Hintergrund der gemeinsamen Hilfe. */
+    #hilfe-spark {
+      position: absolute;
+      z-index: 1;
+      top: 18px;
+      left: 50%;
+      translate: -50% 0;
+      width: min(calc(100% - 40px), 610px);
+    }
+  </style>
+</head>
+<body data-game="spark">
+  <main class="spark-main">
+    <canvas id="field" width="480" height="240" tabindex="0" aria-label="Spark-Spielfeld"></canvas>
+
+    <!-- Ich zeige während des Spiels den Countdown. Außerhalb einer Runde bleibt der Status vorlesbar. -->
+    <div class="spark-controls">
+      <p id="status" class="sr-only" role="status">Bereit. Tippe oder drücke die Leertaste.</p>
+    </div>
+
+    <!-- Ich blende die Anleitung über dem Spiel ein, wenn das i gedrückt wird. -->
+    <section id="hilfe-spark" class="game-help" aria-labelledby="hilfe-spark-title" hidden>
+      <h2 id="hilfe-spark-title" data-text="helpSpark">Anleitung zu Spark</h2>
+      <p class="help-de" lang="de">Tippe auf den Bildschirm oder drücke die Leertaste, um zu starten. Bewege den Korb mit dem Finger, der Maus oder den Pfeiltasten. Du hast 30 Sekunden. Wenn du drei Motive hintereinander verpasst oder den Zombie berührst, endet die Runde.</p>
+      <p class="help-en" lang="en">Tap the screen or press the space bar to start. Move the basket with your finger, mouse, or arrow keys. You have 30 seconds. The round ends if you miss three in a row or touch the zombie.</p>
+    </section>
+  </main>
+</body>
+</html>
