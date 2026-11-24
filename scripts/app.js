@@ -16,7 +16,9 @@ function startSudoku() {
   // Je schwerer das Rätsel, desto weniger Zahlen möchte ich am Anfang vorgeben.
   const CLUE_COUNTS = { easy: 39, medium: 32, hard: 27 };
   const DIGITS = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+  // Ich greife auf das Element board zu, damit ich es im weiteren Ablauf verwenden kann.
   const boardElement = document.querySelector('#board');
+  // Ich greife auf das Element numbers zu, damit ich es im weiteren Ablauf verwenden kann.
   const numberButtons = document.querySelector('#numbers');
   let game;
   // Hier merke ich mir das gewählte Feld. Die Felder zählen von 0 bis 80, also steht -1 für keine Auswahl.
@@ -24,7 +26,9 @@ function startSudoku() {
 
   let lastMessage = '';
   let hint;
+  // Ich greife auf das Element hint-button zu, damit ich es im weiteren Ablauf verwenden kann.
   const hintButton = document.querySelector('#hint-button');
+  // Ich greife auf das Element hint-message zu, damit ich es im weiteren Ablauf verwenden kann.
   const hintMessage = document.querySelector('#hint-message');
 
   function updateSudokuLanguage() {
@@ -35,12 +39,14 @@ function startSudoku() {
     if (lastMessage) announce(lastMessage);
     if (game) renderBoard();
   }
+  // Ich aktualisiere die sprachabhängige Darstellung beim Wechsel der Seitensprache.
   document.addEventListener('game-language-change', updateSudokuLanguage);
 
   // 2. Ich erzeuge das Sudoku und verwende eine 0 für leere Felder.
   // Ich mische eine Kopie der Liste von hinten nach vorne.
   // Ich tausche jedes Element mit einer Zufallsposition im noch nicht gemischten Teil.
   function shuffle(items) {
+    // Ich merke mir das Ergebnis der letzten Prüfung für die Anzeige.
     const result = [...items];
     for (let i = result.length - 1; i > 0; i--) {
       const randomIndex = Math.floor(Math.random() * (i + 1));
@@ -385,13 +391,21 @@ function startMudoku() {
   // Mudoku: Ich zeige den Fall an, prüfe die Eingaben und starte den nächsten Fall.
   // Ich hole die Bedienelemente über ihre IDs aus mudoku.html. # steht für eine ID.
   const form = document.querySelector('#case-form')
+  // Ich greife auf das Element suspect zu, damit ich es im weiteren Ablauf verwenden kann.
   const suspect = document.querySelector('#suspect')
+  // Ich greife auf das Element false-clue zu, damit ich es im weiteren Ablauf verwenden kann.
   const falseClue = document.querySelector('#false-clue')
+  // Ich greife auf das Element feedback zu, damit ich es im weiteren Ablauf verwenden kann.
   const feedback = document.querySelector('#feedback')
+  // Ich greife auf das Element field-errors zu, damit ich es im weiteren Ablauf verwenden kann.
   const fieldErrors = document.querySelector('#field-errors')
+  // Ich greife auf das Element solution zu, damit ich es im weiteren Ablauf verwenden kann.
   const solution = document.querySelector('#solution')
+  // Ich halte den aktuell geöffneten Fall mit Hinweisen und Lösung fest.
   let activeCase
+  // Ich merke mir das Ergebnis der letzten Prüfung für die Anzeige.
   let result = ''
+  // Ich halte die laufende Wartezeit bis zum nächsten Fall fest, damit ich sie abbrechen kann.
   let nextCaseTimer
   let clueItems = []
   let roomFields = []
@@ -423,6 +437,7 @@ function startMudoku() {
     activeCase = entry
     result = ''
 
+    // Ich greife auf das Element clues zu, damit ich es im weiteren Ablauf verwenden kann.
     const clues = document.querySelector('#clues')
     clues.replaceChildren()
     clueItems = entry.de.clues.map(() => {
@@ -464,6 +479,7 @@ function startMudoku() {
     renderCaseLanguage()
   }
 
+  // Ich ermittle die Beschriftung für das Raumfeld der aktuellen Sprache.
   function roomName(index) {
     return 'ABCD'[index]
   }
@@ -545,6 +561,7 @@ function startMudoku() {
     updateErrors()
   }
 
+  // Ich aktualisiere die sprachabhängige Darstellung beim Wechsel der Seitensprache.
   document.addEventListener('game-language-change', renderCaseLanguage)
   startCase(nextCase() ?? caseCatalog.find(entry => entry.level === levelProgress.difficulty('mudoku')))
 
@@ -557,6 +574,7 @@ function startMudoku() {
       showResult('')
     }
   })
+  // Ich setze die Spielmaske über das Zurücksetzen des Formulars zurück.
   form.addEventListener('reset', event => {
     event.preventDefault()
     startCase(activeCase)
@@ -604,6 +622,7 @@ function startMudoku() {
     }, 5000)
   }
 
+  // Ich prüfe die Eingaben, sobald das Formular abgeschickt wird.
   form.addEventListener('submit', event => {
     event.preventDefault()
     const answer = currentAnswer()

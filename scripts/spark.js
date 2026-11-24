@@ -2,6 +2,7 @@
   // Ich hole das Canvas und die Statusanzeige aus der Seite.
   const field = document.querySelector('#field')
   const ctx = field.getContext('2d')
+  // Ich greife auf das Element status zu, damit ich es im weiteren Ablauf verwenden kann.
   const status = document.querySelector('#status')
 
   // Ich speichere die Korbposition, die fallenden Motive und die gedrückten Pfeiltasten.
@@ -11,16 +12,25 @@
   const drops = []
   const motifNames = ['pumpkin', 'carrot', 'honey', 'zombie', 'leek', 'cucumber']
   const motifs = []
+  // Ich merke mir, welche Motive im laufenden Durchgang noch nicht gezogen wurden.
   let remainingMotifs = []
+  // Ich halte die gerade gedrückten Pfeiltasten fest.
   const pressed = new Set()
+  // Ich merke mir die XP dieser Runde für die Meldung am Spielende.
   let roundXp = 0
+  // Ich zähle Fehlversuche in Folge und setze die Serie bei einem Fang zurück.
   let consecutiveMisses = 0
+  // Ich merke mir, ob gerade eine Runde läuft und Eingaben annehmen darf.
   let running = false
+  // Ich halte den festen Endzeitpunkt für den Countdown fest.
   let endTime = 0
+  // Ich speichere die Zeit des vorigen Bilds für Bewegung und XP.
   let previousTime = 0
   // Ich sammle XP nur während laufender Runden und bei sichtbarem Tab.
   const recordPlayTime = levelProgress.trackPlayTime('spark')
+  // Ich merke mir, wann das nächste Motiv von oben erscheint.
   let nextDrop = 0
+  // Ich speichere Treffpunkt und Animationsfortschritt bei der Zombie-Kollision.
   let impact = null
 
   // Ich erstelle aus der PNG-Transparenz eine weiße Variante für den Dunkelmodus.
@@ -146,6 +156,7 @@
     }
 
     const started = performance.now()
+    // Ich zeichne jeweils einen Animationsschritt und gebe danach den Neustart frei.
     function animate(time) {
       impact.progress = Math.min(1, Math.max(0, (time - started) / 420))
       draw()
@@ -158,6 +169,7 @@
     requestAnimationFrame(animate)
   }
 
+  // Ich berechne Bewegung, Kollisionen und Anzeige für das nächste Bild der Runde.
   function frame(time) {
     // Ich zähle die verstrichene Spielzeit unabhängig von der Schrittweite der Bewegung.
     roundXp += recordPlayTime(previousTime, Math.min(time, endTime))
@@ -236,7 +248,9 @@
     moveBasket(x - basket.width / 2)
   }
 
+  // Ich reagiere auf den Beginn einer Berührung oder einen Mausklick.
   field.addEventListener('pointerdown', followPointer)
+  // Ich verarbeite die Bewegung von Finger oder Maus über dem Spielfeld.
   field.addEventListener('pointermove', followPointer)
 
   // Ich merke mir gehaltene Pfeiltasten und entferne sie beim Loslassen oder beim Verlust des Spielfeldfokus.
@@ -247,7 +261,9 @@
     }
   })
 
+  // Ich beende die Eingabe beim Loslassen der Taste.
   field.addEventListener('keyup', event => pressed.delete(event.key))
+  // Ich setze die gehaltenen Eingaben zurück, wenn das Element den Fokus verliert.
   field.addEventListener('blur', () => pressed.clear())
 
   // Ich beginne erst nach dem Laden der Bilder und lasse die Kollisionsanimation auslaufen. Für die neue Runde setze ich Motive, Fehlserie, XP-Zähler und Countdown zurück.
@@ -272,12 +288,14 @@
 
   // Ich starte per Tipp oder Leertaste und lasse Navigation und Anleitung ihre Eingaben selbst verarbeiten.
   const pageControls = 'header, .site-footer, .game-help, a, button, input, select, textarea, [contenteditable]'
+  // Ich reagiere auf den Beginn einer Berührung oder einen Mausklick.
   document.addEventListener('pointerdown', event => {
     if (!running && event.button === 0 && !event.target.closest(pageControls)) {
       startRound()
       if (event.target === field) followPointer(event)
     }
   })
+  // Ich prüfe beim Tastendruck, ob er eine Spielfunktion auslösen soll.
   document.addEventListener('keydown', event => {
     if (event.code !== 'Space' || event.target.closest(pageControls)) return
     event.preventDefault()

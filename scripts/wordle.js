@@ -174,12 +174,19 @@ function startWordLadder() {
     en: new Set('COLD CORD CARD WARD WARM WORD WORM GOLD BOLD HOLD SOLD TOLD FOLD HARD HARM HEAD HEAL TEAL TELL TALL TAIL HAIL HALL HEAR HEAT SEAL DEAL REAL CAT COT DOT DOG COG BAT RAT HAT HOT POT LOT LOG HARE CARE CURE PURE PORE CORE COMB COME DOME HOME HOPE ROPE RIPE PIPE PILE FILE FIRE FIRM FARM FORM FOAM TOLL HELL HILL FILL FULL BULL PULL POLL POLE PALE SALE MALE TALE TAME SAME GAME FAME LAME LIME LIKE LINE MINE NINE WINE WIDE RIDE SIDE SIRE TIRE TILE TIME DIME DINE FINE FIND FOND FOOD FOOL COOL COAL GOAL GOAT COAT BOAT BOLT BELT BELL BALL FALL FAIL FAIR HAIR PAIR PAIL NAIL MAIL MAIN RAIN PAIN PAWN DAWN DOWN TOWN TORN BORN CORN CORP CORK WORK WORN WARN BARN BARK DARK DART DARE DATE GATE LATE MATE RATE RACE PACE FACE FACT FATE FAKE CAKE MAKE BAKE TAKE TAPE TYPE TYRE SURE SAND SEND SENT BENT BEND BOND BAND BANG BANK SANK SINK SING RING KING WING WIND MIND PINE PINT PANT CANT CAST FAST LAST LOST LOFT SOFT SORT FORT FORK PORK PORT POST PAST PEST PETS SETS GETS JETS VETS VEST BEST REST TEST TEXT NEXT NEST NEWS NEAT BEAT SEAT MEAT SELL WELL WELD WILD MILD MILL'.split(' ')),
   }
 
+  // Ich greife auf das Element ladder-start zu, damit ich es im weiteren Ablauf verwenden kann.
   const start = document.querySelector('#ladder-start')
+  // Ich greife auf das Element ladder-target zu, damit ich es im weiteren Ablauf verwenden kann.
   const target = document.querySelector('#ladder-target')
+  // Ich greife auf das Element ladder-path zu, damit ich es im weiteren Ablauf verwenden kann.
   const path = document.querySelector('#ladder-path')
+  // Ich greife auf das Element ladder-form zu, damit ich es im weiteren Ablauf verwenden kann.
   const form = document.querySelector('#ladder-form')
+  // Ich greife auf das Element ladder-input zu, damit ich es im weiteren Ablauf verwenden kann.
   const input = document.querySelector('#ladder-input')
+  // Ich greife auf das Element ladder-submit zu, damit ich es im weiteren Ablauf verwenden kann.
   const submit = document.querySelector('#ladder-submit')
+  // Ich greife auf das Element ladder-status zu, damit ich es im weiteren Ablauf verwenden kann.
   const status = document.querySelector('#ladder-status')
   const language = () => document.documentElement.lang === 'en' ? 'en' : 'de'
   const initial = (lang, puzzle) => ({ puzzle, path: [puzzles[lang][puzzle][0]] })
@@ -198,6 +205,7 @@ function startWordLadder() {
   const progress = { de: initial('de', startingPuzzle('de')), en: initial('en', startingPuzzle('en')) }
   const state = () => progress[language()]
   let error = ''
+  // Ich halte den geplanten Wechsel zum nächsten Worträtsel fest.
   let nextPuzzleTimer
 
   // Ich vergleiche die Buchstaben an jeder Stelle. Tauschen oder Anhängen zählt nicht als ein Zug.

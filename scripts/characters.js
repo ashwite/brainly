@@ -1,5 +1,6 @@
 // Ich verwalte die Charakterauswahl, eigene PNGs und die kurze Rückmeldung nach Rätseln oder Minispielrunden.
 (() => {
+  // Ich verwende diesen Schlüssel für die gespeicherte Auswahl.
   const storageKey = 'level-character'
   const customImageKey = 'level-custom-character'
   const customCharacter = 'custom'
@@ -50,6 +51,7 @@
       clearTimeout(hideTimer)
       celebration.hidden = true
     }
+    // Ich räume die kurze Einblendung nach dem Animationsende weg.
     celebration.addEventListener('animationend', hideCelebration)
     // Ich zeige den ausgewählten Charakter für beide Meldungen mit derselben Animation.
     function showCelebration(text) {
@@ -61,6 +63,7 @@
       hideTimer = setTimeout(hideCelebration, 2200)
     }
 
+    // Ich zeige nach einem gelösten Rätsel die Rückmeldung mit dem ausgewählten Charakter.
     document.addEventListener('puzzle-solved', () => {
       let name = ''
       try {
@@ -78,7 +81,9 @@
     return
   }
 
+  // Ich greife auf das Element character-toggle zu, damit ich es im weiteren Ablauf verwenden kann.
   const toggle = document.querySelector('#character-toggle')
+  // Ich greife auf das Element character-picker zu, damit ich es im weiteren Ablauf verwenden kann.
   const picker = document.querySelector('#character-picker')
   // Ich klappe die Auswahl beim Antippen des aktuellen Bildes auf oder zu und melde den Zustand an Screenreader.
   toggle.addEventListener('click', () => {
@@ -86,9 +91,13 @@
     toggle.setAttribute('aria-expanded', String(!picker.hidden))
   })
 
+  // Ich greife auf das Element character-options zu, damit ich es im weiteren Ablauf verwenden kann.
   const options = document.querySelector('#character-options')
+  // Ich greife auf das Element character-empty zu, damit ich es im weiteren Ablauf verwenden kann.
   const empty = document.querySelector('#character-empty')
+  // Ich greife auf das Element character-upload zu, damit ich es im weiteren Ablauf verwenden kann.
   const upload = document.querySelector('#character-upload')
+  // Ich greife auf das Element character-upload-status zu, damit ich es im weiteren Ablauf verwenden kann.
   const status = document.querySelector('#character-upload-status')
   let statusKey = ''
   let available = []
@@ -99,12 +108,14 @@
     status.textContent = key ? translate(key) : ''
   }
 
+  // Ich übersetze den Namen für das Standardbild, die weiteren Figuren oder ein eigenes Bild.
   function characterName(number) {
     if (number === defaultCharacter) return translate('dogCharacter')
     if (number === customCharacter) return translate('ownCharacter')
     return translate(number === '1' ? 'dinoCharacter' : 'catCharacter')
   }
 
+  // Ich tausche das Profilbild aus und setze die passende Alternativbeschreibung.
   function showCharacter(number) {
     setCharacter(portrait, number)
     portrait.alt = characterName(number)
@@ -214,6 +225,7 @@
     }
   })
 
+  // Ich aktualisiere die sprachabhängige Darstellung beim Wechsel der Seitensprache.
   document.addEventListener('game-language-change', () => {
     showUploadStatus(statusKey)
     for (const { number, input } of available) {

@@ -1,14 +1,21 @@
 <!doctype html>
+<!-- Ich setze Deutsch als Ausgangssprache für die Seite. -->
 <html lang="de">
 <!-- Ich definiere im Kopfbereich den Tab-Titel und lade das Design und die Skripte für diese Seite. -->
 <head>
+  <!-- Ich verwende UTF-8, damit Umlaute und Symbole korrekt erscheinen. -->
   <meta charset="utf-8">
+  <!-- Ich richte die Seitenbreite an der Breite des Geräts aus. -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Ich hinterlege eine kurze Beschreibung für die Seitenvorschau. -->
   <meta name="description" content="Ändere pro Zug einen Buchstaben und erreiche das Zielwort.">
+  <!-- Ich setze den Titel für den Browser-Tab. -->
   <title>Wordle · brainly</title>
+  <!-- Ich lade das Symbol für den Browser-Tab. -->
   <link rel="icon" href="../assets/miffy.png" type="image/png">
   <!-- Ich übernehme die gespeicherte Sprache und das Farbschema vor dem ersten Rendern. -->
   <meta name="theme-color" content="#fff">
+  <!-- Ich stelle das gespeicherte Farbschema und die Sprache vor dem Rendern wieder her. -->
   <script>
     const preferredTheme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     document.documentElement.dataset.theme = preferredTheme;
@@ -23,50 +30,73 @@
   <link rel="stylesheet" href="../styles/style.css?v=164">
   <!-- Ich lade Übersetzungen und gemeinsame Bedienelemente zuerst. defer wartet, bis die Seite eingelesen ist. -->
   <script src="../scripts/text.js?v=35" defer></script>
+  <!-- Ich erzeuge Navigation, Kopfzeile und Footer aus der gemeinsamen Vorlage. -->
   <script src="../scripts/site-shell.js?v=37" defer></script>
+  <!-- Ich verbinde die Schalter für Sprache und Farbschema mit der Seite. -->
   <script src="../scripts/navigation.js?v=5" defer></script>
+  <!-- Ich verbinde das Info-i mit der passenden Spielanleitung. -->
   <script src="../scripts/game-help.js?v=1" defer></script>
+  <!-- Ich lade die Wortlisten und prüfe die Züge von Wordle. -->
   <script src="../scripts/wordle.js?v=10" defer></script>
+  <!-- Ich lade die gewählte Figur für das Profil oder die Rückmeldung am Rundenende. -->
   <script src="../scripts/characters.js?v=11" defer></script>
+  <!-- Ich lade die gemeinsamen XP und den Fortschritt für die Level-Anzeige. -->
   <script src="../scripts/levels.js?v=14" defer></script>
+  <!-- Ich initialisiere das ausgewählte Rätsel. -->
   <script src="../scripts/app.js?v=16" defer></script>
+  <!-- Ich binde die Kontoanmeldung und den Abgleich der Spielstände ein. -->
   <script src="../scripts/account.js?v=9" data-publishable-key="pk_test_d2FybS1wYW5kYS00MjY1LmNsZXJrLmFjY291bnRzLmRldiQ" defer></script>
 </head>
+<!-- Ich beginne hier mit dem sichtbaren Seiteninhalt. -->
 <body class="word-ladder" data-game="wordle">
 
   <!-- Ich zeige bei Wordle das Startwort, das Zielwort und die bisher geprüften gültigen Wörter. -->
   <main>
     <!-- Ich halte die Anleitung anfangs verborgen. Das kleine i öffnet sie. -->
     <section id="hilfe-wordle" class="game-help" aria-labelledby="hilfe-wordle-title" hidden>
+      <!-- Ich kennzeichne mit dieser Überschrift den Beginn des zugehörigen Abschnitts. -->
       <h2 id="hilfe-wordle-title">Wordle</h2>
+      <!-- Ich zeige diesen Teil der Anleitung, wenn Deutsch ausgewählt ist. -->
       <div class="help-de" lang="de">
         <p>Ändere pro Zug genau einen Buchstaben des aktuellen Worts. Deine Eingabe muss in der Wortliste stehen und darf in dieser Runde noch nicht vorkommen. Prüfe sie mit ✓ oder Enter. Das Rätsel endet, sobald du das Zielwort erreichst. Nach drei Sekunden öffnet sich das nächste ungelöste Rätsel deiner aktuellen Stufe, sofern eines verfügbar ist. Mit ↺ startest du das aktuelle Rätsel neu.</p>
       </div>
+      <!-- Ich zeige diesen Teil der Anleitung, wenn Englisch ausgewählt ist. -->
       <div class="help-en" lang="en">
         <p>Change exactly one letter of the current word each turn. Each entry must be in the word list and can only be used once per round. Check it with ✓ or Enter. The puzzle ends when you reach the target word. After three seconds, the next unsolved puzzle at your current difficulty opens if one is available. Use ↺ to restart the current puzzle.</p>
       </div>
     </section>
+    <!-- Ich gruppiere hier einen eigenen Abschnitt des Seiteninhalts. -->
     <section class="ladder-game" data-label="ladderName" aria-label="Wordle">
       <!-- Ich zeige den Fortschritt an, z. B. "5 von 8". -->
       <p id="puzzle-progress"></p>
+      <!-- Ich stelle hier Beschriftungen und die zugehörigen Werte nebeneinander. -->
       <dl class="ladder-words">
+        <!-- Ich setze hier das Startwort des aktuellen Rätsels ein. -->
         <div><dt data-text="ladderStart">Startwort</dt><dd id="ladder-start"></dd></div>
+        <!-- Ich setze hier das Zielwort des aktuellen Rätsels ein. -->
         <div><dt data-text="ladderTarget">Zielwort</dt><dd id="ladder-target"></dd></div>
       </dl>
       <!-- Ich verwende eine geordnete Liste, damit der Weg vom Startwort Schritt für Schritt lesbar ist. -->
       <ol id="ladder-path" data-label="ladderPath"></ol>
+      <!-- Ich fasse Eingaben und Aktionen für die Prüfung zusammen. -->
       <form id="ladder-form">
+        <!-- Ich verknüpfe die Beschriftung mit dem passenden Eingabefeld. -->
         <label for="ladder-input" data-text="ladderNext">Nächstes Wort</label>
         <!-- Ich gruppiere Eingabe, Prüfen und Zurücksetzen in einem gemeinsamen Rahmen. -->
         <div class="ladder-entry">
+          <!-- Ich biete hier ein Feld für die entsprechende Eingabe an. -->
           <input id="ladder-input" type="text" spellcheck="false" autocomplete="off" autocapitalize="characters" required>
+          <!-- Ich prüfe oder sende die Formulareingaben beim Auslösen dieses Buttons. -->
           <button id="ladder-submit" type="submit" data-label="ladderCheck" aria-label="Wort prüfen">
+            <!-- Ich zeichne das Symbol als Vektorgrafik im Button. -->
             <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
               stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="m5 12 4 4L19 6"/>
             </svg>
           </button>
+          <!-- Ich verwende diesen Button für das Zurücksetzen der Runde oder Eingaben. -->
           <button id="ladder-reset" type="reset" data-label="reset" aria-label="Zurücksetzen">
+            <!-- Ich zeichne das Symbol als Vektorgrafik im Button. -->
             <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
               stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M4 11a8 8 0 1 1 2.34 6.66M4 5v6h6"/>
@@ -74,6 +104,7 @@
           </button>
         </div>
       </form>
+      <!-- Ich lasse die aktualisierte Meldung von Screenreadern vorlesen. -->
       <p id="ladder-status" role="status"></p>
     </section>
   </main>

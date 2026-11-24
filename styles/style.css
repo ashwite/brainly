@@ -24,8 +24,11 @@ html[data-theme="dark"] {
 
 /* Hier lege ich die Grundgestaltung und den sichtbaren Tastaturfokus fest. */
 * { box-sizing: border-box; }
+/* Ich lege für body die Außenabstände, den Hintergrund und die Vordergrundfarbe fest. */
 body { margin: 0; background: var(--bg); color: var(--ink); font-family: 'Jost', sans-serif; }
+/* Ich lege für button die Schrift, die Vordergrundfarbe und den Mauszeiger fest. */
 button { font: inherit; color: inherit; cursor: pointer; background: var(--bg); }
+/* Ich verwende für Buttons und Links meine eigene Rückmeldung statt der browserseitigen Tippmarkierung. */
 button, a { -webkit-tap-highlight-color: transparent; }
 /* Wenn ich mit der Tastatur unterwegs bin, zeigt der Rahmen, welches Element gerade den Fokus hat. */
 button:focus-visible, a:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
@@ -39,6 +42,7 @@ header {
   margin: 0 auto;
 }
 
+/* Ich lege für .header-top die Positionierungsart, die Anordnung und die Ausrichtung auf der Querachse fest. */
 .header-top {
   position: relative;
   display: flex;
@@ -57,7 +61,9 @@ header {
   margin: 0 auto 12px;
 }
 
+/* Ich verwende die folgenden Regeln bis 700 Pixel Fensterbreite. */
 @media (max-width: 700px) {
+  /* Auf kleinen Bildschirmen lege ich für .header-games die Rasterspalten, die Abstände zwischen den Elementen und die maximale Breite fest. */
   .header-games {
     grid-template-columns: repeat(12, minmax(0, 1fr));
     gap: 6px 0;
@@ -66,9 +72,11 @@ header {
 
   /* Ich lasse Sudoku neben Rune und Mudoku neben Spark stehen. */
   .header-game-link { grid-column: span 3; margin-inline: 3px; }
+  /* Auf kleinen Bildschirmen lege ich für .header-game-link:nth-child(n+5) die Anzahl belegter Spalten fest. */
   .header-game-link:nth-child(n+5) { grid-column: span 4; }
 }
 
+/* Ich lege für .header-game-link die Anordnung, die Abstände zwischen den Elementen und die Vordergrundfarbe fest. */
 .header-game-link {
   display: grid;
   gap: 4px;
@@ -78,6 +86,7 @@ header {
   text-decoration: none;
 }
 
+/* Ich lege für .header-game-image die Positionierungsart, die Anordnung und das Seitenverhältnis fest. */
 .header-game-image {
   position: relative;
   display: block;
@@ -87,6 +96,7 @@ header {
   background: var(--related);
 }
 
+/* Ich lege für .header-game-image img die Positionierungsart, die Abstände zu den Rändern und die Breite fest. */
 .header-game-image img {
   position: absolute;
   inset: 12%;
@@ -95,20 +105,29 @@ header {
   object-fit: contain;
 }
 
+/* Ich lege für html[data-theme="dark"] .header-game-image img die Bildfarben über einen Filter fest. */
 html[data-theme="dark"] .header-game-image img {
   filter: invert(1);
 }
 
+/* Ich lege für .header-game-link:hover .header-game-image, .header-game-link:focus-visible .header-game-image die Rahmenfarbe fest. */
 .header-game-link:hover .header-game-image,
 .header-game-link:focus-visible .header-game-image {
   border-color: var(--ink);
 }
+/* Ich lege für .brand die Anordnung, die Ausrichtung auf der Querachse und die Vordergrundfarbe fest. */
 .brand { display: inline-flex; align-items: center; color: var(--ink); text-decoration: none; }
+/* Ich lege für .brand-icon die Anordnung, die Breite und die Höhe fest. */
 .brand-icon { display: inline-flex; width: 44px; height: 27px; }
+/* Ich lege für .brand-icon img die Breite, die Höhe und die proportionale Einpassung des Bildes fest. */
 .brand-icon img { width: 100%; height: 100%; object-fit: contain; }
+/* Ich lege für .logo-dark die Anordnung fest. */
 .logo-dark { display: none; }
+/* Ich lege für html[data-theme="dark"] .logo-light die Anordnung fest. */
 html[data-theme="dark"] .logo-light { display: none; }
+/* Ich lege für html[data-theme="dark"] .logo-dark die Anordnung fest. */
 html[data-theme="dark"] .logo-dark { display: block; }
+/* Ich lege für .brand-wordmark die Positionierungsart, die obere Position und die linke Position fest. */
 .brand-wordmark {
   position: absolute;
   top: 50%;
@@ -119,6 +138,7 @@ html[data-theme="dark"] .logo-dark { display: block; }
 }
 /* Ich setze das Info-i und den Hell-Dunkel-Schalter nebeneinander. */
 .header-controls { display: flex; align-items: center; gap: 4px; }
+/* Ich lege für #game-help-toggle die Breite, die Mindesthöhe und die Innenabstände fest. */
 #game-help-toggle {
   width: 32px;
   min-height: 44px;
@@ -127,7 +147,9 @@ html[data-theme="dark"] .logo-dark { display: block; }
   background: transparent;
   font: 400 17px/1 Georgia, serif;
 }
+/* Ich lege für #game-help-toggle:hover, #game-help-toggle[aria-expanded="true"] die Textmarkierung fest. */
 #game-help-toggle:hover, #game-help-toggle[aria-expanded="true"] { text-decoration: underline; }
+/* Ich lege für .theme-toggle die Anordnung, die Ausrichtung der Inhalte und die Breite fest. */
 .theme-toggle { display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 0; font-size: 24px; }
 
 /* Ich zentriere den Hauptinhalt mit gleich großen Randzeilen, wenn das Fenster genug Platz bietet. */
@@ -143,7 +165,9 @@ main {
   margin: 0 auto;
   padding: 32px 30px;
 }
+/* Ich lege für h1, h2, h3, h4, h5, h6 die Schriftfamilie fest. */
 h1, h2, h3, h4, h5, h6 { font-family: 'VT323', monospace; }
+/* Ich lege für h1 die Außenabstände, die Schriftgröße und die Zeilenhöhe fest. */
 h1 { margin: 12px 0 4px; font-size: 22px; line-height: 1.35; font-weight: 400; }
 /* Ich blende Meldungen optisch aus und halte sie für Screenreader erreichbar. */
 .sr-only {
@@ -160,26 +184,38 @@ h1 { margin: 12px 0 4px; font-size: 22px; line-height: 1.35; font-weight: 400; }
 
 /* Ich passe die Abstände für kleine Bildschirme an. */
 @media (max-width: 700px) {
+  /* Auf kleinen Bildschirmen lege ich für html die Schriftgröße fest. */
   html { font-size: 15px; }
-  .header-top { height: 64px; padding: 0 20px; }  .brand-wordmark { font-size: 28px; }
+  /* Auf kleinen Bildschirmen lege ich für .header-top die Höhe und die Innenabstände fest. */
+  .header-top { height: 64px; padding: 0 20px; }  /* Auf kleinen Bildschirmen lege ich für .brand-wordmark die Schriftgröße fest. */ .brand-wordmark { font-size: 28px; }
+  /* Auf kleinen Bildschirmen lege ich für #game-help-toggle die Schriftgröße fest. */
   #game-help-toggle { font-size: 15px; }
+  /* Auf kleinen Bildschirmen lege ich für .theme-toggle die Schriftgröße fest. */
   .theme-toggle { font-size: 22px; }
+  /* Auf kleinen Bildschirmen lege ich für main die maximale Breite, die Abstände zwischen den Elementen und die Innenabstände fest. */
   main { max-width: 510px; gap: 25px; padding: 12px 20px 24px; }
+  /* Auf kleinen Bildschirmen lege ich für h1 die Schriftgröße und die Außenabstände fest. */
   h1 { font-size: 19px; margin: 8px 0 0; }
 }
 
 /* Ich blende die Kopfzeile mit einer kurzen Animation ein. */
 @media (prefers-reduced-motion: no-preference) {
+  /* Ich lege für header den Animationsablauf fest. */
   header { animation: header-arrive .25s ease-out both; }
 }
+/* Ich lege die Zwischenzustände für die Animation header-arrive fest. */
 @keyframes header-arrive {
+  /* Ich lege den Zwischenzustand der Animation bei from fest. */
   from { opacity: 0; transform: translateY(-10px); }
+  /* Ich lege den Zwischenzustand der Animation bei to fest. */
   to { opacity: 1; transform: translateY(0); }
 }
 
 /* Ich unterstreiche die aktive Sprache. */
 .languages { display: flex; gap: 20px; }
+/* Ich lege für .languages button die Innenabstände und den Rahmen fest. */
 .languages button { padding: 8px 0; border: 0; }
+/* Ich lege für .languages button[aria-pressed="true"] die Textmarkierung und den Abstand der Unterstreichung fest. */
 .languages button[aria-pressed="true"] { text-decoration: underline; text-underline-offset: 5px; }
 
 
@@ -190,25 +226,35 @@ body {
   grid-template-columns: minmax(0, 1fr);
   grid-template-rows: minmax(min-content, 1fr) auto minmax(min-content, 1fr);
 }
+/* Ich verwende die folgenden Regeln bis 700 Pixel Fensterbreite. */
 @media (max-width: 700px) {
+  /* Auf kleinen Bildschirmen lege ich für body.mudoku, body:has(> .legal-page) die Rasterzeilen fest. */
   body.mudoku, body:has(> .legal-page) { grid-template-rows: auto auto minmax(min-content, 1fr); }
+  /* Auf kleinen Bildschirmen lege ich für body:not(.mudoku) > main:not(.legal-page) die senkrechten Innenabstände fest. */
   body:not(.mudoku) > main:not(.legal-page) { padding-block: 18px; }
 }
+/* Ich lege für body > header die eigene Ausrichtung fest. */
 body > header { align-self: start; }
 /* Ich setze den animierten Footer vor die Hintergrundbilder. z-index bestimmt, welche Ebene oben liegt. */
 .footer-area { position: relative; z-index: 1; align-self: end; }
+/* Ich lege für .footer-skate die Höhe, den Hintergrund und die Verarbeitung von Zeigereingaben fest. */
 .footer-skate {
   height: clamp(110px, 37vw, 148px);
   background: url('../assets/miffyroll.png') center bottom -2px / auto 100% no-repeat;
   pointer-events: none;
 }
 
+/* Ich aktiviere die folgenden Übergänge nur, wenn reduzierte Bewegung ausgeschaltet ist. */
 @media (prefers-reduced-motion: no-preference) {
+  /* Ich lege für .footer-skate den Animationsablauf fest. */
   .footer-skate { animation: footer-skate-roll 6s linear infinite; }
 }
 
+/* Ich lege die Zwischenzustände für die Animation footer-skate-roll fest. */
 @keyframes footer-skate-roll {
+  /* Ich lege den Zwischenzustand der Animation bei from fest. */
   from { background-position: left -150px bottom -2px; }
+  /* Ich lege den Zwischenzustand der Animation bei to fest. */
   to { background-position: right -150px bottom -2px; }
 }
 
@@ -218,6 +264,7 @@ body > header { align-self: start; }
   padding: 10px clamp(30px, 8vw, 112px);
   font-size: clamp(11px, 2.4vw, 14px);
 }
+/* Ich lege für .footer-links die Anordnung, den Zeilenumbruch und die Ausrichtung auf der Querachse fest. */
 .footer-links {
   display: flex;
   flex-wrap: wrap;
@@ -227,9 +274,13 @@ body > header { align-self: start; }
 }
 /* Ich verteile am Desktop alle Einträge in einer Reihe. Auf dem Handy bekommt jede Gruppe eine eigene Reihe. */
 .footer-games, .footer-meta { display: contents; }
+/* Ich lege für .footer-meta > button den Rahmen und die Innenabstände fest. */
 .footer-meta > button { border: 0; padding: 8px 0; }
+/* Ich verwende die folgenden Regeln bis 700 Pixel Fensterbreite. */
 @media (max-width: 700px) {
+  /* Auf kleinen Bildschirmen lege ich für .footer-links die Anordnung, die Rasterspalten und den Abstand zwischen den Zeilen fest. */
   .footer-links { display: grid; grid-template-columns: minmax(0, 1fr); row-gap: 0; }
+  /* Auf kleinen Bildschirmen lege ich für .footer-games, .footer-meta die Anordnung, die Ausrichtung auf der Querachse und die Verteilung entlang der Hauptachse fest. */
   .footer-games, .footer-meta {
     display: flex;
     align-items: center;
@@ -238,19 +289,32 @@ body > header { align-self: start; }
   }
   /* Ich lasse die Spielelinks auf besonders schmalen Displays umbrechen. */
   .footer-games { flex-wrap: wrap; }
+  /* Auf kleinen Bildschirmen lege ich für .footer-meta > button, .footer-meta .footer-languages button die senkrechten Innenabstände fest. */
   .footer-meta > button, .footer-meta .footer-languages button { padding-block: 4px; }
+  /* Auf kleinen Bildschirmen lege ich für .footer-meta .footer-languages button die Mindesthöhe fest. */
   .footer-meta .footer-languages button { min-height: 32px; }
+  /* Auf kleinen Bildschirmen lege ich für .footer-meta > * die Mindestbreite und die Textausrichtung fest. */
   .footer-meta > * { min-width: 0; text-align: center; }
+  /* Auf kleinen Bildschirmen lege ich für .footer-meta > :not(.footer-languages) den Umbruch langer Wörter fest. */
   .footer-meta > :not(.footer-languages) { overflow-wrap: anywhere; }
+  /* Auf kleinen Bildschirmen lege ich für .footer-meta > .footer-languages das Größenverhalten im Flex-Layout fest. */
   .footer-meta > .footer-languages { flex: none; }
 }
+/* Ich lege für .site-footer a die Vordergrundfarbe und die Textmarkierung fest. */
 .site-footer a { color: inherit; text-decoration: none; }
+/* Ich lege für .site-footer a:hover die Textmarkierung und den Abstand der Unterstreichung fest. */
 .site-footer a:hover { text-decoration: underline; text-underline-offset: 4px; }
+/* Ich lege für .legal-page a die Vordergrundfarbe und den Abstand der Unterstreichung fest. */
 .legal-page a { color: inherit; text-underline-offset: 4px; }
+/* Ich lege für .footer-languages die Ausrichtung auf der Querachse und die Abstände zwischen den Elementen fest. */
 .footer-languages { align-items: center; gap: min(.4vw, 3px); }
+/* Ich lege für .footer-languages button die Mindesthöhe, die seitlichen Innenabstände und die Schriftgröße fest. */
 .footer-languages button { min-height: 44px; padding-inline: 0; font-size: inherit; }
+/* Ich lege für #footer-account-status:empty die Anordnung fest. */
 #footer-account-status:empty { display: none; }
+/* Ich lege für #footer-account-status die Anordnung und die Textausrichtung fest. */
 #footer-account-status { display: block; text-align: center; }
+/* Ich lege für .legal-page die Ausrichtung auf der Querachse und die maximale Breite fest. */
 .legal-page { align-items: stretch; max-width: 640px; }
 
 /* Ich mische die grauen Flächen mit Transparenz. Das Seitenmotiv scheint durch, während der Text volle Deckkraft behält. */
@@ -258,11 +322,13 @@ body > header { align-self: start; }
   --panel-surface: color-mix(in srgb, var(--same), #000 22%);
   background: color-mix(in srgb, var(--panel-surface) 20%, transparent);
 }
+/* Ich lege für .game-help die Breite, die Innenabstände und die Rundung fest. */
 .game-help {
   width: 100%;
   padding: clamp(16px, 4vw, 24px);
   border-radius: 9px;
 }
+/* Ich lege für .game-help h2 den Abstand am Blockanfang fest. */
 .game-help h2 { margin-block-start: 0; }
 
 /* Ich blende im Hilfe-Bereich den englischen Abschnitt bei Deutsch aus und den deutschen Abschnitt bei Englisch. */
@@ -272,9 +338,11 @@ html:lang(en) .help-de { display: none; }
 /* SUDOKU · Hier gestalte ich das Zahlenraster und die Eingabe. */
 
 .game { width: 100%; max-width: 470px; }
+/* Ich lege für .board-wrap den Umgang mit überstehenden Inhalten, den Rahmen und die Rundung fest. */
 .board-wrap { overflow: hidden; border: 2px solid var(--strong-line); border-radius: 9px; }
 /* Ich verteile die Feld-Buttons auf neun gleich breite Spalten. Daraus entstehen bei 81 Feldern neun Zeilen. */
 #board { display: grid; grid-template-columns: repeat(9, 1fr); background: var(--bg); }
+/* Ich lege für .cell das Seitenverhältnis, die Innenabstände und den Rahmen fest. */
 .cell {
   aspect-ratio: 1;
   padding: 0;
@@ -285,42 +353,62 @@ html:lang(en) .help-de { display: none; }
   font-size: 25px;
   font-weight: 400;
 }
+/* Ich lege für .cell.given das Schriftgewicht fest. */
 .cell.given { font-weight: 500; }
+/* Ich lege für .cell.incorrect die Textmarkierung und den Abstand der Unterstreichung fest. */
 .cell.incorrect { text-decoration: underline wavy; text-underline-offset: 3px; }
 /* Ich mache die Linie nach jeder dritten Spalte dicker. Am äußeren Rand übernimmt der Rahmen die Linie. */
 .cell:nth-child(3n) { border-right: 2px solid var(--strong-line); }
+/* Ich lege für .cell:nth-child(9n) die rechte Trennlinie fest. */
 .cell:nth-child(9n) { border-right: 0; }
 /* Die Felder 19 bis 27 und 46 bis 54 beenden den ersten und zweiten Blockstreifen. Dort ziehe ich unten eine dickere Linie. */
 .cell:nth-child(n+19):nth-child(-n+27),
 .cell:nth-child(n+46):nth-child(-n+54) { border-bottom: 2px solid var(--strong-line); }
+/* Ich lege für .cell:nth-child(n+73) die untere Trennlinie fest. */
 .cell:nth-child(n+73) { border-bottom: 0; }
 /* Mit den Klassen aus app.js hebe ich verwandte Felder, gleiche Zahlen und die Auswahl unterschiedlich hervor. */
 .cell.related { background: var(--related); }
+/* Ich lege für .cell.same den Hintergrund fest. */
 .cell.same { background: var(--same); }
+/* Ich lege für .cell.selected den Hintergrund fest. */
 .cell.selected { background: var(--selected); box-shadow: inset 0 0 0 2px var(--ink); }
+/* Ich lege für #numbers die Anordnung, die Rasterspalten und die Abstände zwischen den Elementen fest. */
 #numbers { display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); gap: 7px; }
+/* Ich lege für #numbers button, #hint-button die Höhe, den Rahmen und die Rundung fest. */
 #numbers button, #hint-button { height: 48px; border: 1px solid var(--line); border-radius: 7px; }
+/* Ich lege für #numbers button die seitlichen Innenabstände und die Schriftgröße fest. */
 #numbers button { padding-inline: 0; font-size: 23px; }
+/* Ich lege für #numbers button:hover, #hint-button:enabled:hover die Fokusmarkierung und den Abstand der Fokusmarkierung fest. */
 #numbers button:hover, #hint-button:enabled:hover { outline: 1px solid var(--ink); outline-offset: -1px; }
 
 /* Ich platziere die Glühbirne neben den Zahlentasten. */
 .number-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 5px; margin-top: 20px; }
+/* Ich lege für #hint-button die Anordnung, die Ausrichtung der Inhalte und die Breite fest. */
 #hint-button { display: grid; place-items: center; width: 32px; padding: 0; }
+/* Ich lege für #hint-button:disabled die Deckkraft und den Mauszeiger fest. */
 #hint-button:disabled { opacity: .55; cursor: default; }
+/* Ich lege für #hint-message die Außenabstände, die Schriftgröße und die Textausrichtung fest. */
 #hint-message { margin: 8px 0 0; font-size: 14px; text-align: center; }
+/* Ich lege für #hint-message:empty die Außenabstände fest. */
 #hint-message:empty { margin: 0; }
 
 /* Auf kleinen Bildschirmen verwende ich kleinere Zahlen und Tastenabstände. */
 @media (max-width: 700px) {
+  /* Auf kleinen Bildschirmen lege ich für .cell die Schriftgröße fest. */
   .cell { font-size: 20px; }
+  /* Auf kleinen Bildschirmen lege ich für #numbers die Abstände zwischen den Elementen fest. */
   #numbers { gap: 5px; }
+  /* Auf kleinen Bildschirmen lege ich für #numbers button, #hint-button die Höhe fest. */
   #numbers button, #hint-button { height: 44px; }
+  /* Auf kleinen Bildschirmen lege ich für #numbers button die Schriftgröße fest. */
   #numbers button { font-size: 19px; }
 }
 
 /* Ich gebe beim Drücken der Zahlentasten eine kurze visuelle Rückmeldung. */
 @media (prefers-reduced-motion: no-preference) {
+  /* Ich lege für #numbers button die weiche Änderung zwischen Zuständen fest. */
   #numbers button { transition: transform .18s ease; }
+  /* Ich lege für #numbers button:active die grafische Verschiebung oder Skalierung fest. */
   #numbers button:active { transform: scale(.92); }
 }
 
@@ -333,6 +421,7 @@ html:lang(en) .help-de { display: none; }
   width: 100%;
   align-items: start;
 }
+/* Ich lege für .mudoku .case-layout > section die Anzahl belegter Spalten fest. */
 .mudoku .case-layout > section { grid-column: 1 / -1; }
 /* Ich setze Enton auf breiten Bildschirmen links neben den Flurplan. */
 .mudoku .floor-plan-art {
@@ -340,16 +429,22 @@ html:lang(en) .help-de { display: none; }
   aspect-ratio: 7 / 10;
   background: url('../assets/enton.png') 54% 44% / 185% auto no-repeat;
 }
+/* Ich lege für html[data-theme="dark"] .mudoku .floor-plan-art die Bildfarben über einen Filter fest. */
 html[data-theme="dark"] .mudoku .floor-plan-art {
   filter: invert(1);
 }
 
 /* Ich rahme Fallakte, Flurplan und Auflösung mit denselben Theme-Farben ein. */
 .mudoku .panel { border: 1px solid var(--line); border-radius: 9px; padding: 16px; }
+/* Ich lege für .mudoku .panel h2 die Außenabstände, die Schriftgröße und das Schriftgewicht fest. */
 .mudoku .panel h2 { margin: 0; font-size: 18px; font-weight: 500; }
+/* Ich lege für .mudoku .panel p, .mudoku .game-help p die senkrechten Außenabstände fest. */
 .mudoku .panel p, .mudoku .game-help p { margin-block: 2px; }
+/* Ich rücke die nummerierten Hinweise ein, damit ihre Nummern und der Text Platz haben. */
 .mudoku .panel ol { padding-left: 1.35rem; }
+/* Ich lege für .mudoku .panel li + li den oberen Abstand fest. */
 .mudoku .panel li + li { margin-top: 8px; }
+/* Ich lege für .mudoku .panel label die Anordnung und den unteren Abstand fest. */
 .mudoku .panel label { display: block; margin-bottom: 4px; }
 
 /* Ich zeige in jedem Raumquadrat den Buchstaben und die gewählte Person. Ich lasse das Auswahlfeld das ganze Quadrat bedecken. */
@@ -362,6 +457,7 @@ html[data-theme="dark"] .mudoku .floor-plan-art {
   margin: 8px -4px 12px;
   list-style: none;
 }
+/* Ich lege für .mudoku #rooms > li die Positionierungsart, die Anordnung und die Stapelrichtung fest. */
 .mudoku #rooms > li {
   position: relative;
   display: flex;
@@ -375,8 +471,11 @@ html[data-theme="dark"] .mudoku .floor-plan-art {
   border-radius: 7px;
   background: var(--bg);
 }
+/* Ich lege für .mudoku #rooms label, .mudoku .room-person den Umbruch langer Wörter fest. */
 .mudoku #rooms label, .mudoku .room-person { overflow-wrap: anywhere; }
+/* Ich lege für .mudoku .room-person die Schriftgröße und die Zeilenhöhe fest. */
 .mudoku .room-person { font-size: .875rem; line-height: 1.1; }
+/* Ich lege für .mudoku #rooms select die Positionierungsart, die Abstände zu den Rändern und die Breite fest. */
 .mudoku #rooms select {
   position: absolute;
   inset: 0;
@@ -386,8 +485,11 @@ html[data-theme="dark"] .mudoku .floor-plan-art {
   opacity: 0;
   cursor: pointer;
 }
+/* Ich lege für .mudoku #rooms > li:has(select:focus-visible) die Fokusmarkierung und den Abstand der Fokusmarkierung fest. */
 .mudoku #rooms > li:has(select:focus-visible) { outline: 2px solid var(--ink); outline-offset: 2px; }
+/* Ich lege für .mudoku #rooms > li:has(select.incorrect) die Rahmenfarbe fest. */
 .mudoku #rooms > li:has(select.incorrect) { border-color: var(--ink); }
+/* Ich lege für .mudoku #rooms > li:has(select.incorrect) .room-person die Textmarkierung fest. */
 .mudoku #rooms > li:has(select.incorrect) .room-person { text-decoration: underline wavy; }
 
 /* Ich gestalte die Auswahllisten und Aktionsbuttons für die Raumzuordnung. */
@@ -400,10 +502,15 @@ html[data-theme="dark"] .mudoku .floor-plan-art {
   color: var(--ink);
   font: inherit;
 }
+/* Ich lasse die Auswahllisten die ganze Breite ihrer Felder ausfüllen. */
 .mudoku .panel select { width: 100%; }
+/* Ich zeige beim Tastaturfokus einen sichtbaren Rahmen mit Abstand zur Auswahlliste. */
 .mudoku .panel select:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+/* Ich ordne Fehleranzeige, Prüfen und Zurücksetzen in einer gemeinsamen Aktionsleiste an. */
 .mudoku .actions { display: flex; align-items: center; gap: 4px; margin-top: 14px; }
+/* Ich schiebe die Fehlerzahl nach links und lasse den verbleibenden Platz zwischen ihr und den Aktionsknöpfen. */
 .mudoku .actions #field-errors { margin: 0 auto 0 0; }
+/* Ich gebe den Aktionsknöpfen eine mindestens 44 Pixel hohe Tippfläche und zentriere die Symbole darin. */
 .mudoku .actions button {
   flex: 0 0 44px;
   display: grid;
@@ -415,27 +522,44 @@ html[data-theme="dark"] .mudoku .floor-plan-art {
   border-radius: 7px;
   background: transparent;
 }
+/* Ich zeige beim Überfahren eines Aktionsknopfs eine dezente Hintergrundfläche. */
 .mudoku .actions button:hover { background: var(--related); }
+/* Ich hebe die Rückmeldung mit etwas kräftigerer Schrift hervor und nehme den unteren Absatzabstand weg. */
 .mudoku #feedback { margin-bottom: 0; font-weight: 500; }
+/* Ich entferne die Außenabstände, solange die Rückmeldung leer ist. */
 .mudoku #feedback:empty { margin: 0; }
+/* Ich zeige die Auflösung über die volle Breite und verwende dafür die kräftigere Rahmenfarbe. */
 .mudoku .solution { width: 100%; border-color: var(--strong-line); }
 
 
+/* Ich trenne die zusätzliche Frage zur falschen Aussage durch Abstand vom vorigen Feld. */
 .mudoku #lie-field { margin-top: 12px; }
 /* Ich markiere falsche Auswahlen direkt im Feld mit einer welligen Linie. */
 .mudoku .panel select.incorrect { border-color: var(--ink); text-decoration: underline wavy; text-underline-offset: 3px; }
 
+/* Ich verwende die folgenden Regeln bis 700 Pixel Fensterbreite. */
 @media (max-width: 700px) {
+  /* Auf kleinen Bildschirmen lege ich für .mudoku main die Abstände zwischen den Elementen und den unteren Innenabstand fest. */
   .mudoku main { gap: 16px; padding-block-end: 18px; }
+  /* Auf kleinen Bildschirmen lege ich für .mudoku .case-layout die Rasterspalten und die Abstände zwischen den Elementen fest. */
   .mudoku .case-layout { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+  /* Auf kleinen Bildschirmen lege ich für .mudoku .floor-plan-art die Anordnung fest. */
   .mudoku .floor-plan-art { display: none; }
+  /* Auf kleinen Bildschirmen lege ich für .mudoku .panel, .mudoku .game-help die Innenabstände fest. */
   .mudoku .panel, .mudoku .game-help { padding: 12px; }
+  /* Auf kleinen Bildschirmen lege ich für .mudoku .panel p, .mudoku .game-help p die senkrechten Außenabstände fest. */
   .mudoku .panel p, .mudoku .game-help p { margin-block: 1px; }
+  /* Auf kleinen Bildschirmen lege ich für .mudoku #clues die senkrechten Außenabstände fest. */
   .mudoku #clues { margin-block: 8px; }
+  /* Auf kleinen Bildschirmen lege ich für .mudoku .panel li + li den oberen Abstand fest. */
   .mudoku .panel li + li { margin-top: 5px; }
+  /* Auf kleinen Bildschirmen lege ich für .mudoku #rooms > li die Außenabstände und die Innenabstände fest. */
   .mudoku #rooms > li { margin: 0; padding: 4px; }
+  /* Auf kleinen Bildschirmen lege ich für .mudoku #rooms die Breite und die senkrechten Außenabstände fest. */
   .mudoku #rooms { width: min(92%, 196px); margin-block: 6px 8px; }
+  /* Auf kleinen Bildschirmen lege ich für .mudoku #lie-field, .mudoku .actions den oberen Abstand fest. */
   .mudoku #lie-field, .mudoku .actions { margin-top: 8px; }
+  /* Auf kleinen Bildschirmen lege ich für .mudoku .panel select die seitlichen Innenabstände fest. */
   .mudoku .panel select { padding-inline: 8px; }
 }
 
@@ -445,7 +569,9 @@ html[data-theme="dark"] .mudoku .floor-plan-art {
   max-width: 470px;
 }
 
+/* Ich lege für .word-ladder .ladder-game label die Anordnung und den unteren Abstand fest. */
 .word-ladder .ladder-game label { display: block; margin-bottom: 4px; }
+/* Ich lege für .word-ladder .ladder-entry input die Breite, die Mindesthöhe und die Innenabstände fest. */
 .word-ladder .ladder-entry input {
   width: 100%;
   min-height: 44px;
@@ -457,7 +583,9 @@ html[data-theme="dark"] .mudoku .floor-plan-art {
   font: inherit;
   text-transform: uppercase;
 }
+/* Ich lege für .word-ladder .ladder-entry input[aria-invalid="true"] die Textmarkierung fest. */
 .word-ladder .ladder-entry input[aria-invalid="true"] { text-decoration: underline wavy; }
+/* Ich lege für .word-ladder .ladder-words die Anordnung, die Rasterspalten und die Ausrichtung auf der Querachse fest. */
 .word-ladder .ladder-words {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
@@ -472,10 +600,15 @@ html[data-theme="dark"] .mudoku .floor-plan-art {
   aspect-ratio: 1;
   background: url('../assets/heart.png') center / contain no-repeat;
 }
+/* Ich lege für .word-ladder .ladder-words > :first-child die Rasterposition fest. */
 .word-ladder .ladder-words > :first-child { grid-area: 1 / 1; }
+/* Ich lege für .word-ladder .ladder-words > :last-child die Rasterposition und die Textausrichtung fest. */
 .word-ladder .ladder-words > :last-child { grid-area: 1 / 3; text-align: end; }
+/* Ich lege für .word-ladder .ladder-words dd die Außenabstände und die Schrift fest. */
 .word-ladder .ladder-words dd { margin: 0; font: 400 1.75rem/1.15 'VT323', monospace; letter-spacing: .08em; }
+/* Ich setze den Innenabstand der Liste mit dem bisher gespielten Wortweg. */
 .word-ladder #ladder-path { padding-inline-start: 1.5rem; letter-spacing: .08em; }
+/* Ich lege für .word-ladder .ladder-entry die Anordnung, die Rasterspalten und die Ausrichtung auf der Querachse fest. */
 .word-ladder .ladder-entry {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto auto;
@@ -484,16 +617,23 @@ html[data-theme="dark"] .mudoku .floor-plan-art {
   border-radius: 7px;
   background: var(--bg);
 }
+/* Ich lege für .word-ladder .ladder-entry:has(input:focus-visible) die Fokusmarkierung und den Abstand der Fokusmarkierung fest. */
 .word-ladder .ladder-entry:has(input:focus-visible) { outline: 2px solid var(--ink); outline-offset: 3px; }
+/* Ich lege für .word-ladder .ladder-entry:has(input[aria-invalid="true"]) die Rahmenfarbe fest. */
 .word-ladder .ladder-entry:has(input[aria-invalid="true"]) { border-color: var(--ink); }
+/* Ich lege für .word-ladder .ladder-entry button die Anordnung, die Ausrichtung der Inhalte und die Breite fest. */
 .word-ladder .ladder-entry button { display: grid; place-items: center; width: 44px; min-height: 44px; padding: 0; border: 0; background: transparent; }
+/* Ich platziere den Prüfen-Knopf am dafür vorgesehenen Rand der Eingabe. */
 .word-ladder #ladder-submit { justify-items: end; padding-inline-end: 6px; }
+/* Ich platziere den Reset-Knopf am dafür vorgesehenen Rand der Eingabe. */
 .word-ladder #ladder-reset { justify-items: start; padding-inline-start: 6px; }
+/* Ich lege für .word-ladder .ladder-entry button:disabled die Deckkraft und den Mauszeiger fest. */
 .word-ladder .ladder-entry button:disabled { opacity: .55; cursor: default; }
 
 /* Ich zeige links die Level-Anzeige und rechts das Charakterprofil. Auf sehr schmalen Bildschirmen stehen beide Blöcke untereinander. */
 .home-level { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: stretch; gap: 24px; width: 100%; font-family: 'VT323', monospace; font-size: 20px; }
 
+/* Ich lege für .level-summary, .level-character-settings die Anordnung, die Abstände zwischen den Elementen und die Mindestbreite fest. */
 .level-summary, .level-character-settings {
   display: grid;
   align-content: start;
@@ -502,13 +642,16 @@ html[data-theme="dark"] .mudoku .floor-plan-art {
   padding: 20px;
   border-radius: 9px;
 }
+/* Ich lege für .level-summary die Positionierungsart fest. */
 .level-summary { position: relative; }
+/* Ich lege für .level-character-profile die Anordnung, die Rasterspalten und die Ausrichtung auf der Querachse fest. */
 .level-character-profile {
   display: grid;
   grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
   align-items: center;
   gap: 12px;
 }
+/* Ich lege für .character-toggle die Mindestbreite, die maximale Breite und die Innenabstände fest. */
 .character-toggle {
   justify-self: start;
   min-width: 0;
@@ -517,12 +660,18 @@ html[data-theme="dark"] .mudoku .floor-plan-art {
   border: 0;
   background: transparent;
 }
+/* Ich lege für .character-toggle img die maximale Breite fest. */
 .character-toggle img { max-width: 100%; vertical-align: top; }
+/* Ich verwende die folgenden Regeln bis 480 Pixel Fensterbreite. */
 @media (max-width: 480px) {
+  /* Auf kleinen Bildschirmen lege ich für .home-level die Rasterspalten fest. */
   .home-level { grid-template-columns: minmax(0, 1fr); }
 }
+/* Ich lege für .level-summary h1 die Außenabstände und die Schriftgröße fest. */
 .level-summary h1 { margin: 0; padding-inline-end: 36px; font-size: clamp(24px, 5vw, 36px); }
+/* Ich lege für .level-summary progress die Breite fest. */
 .level-summary progress { width: 100%; accent-color: var(--ink); }
+/* Ich lege für #level-share die Positionierungsart, den Abstand zum oberen Blockrand und den Abstand zum Zeilenende fest. */
 #level-share {
   position: absolute;
   inset-block-start: 8px;
@@ -535,13 +684,20 @@ html[data-theme="dark"] .mudoku .floor-plan-art {
   border: 0;
   border-radius: 7px;
 }
+/* Ich lege für #level-share:hover den Hintergrund fest. */
 #level-share:hover { background: var(--related); }
+/* Ich lege für #level-share:disabled die Deckkraft und den Mauszeiger fest. */
 #level-share:disabled { opacity: .55; cursor: wait; }
+/* Ich lege für #level-share-status die Außenabstände fest. */
 #level-share-status { margin: 0; }
+/* Ich lege für #level-share-status:empty die Anordnung fest. */
 #level-share-status:empty { display: none; }
 
+/* Ich lege für .level-name die Anordnung, die Abstände zwischen den Elementen und die Breite fest. */
 .level-name { display: grid; gap: 6px; width: 100%; }
+/* Ich lege für .level-name > label die Schrift fest. */
 .level-name > label { font: 400 13px/1.3 'Jost', sans-serif; }
+/* Ich lege für .level-name > button den Abstand am Blockanfang, die Innenabstände und den Rahmen fest. */
 .level-name > button {
   justify-self: start;
   margin-block-start: 8px;
@@ -551,7 +707,9 @@ html[data-theme="dark"] .mudoku .floor-plan-art {
   background: var(--related);
   font: 400 14px/1.3 'Jost', sans-serif;
 }
+/* Ich lege für .level-name > button:hover den Hintergrund fest. */
 .level-name > button:hover { background: var(--same); }
+/* Ich lege für .level-name input die Breite, die Innenabstände und den Rahmen fest. */
 .level-name input {
   width: 100%;
   padding: 8px 12px;
@@ -561,9 +719,12 @@ html[data-theme="dark"] .mudoku .floor-plan-art {
   background: var(--related);
   font: inherit;
 }
+/* Ich lege für .level-name input:focus-visible die Fokusmarkierung und den Abstand der Fokusmarkierung fest. */
 .level-name input:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
 
+/* Ich lege für #level-character die Breite, die Höhe und die proportionale Einpassung des Bildes fest. */
 #level-character { width: clamp(48px, 17vw, 92px); height: auto; object-fit: contain; }
+/* Ich lege für .character-picker die Breite, die Mindestbreite und die Außenabstände fest. */
 .character-picker {
   width: 100%;
   min-width: 0;
@@ -571,11 +732,17 @@ html[data-theme="dark"] .mudoku .floor-plan-art {
   padding: 0;
   border: 0;
 }
+/* Ich lege für .character-picker legend den unteren Abstand und die Innenabstände fest. */
 .character-picker legend { margin-bottom: 6px; padding: 0; }
+/* Ich lege für .character-choices die Anordnung, den Zeilenumbruch und die Ausrichtung auf der Querachse fest. */
 .character-choices { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+/* Ich lege für #character-options die Anordnung fest. */
 #character-options { display: contents; }
+/* Ich lege für #character-options label die Positionierungsart und den Mauszeiger fest. */
 #character-options label { position: relative; cursor: pointer; }
+/* Ich lege für #character-options input die Positionierungsart und die Deckkraft fest. */
 #character-options input { position: absolute; opacity: 0; }
+/* Ich lege für .character-picker label img die Anordnung, die Innenabstände und den Rahmen fest. */
 .character-picker label img {
   display: block;
   padding: 4px;
@@ -583,9 +750,13 @@ html[data-theme="dark"] .mudoku .floor-plan-art {
   border-radius: 7px;
   object-fit: contain;
 }
+/* Ich lege für .character-picker input:checked + img den Hintergrund fest. */
 .character-picker input:checked + img { background: var(--same); }
+/* Ich lege für .character-picker input:focus-visible + img die Fokusmarkierung und den Abstand der Fokusmarkierung fest. */
 .character-picker input:focus-visible + img { outline: 2px solid var(--ink); outline-offset: 2px; }
+/* Ich lege für #character-empty die Außenabstände fest. */
 #character-empty { margin: 0; }
+/* Ich lege für .character-upload-label die Positionierungsart, die Anordnung und die Ausrichtung der Inhalte fest. */
 .character-upload-label {
   position: relative;
   display: grid;
@@ -597,10 +768,15 @@ html[data-theme="dark"] .mudoku .floor-plan-art {
   font-size: 24px;
   cursor: pointer;
 }
+/* Ich lege für .character-upload-label:hover den Hintergrund fest. */
 .character-upload-label:hover { background: var(--same); }
+/* Ich lege für .character-upload-label:focus-within die Fokusmarkierung und den Abstand der Fokusmarkierung fest. */
 .character-upload-label:focus-within { outline: 2px solid var(--ink); outline-offset: 2px; }
+/* Ich lege für .character-upload-label:has(input:disabled) die Deckkraft und den Mauszeiger fest. */
 .character-upload-label:has(input:disabled) { opacity: .55; cursor: wait; }
+/* Ich lege für #character-upload-status die Außenabstände fest. */
 #character-upload-status { margin: 8px 0 0; }
+/* Ich lege für #character-upload-status:empty die Anordnung fest. */
 #character-upload-status:empty { display: none; }
 
 
@@ -619,7 +795,9 @@ html[data-theme="dark"] .mudoku .floor-plan-art {
   gap: 8px;
   pointer-events: none;
 }
+/* Ich lege für .character-celebration:not([hidden]) die Anordnung fest. */
 .character-celebration:not([hidden]) { display: grid; }
+/* Ich lege für .character-celebration p die maximale Breite, die Außenabstände und die Vordergrundfarbe fest. */
 .character-celebration p {
   max-width: min(85vw, 32rem);
   margin: 0;
@@ -630,35 +808,46 @@ html[data-theme="dark"] .mudoku .floor-plan-art {
   overflow-wrap: anywhere;
   text-shadow: 0 0 4px var(--bg), 0 2px 6px var(--bg);
 }
+/* Ich lege für .character-celebration img die Breite, die Höhe und die Bildfarben über einen Filter fest. */
 .character-celebration img {
   width: clamp(168px, 38vw, 224px);
   height: auto;
   filter: drop-shadow(0 6px 9px rgb(0 0 0 / 35%));
 }
+/* Ich lege für #level-character[data-character="6"] die Breite fest. */
 #level-character[data-character="6"] { width: clamp(56px, 20vw, 116px); }
+/* Ich lege für .character-celebration img[data-character="6"] die Breite fest. */
 .character-celebration img[data-character="6"] { width: clamp(208px, 48vw, 288px); }
+/* Ich aktiviere die folgenden Übergänge nur, wenn reduzierte Bewegung ausgeschaltet ist. */
 @media (prefers-reduced-motion: no-preference) {
+  /* Ich lege für .character-celebration:not([hidden]) den Animationsablauf fest. */
   .character-celebration:not([hidden]) { animation: character-arrive 2s both; }
+  /* Ich lege die Zwischenzustände für die Animation character-arrive fest. */
   @keyframes character-arrive {
+    /* Ich lege den Zwischenzustand der Animation bei 0% fest. */
     0% {
       opacity: 0;
       transform: translateY(8px) scale(.97);
       animation-timing-function: ease-out;
     }
+    /* Ich lege den Zwischenzustand der Animation bei 18% fest. */
     18% {
       opacity: 1;
       transform: translateY(0) scale(1);
       animation-timing-function: ease-in-out;
     }
+    /* Ich lege den Zwischenzustand der Animation bei 48% fest. */
     48% {
       transform: translateY(-6px);
       animation-timing-function: ease-in-out;
     }
+    /* Ich lege den Zwischenzustand der Animation bei 76% fest. */
     76% {
       opacity: 1;
       transform: translateY(0);
       animation-timing-function: ease-in;
     }
+    /* Ich lege den Zwischenzustand der Animation bei 100% fest. */
     100% {
       opacity: 0;
       transform: translateY(6px) scale(.99);
@@ -671,6 +860,7 @@ body {
   position: relative;
   isolation: isolate;
 }
+/* Ich lege für body::before, body::after, .background-motif-center den erzeugten Inhalt, die Positionierungsart und die Ebene fest. */
 body::before,
 body::after,
 .background-motif-center {
@@ -684,12 +874,15 @@ body::after,
   opacity: .56;
   pointer-events: none;
 }
+/* Ich lege für body::before die Abstände zu den Rändern fest. */
 body::before { inset: 0 auto auto 0; }
+/* Ich lege für body::after die Abstände zu den Rändern und die grafische Verschiebung oder Skalierung fest. */
 body::after {
   inset: auto 0 0 auto;
   transform: scaleX(-1);
 }
 
+/* Ich lege für .background-motif-center die Abstände zu den Rändern, die Breite und die Verschiebung fest. */
 .background-motif-center {
   inset: 50% auto auto 50%;
   width: clamp(235px, 51vw, 545px);
@@ -727,15 +920,25 @@ html[data-theme="dark"] .background-butterflies {
 
 /* Ich stelle die Schrift auf kleinen Bildschirmen kompakter dar und lasse iOS-Eingabefelder mindestens 16 px groß. */
 @media (max-width: 700px) {
+  /* Auf kleinen Bildschirmen lege ich für .site-footer die Schriftgröße fest. */
   .site-footer { font-size: clamp(13px, 3vw, 15px); }
+  /* Auf kleinen Bildschirmen lege ich für #hint-message die Schriftgröße fest. */
   #hint-message { font-size: 13px; }
+  /* Auf kleinen Bildschirmen lege ich für .mudoku .panel h2 die Schriftgröße fest. */
   .mudoku .panel h2 { font-size: 17px; }
+  /* Auf kleinen Bildschirmen lege ich für .word-ladder .ladder-words dd die Schriftgröße fest. */
   .word-ladder .ladder-words dd { font-size: 1.65rem; }
+  /* Auf kleinen Bildschirmen lege ich für .home-level die Schriftgröße fest. */
   .home-level { font-size: 18px; }
+  /* Auf kleinen Bildschirmen lege ich für .level-name > label die Schriftgröße fest. */
   .level-name > label { font-size: 12px; }
+  /* Auf kleinen Bildschirmen lege ich für .level-name > button die Schriftgröße fest. */
   .level-name > button { font-size: 13px; }
+  /* Auf kleinen Bildschirmen lege ich für .level-summary h1, .character-celebration p die Schriftgröße fest. */
   .level-summary h1, .character-celebration p { font-size: clamp(22px, 4.5vw, 32px); }
+  /* Auf kleinen Bildschirmen lege ich für .character-upload-label die Schriftgröße fest. */
   .character-upload-label { font-size: 22px; }
+  /* Auf kleinen Bildschirmen lege ich für .word-ladder .ladder-entry input, .mudoku .panel select die Schriftgröße fest. */
   .word-ladder .ladder-entry input, .mudoku .panel select { font-size: 16px; }
 }
 /* Ich lasse Puff zwischen der Spieleauswahl und der Fußnavigation fliegen. */
@@ -743,6 +946,7 @@ body[data-game="puff"] {
   grid-template-rows: auto minmax(270px, 1fr) auto;
 }
 
+/* Ich lege für body[data-game="puff"] > main.puff-main die Anordnung, die maximale Breite und die Innenabstände fest. */
 body[data-game="puff"] > main.puff-main {
   display: block;
   max-width: none;
@@ -750,6 +954,7 @@ body[data-game="puff"] > main.puff-main {
   border-top: 2px solid var(--ink);
 }
 
+/* Ich lege für body[data-game="puff"] .site-footer die obere Trennlinie fest. */
 body[data-game="puff"] .site-footer {
   border-top: 2px solid var(--ink);
 }
@@ -764,6 +969,7 @@ body[data-game="puff"] .site-footer {
   touch-action: none;
 }
 
+/* Ich lege für #puff-field:focus-visible die Fokusmarkierung und den Abstand der Fokusmarkierung fest. */
 #puff-field:focus-visible {
   outline: 2px solid var(--ink);
   outline-offset: -2px;

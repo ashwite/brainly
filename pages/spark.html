@@ -1,9 +1,15 @@
 <!doctype html>
+<!-- Ich setze Deutsch als Ausgangssprache für die Seite. -->
 <html lang="de">
+<!-- Ich lade hier Seitentitel, Einstellungen, Design und Skripte. -->
 <head>
+  <!-- Ich verwende UTF-8, damit Umlaute und Symbole korrekt erscheinen. -->
   <meta charset="utf-8">
+  <!-- Ich richte die Seitenbreite an der Breite des Geräts aus. -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Ich lege die Ausgangsfarbe der Browserleiste fest. -->
   <meta name="theme-color" content="#fff">
+  <!-- Ich setze den Titel für den Browser-Tab. -->
   <title>Spark · brainly</title>
 
   <!-- Ich übernehme Sprache und Farbschema vor dem ersten Rendern. -->
@@ -23,13 +29,19 @@
 
   <!-- Ich lade das gemeinsame Design und lasse die Skripte mit defer nach dem Einlesen des HTML laufen. -->
   <link rel="stylesheet" href="../styles/style.css?v=164">
+  <!-- Ich lade die deutschen und englischen Texte für Beschriftungen und Meldungen. -->
   <script src="../scripts/text.js?v=35" defer></script>
+  <!-- Ich erzeuge Navigation, Kopfzeile und Footer aus der gemeinsamen Vorlage. -->
   <script src="../scripts/site-shell.js?v=37" defer></script>
+  <!-- Ich verbinde die Schalter für Sprache und Farbschema mit der Seite. -->
   <script src="../scripts/navigation.js?v=5" defer></script>
+  <!-- Ich verbinde das Info-i mit der passenden Spielanleitung. -->
   <script src="../scripts/game-help.js?v=1" defer></script>
   <!-- Ich lade das Levelsystem und die Charakteranzeige vor dem Spielskript. -->
   <script src="../scripts/levels.js?v=14" defer></script>
+  <!-- Ich lade die gewählte Figur für das Profil oder die Rückmeldung am Rundenende. -->
   <script src="../scripts/characters.js?v=12" defer></script>
+  <!-- Ich lade die Korbsteuerung, Fallmotive und Fehlversuche für Spark. -->
   <script src="../scripts/spark.js?v=11" defer></script>
   <style>
     /* Ich lasse das Spiel den gesamten Platz zwischen Spieleauswahl und Fußnavigation füllen. */
@@ -37,6 +49,7 @@
       grid-template-rows: auto minmax(240px, 1fr) auto;
     }
 
+    /* Ich lege für body[data-game="spark"] > main.spark-main die Anordnung, die maximale Breite und die Innenabstände fest. */
     body[data-game="spark"] > main.spark-main {
       display: block;
       max-width: none;
@@ -60,6 +73,7 @@
       touch-action: none;
     }
 
+    /* Ich lege für #field:focus-visible die Fokusmarkierung und den Abstand der Fokusmarkierung fest. */
     #field:focus-visible {
       outline: 2px solid var(--ink);
       outline-offset: -2px;
@@ -83,19 +97,26 @@
     }
   </style>
 </head>
+<!-- Ich beginne hier mit dem sichtbaren Seiteninhalt. -->
 <body data-game="spark">
+  <!-- Ich halte den Hauptinhalt von Navigation und Footer getrennt. -->
   <main class="spark-main">
+    <!-- Ich verwende diese Zeichenfläche für die Spielfiguren und mache sie per Tastatur erreichbar. -->
     <canvas id="field" width="480" height="240" tabindex="0" aria-label="Spark-Spielfeld"></canvas>
 
     <!-- Ich zeige während des Spiels den Countdown. Außerhalb einer Runde bleibt der Status vorlesbar. -->
     <div class="spark-controls">
+      <!-- Ich lasse die aktualisierte Meldung von Screenreadern vorlesen. -->
       <p id="status" class="sr-only" role="status">Bereit. Tippe oder drücke die Leertaste.</p>
     </div>
 
     <!-- Ich blende die Anleitung über dem Spiel ein, wenn das i gedrückt wird. -->
     <section id="hilfe-spark" class="game-help" aria-labelledby="hilfe-spark-title" hidden>
+      <!-- Ich kennzeichne mit dieser Überschrift den Beginn des zugehörigen Abschnitts. -->
       <h2 id="hilfe-spark-title" data-text="helpSpark">Anleitung zu Spark</h2>
+      <!-- Ich zeige diesen Teil der Anleitung, wenn Deutsch ausgewählt ist. -->
       <p class="help-de" lang="de">Tippe auf den Bildschirm oder drücke die Leertaste, um zu starten. Bewege den Korb mit dem Finger, der Maus oder den Pfeiltasten. Du hast 30 Sekunden. Wenn du drei Motive hintereinander verpasst oder den Zombie berührst, endet die Runde.</p>
+      <!-- Ich zeige diesen Teil der Anleitung, wenn Englisch ausgewählt ist. -->
       <p class="help-en" lang="en">Tap the screen or press the space bar to start. Move the basket with your finger, mouse, or arrow keys. You have 30 seconds. The round ends if you miss three in a row or touch the zombie.</p>
     </section>
   </main>

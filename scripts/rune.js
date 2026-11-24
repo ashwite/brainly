@@ -1,20 +1,29 @@
 (() => {
   // Ich hole die Spielfläche, die Figurenbilder und den vorlesbaren Rundenstatus aus der Seite.
   const field = document.querySelector('#field')
+  // Ich greife auf das Element rune-obstacle zu, damit ich es im weiteren Ablauf verwenden kann.
   const obstacleImage = document.querySelector('#rune-obstacle')
+  // Ich greife auf das Element rune-player zu, damit ich es im weiteren Ablauf verwenden kann.
   const player = document.querySelector('#rune-player')
+  // Ich greife auf das Element status zu, damit ich es im weiteren Ablauf verwenden kann.
   const status = document.querySelector('#status')
 
   // Ich rechne senkrecht mit der Canvas-Höhe und trenne die Kollisionsbereiche von der Bildgröße.
   const ground = field.height
+  // Ich setze die Beschleunigung fest, mit der Rune zur Bodenlinie zurückfällt.
   const gravity = 1250
   const runner = { x: 210, y: ground - 48, width: 28, height: 48 }
   const obstacle = { x: 480, y: ground - 32, width: 24, height: 32 }
   let velocity = 0
+  // Ich merke mir die XP dieser Runde für die Meldung am Spielende.
   let roundXp = 0
+  // Ich zähle übersprungene Hindernisse für die Geschwindigkeit.
   let passedObstacles = 0
+  // Ich merke mir, ob gerade eine Runde läuft und Eingaben annehmen darf.
   let running = false
+  // Ich sperre Eingaben, bis Rune nach der Kollision wieder sichtbar ist.
   let respawning = false
+  // Ich speichere die Zeit des vorigen Bilds für Bewegung und XP.
   let previousTime = 0
   // Ich sammle XP nur während laufender Runden und bei sichtbarem Tab.
   const recordPlayTime = levelProgress.trackPlayTime('rune')
@@ -78,6 +87,7 @@
     }, 3000)
   }
 
+  // Ich berechne Bewegung, Kollisionen und Anzeige für das nächste Bild der Runde.
   function frame(time) {
     // Ich zähle die verstrichene Spielzeit unabhängig von der Schrittweite der Bewegung.
     roundXp += recordPlayTime(previousTime, time)
@@ -149,9 +159,11 @@
 
   // Ich lasse Links, Bedienelemente und die Anleitung ihre eigenen Eingaben verarbeiten.
   const pageControls = 'header, .site-footer, .game-help, a, button, input, select, textarea, [contenteditable]'
+  // Ich reagiere auf den Beginn einer Berührung oder einen Mausklick.
   document.addEventListener('pointerdown', event => {
     if (event.button === 0 && !event.target.closest(pageControls)) play()
   })
+  // Ich prüfe beim Tastendruck, ob er eine Spielfunktion auslösen soll.
   document.addEventListener('keydown', event => {
     if (event.code !== 'Space' || event.target.closest(pageControls)) return
     event.preventDefault()

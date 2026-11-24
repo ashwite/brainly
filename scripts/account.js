@@ -8,7 +8,9 @@
   const hasGame = typeof gameApp !== 'undefined';
   const progress = typeof levelProgress === 'undefined' ? {} : levelProgress;
   const { saveKey, restoreSave } = hasGame ? gameApp : progress;
+  // Ich lege den Abstand zwischen automatischen Speicherläufen fest.
   const autosaveInterval = 15_000;
+  // Ich lege den Abstand zwischen Abrufen des Online-Stands fest.
   const autoloadInterval = 20_000;
 
   // Ich verwende für Sudoku den bereits vorhandenen lokalen Spielstand.
@@ -44,6 +46,7 @@
 
   // Hier hole ich die Buttons aus dem HTML, damit ich später festlegen kann, was ein Klick auslöst.
   const sessionButton = document.querySelector('#account-session');
+  // Ich greife auf das Element footer-profile zu, damit ich es im weiteren Ablauf verwenden kann.
   const footerProfile = document.querySelector('#footer-profile');
   // In dieser Liste sammle ich alle Konto-Buttons. So kann ich sie bei einer laufenden Aktion gemeinsam sperren.
   const controls = [footerProfile, sessionButton];
@@ -54,6 +57,7 @@
   // onload meldet Erfolg, onerror einen Fehler. Mit await kann ich später auf das Ergebnis warten.
   function loadScript(url, publishableKey) {
     return new Promise((resolve, reject) => {
+      // Ich lese die Seiteneinstellungen aus dem Browser, bevor die Skripte die Oberfläche aufbauen.
       const script = document.createElement('script');
       script.src = url;
       script.crossOrigin = 'anonymous';
@@ -140,6 +144,7 @@
     let activeUserId;
     let remoteGame;
     let savedLevel;
+    // Ich führe Abrufe und Speicherläufe in derselben Reihenfolge aus, in der sie eingeplant werden.
     let syncQueue = Promise.resolve();
     let syncError = '';
 

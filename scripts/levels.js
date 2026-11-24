@@ -2,13 +2,18 @@
 const levelProgress = (() => {
   const prefix = 'puzzle-xp:'
   const minigamePrefix = 'minigame-xp:'
+  // Ich erkenne an diesem Muster, welche gespeicherten Einträge zu Minispiel-Sitzungen gehören.
   const minigameKey = /^minigame-xp:(rune|spark|puff):[0-9]+(?:-[0-9]+){3}$/
+  // Ich vergebe die Minispiel-XP in Abschnitten von drei Sekunden.
   const playInterval = 3000
+  // Ich rechne fünf XP pro vollständig gespieltem Zeitabschnitt an.
   const xpPerInterval = 5
+  // Ich verwende tausend XP als Abstand zwischen zwei Leveln.
   const xpPerLevel = 1000
   const xpWithHelp = 50
   const xpWithoutHelp = 100
   const games = ['sudoku', 'mudoku', 'wordle']
+  // Ich halte die XP dieses Tabs griffbereit, auch wenn der Browser das Speichern verhindert.
   const sessionAwards = new Map()
 
   // Ich erkenne Minispiel-XP an der Sitzungskennung und an vollständigen Schritten von fünf XP.
@@ -58,6 +63,7 @@ function difficulty(game) {
 
   // Ich addiere Rätsel- und Minispiel-XP für die Level-Anzeige auf der Startseite.
   function render() {
+    // Ich greife auf das Element level-progress zu, damit ich es im weiteren Ablauf verwenden kann.
     const progress = document.querySelector('#level-progress')
     if (!progress) return
 
@@ -99,8 +105,10 @@ function difficulty(game) {
   function trackPlayTime(game) {
     const id = crypto.getRandomValues(new Uint32Array(4)).join('-')
     const key = `${minigamePrefix}${game}:${id}`
+    // Ich hebe noch nicht vergütete Millisekunden für den nächsten Spielabschnitt auf.
     let remaining = 0
     let total = 0
+    // Ich speichere, seit wann der Tab sichtbar ist, damit Hintergrundzeit keine XP gibt.
     let visibleSince = document.hidden ? Infinity : performance.now()
 
     // Ich beginne nach einem Tabwechsel erst wieder beim Sichtbarwerden mit dem Zählen.
@@ -186,8 +194,11 @@ function difficulty(game) {
     })
   }
 
+  // Ich aktualisiere die sprachabhängige Darstellung beim Wechsel der Seitensprache.
   document.addEventListener('game-language-change', render)
+  // Ich lade die aktuelle Anzeige, wenn diese Seite wieder sichtbar wird.
   window.addEventListener('pageshow', render)
+  // Ich aktualisiere die Darstellung, wenn ein anderer Tab den Browserspeicher ändert.
   window.addEventListener('storage', event => {
     if (event.key === null || event.key.startsWith(prefix) || event.key.startsWith(minigamePrefix)) render()
   })
