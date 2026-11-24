@@ -1,5 +1,6 @@
 // Ich steuere die Spielanleitung, die über das kleine i in der Kopfzeile erreichbar ist.
 (() => {
+  // Ich greife auf das Element game-help-toggle zu, damit ich es im weiteren Ablauf verwenden kann.
   const button = document.querySelector('#game-help-toggle')
   // Ich lese am Button, zu welchem Abschnitt er gehört. aria-controls verweist auf die Kennung des passenden Abschnitts.
   const panel = document.getElementById(button.getAttribute('aria-controls'))

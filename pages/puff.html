@@ -1,9 +1,15 @@
 <!doctype html>
+<!-- Ich setze Deutsch als Ausgangssprache für die Seite. -->
 <html lang="de">
+<!-- Ich lade hier Seitentitel, Einstellungen, Design und Skripte. -->
 <head>
+  <!-- Ich verwende UTF-8, damit Umlaute und Symbole korrekt erscheinen. -->
   <meta charset="utf-8">
+  <!-- Ich richte die Seitenbreite an der Breite des Geräts aus. -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Ich lege die Ausgangsfarbe der Browserleiste fest. -->
   <meta name="theme-color" content="#fff">
+  <!-- Ich setze den Titel für den Browser-Tab. -->
   <title>Puff · brainly</title>
 
   <!-- Ich übernehme Sprache und Farbschema vor dem ersten Rendern. -->
@@ -23,25 +29,37 @@
 
   <!-- Ich lade das gemeinsame Design und lasse die Skripte mit defer nach dem Einlesen des HTML laufen. -->
   <link rel="stylesheet" href="../styles/style.css?v=164">
+  <!-- Ich lade die deutschen und englischen Texte für Beschriftungen und Meldungen. -->
   <script src="../scripts/text.js?v=35" defer></script>
+  <!-- Ich erzeuge Navigation, Kopfzeile und Footer aus der gemeinsamen Vorlage. -->
   <script src="../scripts/site-shell.js?v=37" defer></script>
+  <!-- Ich verbinde die Schalter für Sprache und Farbschema mit der Seite. -->
   <script src="../scripts/navigation.js?v=5" defer></script>
+  <!-- Ich verbinde das Info-i mit der passenden Spielanleitung. -->
   <script src="../scripts/game-help.js?v=1" defer></script>
   <!-- Ich lade das Levelsystem und die Charakteranzeige vor dem Spielskript. -->
   <script src="../scripts/levels.js?v=14" defer></script>
+  <!-- Ich lade die gewählte Figur für das Profil oder die Rückmeldung am Rundenende. -->
   <script src="../scripts/characters.js?v=12" defer></script>
+  <!-- Ich lade Ballonsteuerung, Wolken und Kollisionserkennung für Puff. -->
   <script src="../scripts/puff.js?v=3" defer></script>
 </head>
+<!-- Ich beginne hier mit dem sichtbaren Seiteninhalt. -->
 <body data-game="puff">
+  <!-- Ich halte den Hauptinhalt von Navigation und Footer getrennt. -->
   <main class="puff-main">
     <!-- Ich lasse Blumen und Schmetterlinge durch die transparente Spielfläche sichtbar. -->
     <canvas id="puff-field" tabindex="0" aria-label="Puff"></canvas>
+    <!-- Ich lasse die aktualisierte Meldung von Screenreadern vorlesen. -->
     <p id="puff-status" class="sr-only" role="status"></p>
 
     <!-- Ich zeige die Anleitung auf Deutsch oder Englisch über das i in der Kopfzeile. -->
     <section id="hilfe-puff" class="game-help" aria-labelledby="hilfe-puff-title" hidden>
+      <!-- Ich kennzeichne mit dieser Überschrift den Beginn des zugehörigen Abschnitts. -->
       <h2 id="hilfe-puff-title" data-text="helpPuff">Anleitung zu Puff</h2>
+      <!-- Ich zeige diesen Teil der Anleitung, wenn Deutsch ausgewählt ist. -->
       <p class="help-de" lang="de">Halte den Finger, die Maustaste oder die Leertaste gedrückt, um aufzusteigen. Lass los, um zu sinken. Weiche den Wolken aus.</p>
+      <!-- Ich zeige diesen Teil der Anleitung, wenn Englisch ausgewählt ist. -->
       <p class="help-en" lang="en">Hold your finger, the mouse button, or space to rise. Release to descend. Avoid the clouds.</p>
     </section>
   </main>

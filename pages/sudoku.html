@@ -1,12 +1,19 @@
 <!doctype html>
+<!-- Ich setze Deutsch als Ausgangssprache für die Seite. -->
 <html lang="de">
 <!-- Ich definiere im Kopfbereich den Tab-Titel und lade das Design und die Skripte für diese Seite. -->
 <head>
+  <!-- Ich verwende UTF-8, damit Umlaute und Symbole korrekt erscheinen. -->
   <meta charset="UTF-8">
+  <!-- Ich richte die Seitenbreite an der Breite des Geräts aus. -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Ich lege die Ausgangsfarbe der Browserleiste fest. -->
   <meta name="theme-color" content="#fff">
+  <!-- Ich hinterlege eine kurze Beschreibung für die Seitenvorschau. -->
   <meta name="description" content="Sudoku mit automatischer Schwierigkeit und automatischem Spielstand.">
+  <!-- Ich lade das Symbol für den Browser-Tab. -->
   <link rel="icon" type="image/png" sizes="32x32" href="../assets/miffy.png">
+  <!-- Ich setze den Titel für den Browser-Tab. -->
   <title>Sudoku · brainly</title>
 
   <!-- Ich übernehme die gespeicherte Sprache und das Farbschema vor dem ersten Rendern. -->
@@ -24,12 +31,19 @@
   <!-- Ich lade zuerst die Spiellogik und dann die Konto-Funktionen. defer wartet mit der Ausführung, bis das HTML eingelesen ist. -->
   <!-- Ich lade Übersetzungen und gemeinsame Bedienelemente zuerst. defer wartet, bis die Seite eingelesen ist. -->
   <script src="../scripts/text.js?v=35" defer></script>
+  <!-- Ich erzeuge Navigation, Kopfzeile und Footer aus der gemeinsamen Vorlage. -->
   <script src="../scripts/site-shell.js?v=37" defer></script>
+  <!-- Ich verbinde die Schalter für Sprache und Farbschema mit der Seite. -->
   <script src="../scripts/navigation.js?v=5" defer></script>
+  <!-- Ich verbinde das Info-i mit der passenden Spielanleitung. -->
   <script src="../scripts/game-help.js?v=1" defer></script>
+  <!-- Ich lade die gewählte Figur für das Profil oder die Rückmeldung am Rundenende. -->
   <script src="../scripts/characters.js?v=11" defer></script>
+  <!-- Ich lade die gemeinsamen XP und den Fortschritt für die Level-Anzeige. -->
   <script src="../scripts/levels.js?v=14" defer></script>
+  <!-- Ich initialisiere das ausgewählte Rätsel. -->
   <script src="../scripts/app.js?v=16" defer></script>
+  <!-- Ich binde die Kontoanmeldung und den Abgleich der Spielstände ein. -->
   <script src="../scripts/account.js?v=9" data-publishable-key="pk_test_d2FybS1wYW5kYS00MjY1LmNsZXJrLmFjY291bnRzLmRldiQ" defer></script>
 </head>
 <!-- Ich gebe mit data-game an, welche Spiellogik app.js starten soll. -->
@@ -39,13 +53,16 @@
   <main>
     <!-- Ich hinterlege beide Sprachen. Das kleine i öffnet die Anleitung, die zur gewählten Sprache passt. -->
     <section id="hilfe-sudoku" class="game-help" aria-labelledby="hilfe-sudoku-title" hidden>
+      <!-- Ich kennzeichne mit dieser Überschrift den Beginn des zugehörigen Abschnitts. -->
       <h2 id="hilfe-sudoku-title">Sudoku</h2>
+      <!-- Ich zeige diesen Teil der Anleitung, wenn Deutsch ausgewählt ist. -->
       <div class="help-de" lang="de">
         <p>Fülle das Raster so, dass jede Zahl von 1 bis 9 in jeder Zeile, Spalte und jedem 3×3-Block genau einmal vorkommt.</p>
         <p>Wähle ein freies Feld und tippe eine Zahl an oder drücke 1 bis 9. Mit Rücktaste, Entf oder einem zweiten Tipp auf das gewählte Feld löschst du deine Eingabe.</p>
         <p>Eine wellige Unterstreichung zeigt eine falsche Zahl an. Sie verschwindet beim Korrigieren oder Löschen.</p>
         <p>Wenn du nicht weiterkommst, tippe auf die kleine Glühbirne rechts neben den Zahlentasten. Sie markiert eine falsche Eingabe oder wählt ein freies Feld aus und zeigt dir, welche Zahlen dort infrage kommen. Du trägst die Zahl selbst ein. Nach der Lösung startet automatisch ein neues Rätsel.</p>
       </div>
+      <!-- Ich zeige diesen Teil der Anleitung, wenn Englisch ausgewählt ist. -->
       <div class="help-en" lang="en">
         <p>Fill the grid so that each number from 1 to 9 appears exactly once in every row, column and 3×3 box.</p>
         <p>Select an empty cell and tap a number or press 1 to 9. Press Backspace or Delete, or tap the selected cell again, to clear your entry.</p>
@@ -53,21 +70,27 @@
         <p>If you get stuck, tap the small light bulb to the right of the number buttons. It highlights an incorrect entry or selects an empty cell and shows which numbers could fit there. You enter the number yourself. Once you solve the grid, a new puzzle starts automatically.</p>
       </div>
     </section>
+    <!-- Ich gruppiere hier einen eigenen Abschnitt des Seiteninhalts. -->
     <section class="game" data-label="game" aria-label="Sudoku-Spiel">
       <!-- Ich zeige den Fortschritt an, z. B. "5 von 8". -->
       <p id="puzzle-progress"></p>
       <!-- Mit JavaScript ergänze ich hier die 81 Felder und die neun Zahlentasten. -->
       <div class="board-wrap">
+        <!-- Ich fülle das Sudoku-Raster per JavaScript mit 81 auswählbaren Feldern. -->
         <div id="board" role="group" data-label="board" aria-label="Sudoku-Raster"></div>
       </div>
       <div class="number-row">
+        <!-- Ich gruppiere die Zahlentasten und den Hinweis für Sudoku. -->
         <div id="numbers" data-label="numbers" aria-label="Zahlen eingeben"></div>
+        <!-- Ich stelle für diese Aktion einen eigenen Button bereit. -->
         <button id="hint-button" type="button" data-label="hint" aria-label="Hinweis">
+          <!-- Ich zeichne das Symbol als Vektorgrafik im Button. -->
           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true">
             <path d="M9 18h6m-5 3h4m-5-6c0-2-3-3-3-7a6 6 0 0 1 12 0c0 4-3 5-3 7z"/>
           </svg>
         </button>
       </div>
+      <!-- Ich lasse die aktualisierte Meldung von Screenreadern vorlesen. -->
       <p id="hint-message" role="status"></p>
       <!-- Ich stelle die Meldungen für Screenreader bereit und blende sie optisch aus. -->
       <p id="message" class="sr-only" role="status" aria-live="polite"></p>
