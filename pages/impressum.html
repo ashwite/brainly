@@ -1,0 +1,104 @@
+<!doctype html>
+<!-- Ich setze Deutsch als Ausgangssprache für die Seite. -->
+<html lang="de">
+<!-- Ich definiere im Kopfbereich den Tab-Titel und lade das Design und die Skripte für diese Seite. -->
+<head>
+  <!-- Ich verwende UTF-8, damit Umlaute und Symbole korrekt erscheinen. -->
+  <meta charset="utf-8">
+  <!-- Ich richte die Seitenbreite an der Breite des Geräts aus. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Ich lege die Ausgangsfarbe der Browserleiste fest. -->
+  <meta name="theme-color" content="#fff">
+  <!-- Ich setze den Titel für den Browser-Tab. -->
+  <title>Impressum · brainly</title>
+  <!-- Ich lade das Symbol für den Browser-Tab. -->
+  <link rel="icon" href="../assets/miffy.png" type="image/png">
+  <!-- Ich stelle das gespeicherte Farbschema und die Sprache vor dem Rendern wieder her. -->
+  <script>
+    const root = document.documentElement
+    root.dataset.theme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+    try {
+      root.lang = localStorage.getItem('sudoku-language') === 'en' ? 'en' : 'de'
+      root.dataset.theme = localStorage.getItem('sudoku-theme') || root.dataset.theme
+    } catch {
+      // Wenn der Browser den Speicher blockiert, verwende ich die Vorgaben.
+    }
+  </script>
+  <!-- Ich lade das gemeinsame Design mit einer Versionsnummer für den Browsercache. -->
+  <link rel="stylesheet" href="../styles/style.css?v=205">
+  <!-- Ich lade Caveat für meine Einladung zum Schreiben. -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat&display=swap">
+  <!-- Ich lade Übersetzungen und gemeinsame Bedienelemente zuerst. defer wartet, bis die Seite eingelesen ist. -->
+  <script src="../scripts/text.js?v=35" defer></script>
+  <!-- Ich erzeuge Navigation, Kopfzeile und Footer aus der gemeinsamen Vorlage. -->
+  <script src="../scripts/site-shell.js?v=39" defer></script>
+  <!-- Ich verbinde die Schalter für Sprache und Farbschema mit der Seite. -->
+  <script src="../scripts/navigation.js?v=5" defer></script>
+  <!-- Ich lade die gewählte Figur für das Profil oder die Rückmeldung am Rundenende. -->
+  <script src="../scripts/characters.js?v=11" defer></script>
+  <!-- Ich lade die gemeinsamen XP und den Fortschritt für die Level-Anzeige. -->
+  <script src="../scripts/levels.js?v=14" defer></script>
+  <!-- Ich erstelle auf Wunsch ein teilbares Bild aus Figur und Levelstand. -->
+  <script src="../scripts/level-share.js?v=1" defer></script>
+  <!-- Ich binde die Kontoanmeldung und den Abgleich der Spielstände ein. -->
+  <script src="../scripts/account.js?v=9" data-publishable-key="pk_test_d2FybS1wYW5kYS00MjY1LmNsZXJrLmFjY291bnRzLmRldiQ" defer></script>
+</head>
+<!-- Ich beginne hier mit dem sichtbaren Seiteninhalt. -->
+<body data-page="impressum">
+  <main class="legal-page">
+    <!-- Ich zeige den Über-mich-Text in der gewählten Sprache. -->
+    <section class="imprint-profile" aria-labelledby="imprint-handle">
+      <div class="imprint-heading" aria-hidden="true"></div>
+      <div class="imprint-copy">
+        <p class="help-de" lang="de">
+            Hi, ich bin Hannah! Ich mache eine Ausbildung zur Fachinformatikerin für Anwendungsentwicklung und interessiere mich für Webentwicklung und Grafikdesign. In Brainly verbinde ich beides.
+            <br><br>
+            In 2026 wird es immer schwieriger wenig am Handy zu sein. Man scrollt stundenlang durch Social Media, schaut Serien und Videos oder spielt Spiele. Ich möchte mit Brainly eine Plattform schaffen, die Spaß macht und gleichzeitig das Gehirn trainiert. Mein Ziel ist es, dass man Brainly gerne öffnet, um sich zu entspannen und gleichzeitig etwas zu lernen. Vielleicht ersetzt ja brainly in Zukunft einen Teil deiner Social-Media-Zeit.
+            <br><br>
+
+            Mein <a href="https://gitlab.com/ashwite/myspace">Portfolio</a> ist als Website noch nicht veröffentlicht. Den Quellcode findest du schon auf GitLab.</p>
+            
+        <p class="help-en" lang="en">
+            Hi, I’m Hannah! I’m training as a software developer and enjoy web development and graphic design. Brainly brings those interests together. 
+            <br><br>
+            In 2026, it will be increasingly difficult to spend less time on your phone. People scroll through social media for hours, watch series and videos, or play games. With Brainly, I want to create a platform that is fun and trains the brain at the same time. My goal is for people to open Brainly to relax and learn something at the same time. Maybe Brainly will replace part of your social media time in the future.
+            <br><br>
+
+            My <a href="https://gitlab.com/ashwite/myspace">portfolio</a> isn’t live yet. You can already find its source code on GitLab.</p>
+
+      </div>
+
+      <!-- Ich trenne die Einladung zum Schreiben von meinen Kontakt- und Projektlinks. -->
+      <div class="imprint-contact">
+        <div class="imprint-contact-block">
+          <p class="help-de" lang="de">Du hast Wünsche, Ideen oder Feedback? Schreib mir gerne!</p>
+          <p class="help-en" lang="en">Have a suggestion, idea, or feedback? I’d love to hear from you!</p>
+          <!-- Ich zeige mein Profilbild mit meinem Benutzernamen unter der Einladung zum Schreiben. -->
+          <div class="imprint-signature">
+            <img class="imprint-portrait" src="../assets/mee.png" width="96" height="96" alt="">
+            <span id="imprint-handle" class="imprint-handle">@ashwite</span>
+          </div>
+        </div>
+        <div class="imprint-contact-frame">
+          <!-- Ich verwende die Hasengrafik als Rahmen und lege die anklickbaren Links darüber. -->
+          <img src="../assets/imprint-contact-frame.png" width="680" height="366" alt="">
+          <!-- Ich setze die E-Mail in die obere und die Repository-Icons in die untere Zeile. -->
+          <a class="imprint-email" href="mailto:hannah@kleinerbauer.de">hannah@kleinerbauer.de</a>
+          <div class="imprint-project-links">
+            <a href="https://github.com/ashwite/brainly">
+              <span class="sr-only help-de" lang="de">Brainly auf GitHub</span>
+              <span class="sr-only help-en" lang="en">Brainly on GitHub</span>
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"></path></svg>
+            </a>
+            <a href="https://gitlab.com/ashwite/brainly">
+              <span class="sr-only help-de" lang="de">Brainly auf GitLab</span>
+              <span class="sr-only help-en" lang="en">Brainly on GitLab</span>
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m23.6004 9.5927-.0337-.0862L20.3.9814a.851.851 0 0 0-.3362-.405.8748.8748 0 0 0-.9997.0539.8748.8748 0 0 0-.29.4399l-2.2055 6.748H7.5375l-2.2057-6.748a.8573.8573 0 0 0-.29-.4412.8748.8748 0 0 0-.9997-.0537.8585.8585 0 0 0-.3362.4049L.4332 9.5015l-.0325.0862a6.0657 6.0657 0 0 0 2.0119 7.0105l.0113.0087.03.0213 4.976 3.7264 2.462 1.8633 1.4995 1.1321a1.0085 1.0085 0 0 0 1.2197 0l1.4995-1.1321 2.4619-1.8633 5.006-3.7489.0125-.01a6.0682 6.0682 0 0 0 2.0094-7.003z"></path></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
