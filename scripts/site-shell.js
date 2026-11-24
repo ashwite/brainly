@@ -4,7 +4,7 @@
   // Ich leite die Projektadresse aus der Adresse dieses Skripts ab. So funktionieren die Links auch in einem Unterordner.
   const base = new URL('../', document.currentScript.src).href
   // Ich verwende dieselbe Spielreihenfolge oben und in der Fußnavigation.
-  const games = { sudoku: 'Sudoku', rune: 'Rune', mudoku: 'Mudoku', spark: 'Spark', wordle: 'Wordle' }
+  const games = { puff: 'Puff', sudoku: 'Sudoku', rune: 'Rune', mudoku: 'Mudoku', spark: 'Spark', wordle: 'Wordle' }
   // Ich lese aus dem Seitenkörper, ob ein Spiel geöffnet ist. Nur dann füge ich das i zur Anleitung hinzu.
   const game = document.body.dataset.game
   const gameName = games[game]
@@ -32,17 +32,17 @@
       ${Object.entries({ home: 'Home', ...games }).map(([slug, name]) => `
         <a class="header-game-link" href="${base}pages/${slug}.html">
           <span class="header-game-image">
-            <img src="${base}assets/nav-${slug}.png" alt="">
+            <img src="${base}assets/nav-${slug}.png${slug === 'puff' || slug === 'mudoku' ? '?v=2' : ''}" alt="">
           </span>
           <span>${name}</span>
         </a>
       `).join('')}
     </nav>
   </header>`)
-  // Ich ergänze den Footer. In Spark reicht das Spielfeld bis zur Fußnavigation, deshalb lasse ich Miffyroll dort weg.
+  // Ich ergänze den Footer. In Spark und Puff reicht das Spielfeld bis zur Fußnavigation, deshalb lasse ich Miffyroll dort weg.
   document.body.insertAdjacentHTML('beforeend', `
   <div class="footer-area">
-    ${game === 'spark' ? '' : '<div class="footer-skate" aria-hidden="true"></div>'}
+    ${['spark', 'puff'].includes(game) ? '' : '<div class="footer-skate" aria-hidden="true"></div>'}
     <footer class="site-footer">
       <nav class="footer-links" aria-label="Fußnavigation" data-label="footerNavigation">
         <div class="footer-games">
