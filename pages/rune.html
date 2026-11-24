@@ -21,15 +21,15 @@
   </script>
 
   <!-- Ich lade das gemeinsame Design und lasse die Skripte mit defer nach dem Einlesen des HTML laufen. -->
-  <link rel="stylesheet" href="../styles/style.css?v=161">
+  <link rel="stylesheet" href="../styles/style.css?v=162">
   <script src="../scripts/text.js?v=33" defer></script>
-  <script src="../scripts/site-shell.js?v=31" defer></script>
+  <script src="../scripts/site-shell.js?v=34" defer></script>
   <script src="../scripts/navigation.js?v=5" defer></script>
   <script src="../scripts/game-help.js?v=1" defer></script>
   <!-- Ich lade das Levelsystem und die Charakteranzeige vor dem Spielskript. -->
   <script src="../scripts/levels.js?v=13" defer></script>
   <script src="../scripts/characters.js?v=12" defer></script>
-  <script src="../scripts/rune.js?v=10" defer></script>
+  <script src="../scripts/rune.js?v=11" defer></script>
   <!-- Ich gestalte hier die Strecke, die Figuren und die Bedienelemente von Rune. -->
   <style>
   /* Ich gebe der Strecke die gesamte Seitenbreite und begrenze die Textbereiche separat. */
@@ -37,11 +37,6 @@
     max-width: none;
     padding-inline: 0;
   }
-
-  .rune-controls {
-  text-align: center;
-  margin-bottom: 16px;
-}
 
   .rune-game {
     width: 100%;
@@ -116,7 +111,7 @@
     translate: -50% 0;
   }
 
-  /* Ich färbe die schwarzen Konturen im Dunkelmodus weiß. */
+  /* Ich kehre die schwarzen Konturen im Dunkelmodus zu Weiß um. */
   html[data-theme="dark"] :is(#rune-player, #rune-obstacle) {
     filter: invert(1);
   }
@@ -129,22 +124,19 @@
       <!-- Ich zeige die Anleitung erst beim Öffnen über das i in der Kopfzeile. -->
       <section id="hilfe-rune" class="game-help" aria-labelledby="hilfe-rune-title" hidden>
         <h2 id="hilfe-rune-title" data-text="helpRune">Anleitung zu Rune</h2>
-        <p class="help-de" lang="de">Tippe aufs Spielfeld oder drücke die Leertaste, um zu springen.</p>
-        <p class="help-en" lang="en">Tap the play area or press the space bar to jump.</p>
+        <p class="help-de" lang="de">Tippe auf den Bildschirm oder drücke die Leertaste, um zu starten. Tippe oder drücke erneut, um zu springen.</p>
+        <p class="help-en" lang="en">Tap the screen or press the space bar to start. Tap or press again to jump.</p>
       </section>
     </div>
- <!-- Ich zeige hier den Spielstand und den Startknopf. Statusänderungen können vorgelesen werden. -->
- <div class="rune-copy rune-controls">
-  <p id="status" role="status">Bereit?</p>
-  <button id="start" type="button">Start</button>
-</div>
+    <!-- Ich lasse den Rundenstatus vorlesen, ohne ihn auf der Strecke einzublenden. -->
+    <p id="status" class="sr-only" role="status">Bereit. Tippe oder drücke die Leertaste.</p>
     <!-- Ich setze die Strecke per Skript an die Stelle von Miffyroll. -->
     <div class="rune-track">
       <!-- Ich mache die Spielfläche für Berührung und Tastatur erreichbar. -->
       <canvas id="field" width="480" height="204" tabindex="0"
         aria-label="Rune-Spielfeld"></canvas>
       <img id="rune-player" src="../assets/rune-player.png" alt="">
-      <!-- Ich setze das Hindernis im HTML hinter das Spielerbild, damit es bei einer Überlappung im Vordergrund liegt. -->
+      <!-- Ich setze die Hindernisebene im HTML nach dem Spielerbild, damit sie bei einer Überlappung vorne gezeichnet wird. -->
       <div class="rune-obstacle-layer" aria-hidden="true">
         <img id="rune-obstacle" src="../assets/rune-obstacle.png" alt="" hidden>
       </div>

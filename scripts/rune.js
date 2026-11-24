@@ -1,10 +1,9 @@
 (() => {
-  // Ich hole die Spielfläche, die Bilder und die Bedienelemente aus der Seite.
+  // Ich hole die Spielfläche, die Figurenbilder und den vorlesbaren Rundenstatus aus der Seite.
   const field = document.querySelector('#field')
   const obstacleImage = document.querySelector('#rune-obstacle')
   const player = document.querySelector('#rune-player')
   const status = document.querySelector('#status')
-  const startButton = document.querySelector('#start')
 
   // Ich rechne senkrecht mit der Canvas-Höhe und trenne die Kollisionsbereiche von der Bildgröße.
   const ground = field.height
@@ -15,8 +14,9 @@
   let roundXp = 0
   let passedObstacles = 0
   let running = false
+  let respawning = false
   let previousTime = 0
-  // Ich sammle Zeit nur aus laufenden Runden. Startbildschirm und Rundenpausen bleiben außen vor.
+  // Ich sammle XP nur während laufender Runden und bei sichtbarem Tab.
   const recordPlayTime = levelProgress.trackPlayTime('rune')
 
   // Ich setze die Bilder an ihre Spielpositionen und passe die Sprunghöhe optisch der sichtbaren Feldhöhe an.
@@ -45,9 +45,9 @@
   // Ich beende die Runde und lasse den Charakter die verdienten XP anzeigen.
   async function finish() {
     running = false
+    respawning = true
     status.textContent = 'Runde vorbei'
     document.dispatchEvent(new CustomEvent('minigame-finished', { detail: { xp: roundXp } }))
-    startButton.textContent = 'Nochmal'
 
     // Ich lasse beide Bilder kurz pulsieren und ausblenden, wenn reduzierte Bewegung ausgeschaltet ist.
     if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
@@ -73,8 +73,8 @@
       obstacle.x = field.width
       draw()
       player.hidden = false
-      startButton.disabled = false
-      if (document.activeElement === field) startButton.focus()
+      respawning = false
+      status.textContent = 'Bereit. Tippe oder drücke die Leertaste.'
     }, 3000)
   }
 
@@ -126,7 +126,7 @@
   }
 
   // Ich setze Positionen und die XP-Anzeige für die neue Runde zurück.
-  startButton.addEventListener('click', () => {
+  function startRound() {
     runner.y = ground - runner.height
     obstacle.x = field.width
     obstacleImage.hidden = false
@@ -136,21 +136,30 @@
     running = true
     previousTime = performance.now()
     status.textContent = ''
-    field.focus()
-    startButton.disabled = true
+    field.focus({ preventScroll: true })
     requestAnimationFrame(frame)
-  })
+  }
 
-  // Ich verwende dieselbe Sprungfunktion für Berührung, Mausklick und Leertaste.
-  field.addEventListener('pointerdown', jump)
-  field.addEventListener('keydown', event => {
-    if (event.code === 'Space') {
-      event.preventDefault()
-      if (!event.repeat) jump()
-    }
+  // Ich starte per Tipp oder Leertaste und springe mit derselben Eingabe. Nach einer Kollision warte ich, bis Rune wieder da ist.
+  function play() {
+    if (respawning) return
+    if (running) jump()
+    else startRound()
+  }
+
+  // Ich lasse Links, Bedienelemente und die Anleitung ihre eigenen Eingaben verarbeiten.
+  const pageControls = 'header, .site-footer, .game-help, a, button, input, select, textarea, [contenteditable]'
+  document.addEventListener('pointerdown', event => {
+    if (event.button === 0 && !event.target.closest(pageControls)) play()
+  })
+  document.addEventListener('keydown', event => {
+    if (event.code !== 'Space' || event.target.closest(pageControls)) return
+    event.preventDefault()
+    if (!event.repeat) play()
   })
 
   resizeField()
   draw()
+  // Ich passe die Strecke auch dann an, wenn sich die Fenstergröße während einer Runde ändert.
   new ResizeObserver(resizeField).observe(field)
 })()

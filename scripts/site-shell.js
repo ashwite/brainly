@@ -3,10 +3,11 @@
   // Ich verwende dieselbe Kopf- und Fußzeile auf allen Seiten.
   // Ich leite die Projektadresse aus der Adresse dieses Skripts ab. So funktionieren die Links auch in einem Unterordner.
   const base = new URL('../', document.currentScript.src).href
-  const games = { sudoku: 'Sudoku', mudoku: 'Mudoku', wordle: 'Wordle' }
+  // Ich verwende dieselbe Spielreihenfolge oben und in der Fußnavigation.
+  const games = { sudoku: 'Sudoku', rune: 'Rune', mudoku: 'Mudoku', spark: 'Spark', wordle: 'Wordle' }
   // Ich lese aus dem Seitenkörper, ob ein Spiel geöffnet ist. Nur dann füge ich das i zur Anleitung hinzu.
   const game = document.body.dataset.game
-  const gameName = game === 'rune' ? 'Rune' : games[game]
+  const gameName = games[game]
   document.body.insertAdjacentHTML('afterbegin', `
   <div class="background-butterflies" aria-hidden="true"></div>
   <div class="background-motif-center" aria-hidden="true"></div>
@@ -28,14 +29,7 @@
     </div>
         </div>
           <nav class="header-games" aria-label="Spielnavigation">
-      ${Object.entries({
-        home: 'Home',
-        sudoku: 'Sudoku',
-        rune: 'Rune',
-        mudoku: 'Mudoku',
-        spark: 'Spark',
-        wordle: 'Wordle'
-      }).map(([slug, name]) => `
+      ${Object.entries({ home: 'Home', ...games }).map(([slug, name]) => `
         <a class="header-game-link" href="${base}pages/${slug}.html">
           <span class="header-game-image">
             <img src="${base}assets/nav-${slug}.png" alt="">
@@ -45,10 +39,10 @@
       `).join('')}
     </nav>
   </header>`)
-  // Ich ergänze unten die animierte Figur, die Footer-Links und die Zeile für Konto-Meldungen.
+  // Ich ergänze den Footer. In Spark reicht das Spielfeld bis zur Fußnavigation, deshalb lasse ich Miffyroll dort weg.
   document.body.insertAdjacentHTML('beforeend', `
   <div class="footer-area">
-    <div class="footer-skate" aria-hidden="true"></div>
+    ${game === 'spark' ? '' : '<div class="footer-skate" aria-hidden="true"></div>'}
     <footer class="site-footer">
       <nav class="footer-links" aria-label="Fußnavigation" data-label="footerNavigation">
         <div class="footer-games">
@@ -72,6 +66,7 @@
   </div>`)
 
   const runeTrack = document.querySelector('.rune-track')
+  // Ich setze die Rune-Strecke genau an die Stelle der Footer-Animation.
   if (game === 'rune' && runeTrack) {
     document.querySelector('.footer-skate').replaceWith(runeTrack)
   }

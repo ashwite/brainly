@@ -8,11 +8,13 @@
   // Ich behalte die alten Nummern im Browserspeicher, damit gespeicherte Auswahlen mit den neuen Dateinamen funktionieren.
   const characterImages = { '6': 'max.png', '1': 'dino.png', '5': 'cat.png' }
   const documentScript = document.currentScript.src
+  // Ich lese eigene Bilder aus dem Browserspeicher und löse mitgelieferte Bilder relativ zum Skript auf.
   function imagePath(number) {
     if (number === customCharacter) return localStorage.getItem(customImageKey)
     return new URL(`../assets/${characterImages[number]}`, documentScript).href
   }
 
+  // Ich verwende die gespeicherte Auswahl, wenn das Bild verfügbar ist. Sonst zeige ich Max.
   function selectedCharacter() {
     try {
       const saved = localStorage.getItem(storageKey)
@@ -23,6 +25,7 @@
     }
   }
 
+  // Ich setze das Bild und seine Kennung, damit CSS bei Bedarf die passende Größe anwenden kann.
   function setCharacter(image, number) {
     image.dataset.character = number
     image.src = imagePath(number)
@@ -42,6 +45,7 @@
     document.body.append(celebration)
 
     let hideTimer
+    // Ich blende die Meldung am Ende der Animation oder nach dem Ablauf des Timers aus.
     function hideCelebration() {
       clearTimeout(hideTimer)
       celebration.hidden = true
@@ -89,6 +93,7 @@
   let statusKey = ''
   let available = []
 
+  // Ich halte den Meldungsschlüssel fest, damit ich denselben Status nach einem Sprachwechsel übersetzen kann.
   function showUploadStatus(key) {
     statusKey = key
     status.textContent = key ? translate(key) : ''
@@ -134,6 +139,7 @@
     })
   }
 
+  // Ich zeige nur geladene Bilder und markiere die zuletzt gewählte Figur, sofern sie verfügbar ist.
   function renderOptions(selected) {
     empty.hidden = available.length > 0
     options.replaceChildren(...available.map(({ label }) => label))

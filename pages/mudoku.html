@@ -7,7 +7,7 @@
   <meta name="description" content="Ordne vier Verdächtige ihren Räumen zu und löse den Fall.">
   <title>Mudoku · Der letzte Termin</title>
   <link rel="icon" href="../assets/miffy.png" type="image/png">
-  <!-- Gespeicherte Sprache und Hell-Dunkel-Modus vor dem Rendern anwenden. -->
+  <!-- Ich übernehme die gespeicherte Sprache und das Farbschema vor dem ersten Rendern. -->
   <meta name="theme-color" content="#fff">
   <script>
     const preferredTheme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
@@ -20,10 +20,10 @@
     }
   </script>
   <!-- Im Stylesheet sammle ich gemeinsame Regeln und ergänze für jedes Spiel eigene Regeln. -->
-  <link rel="stylesheet" href="../styles/style.css?v=161">
+  <link rel="stylesheet" href="../styles/style.css?v=162">
   <!-- Ich lade Übersetzungen und gemeinsame Bedienelemente zuerst. defer wartet, bis die Seite eingelesen ist. -->
   <script src="../scripts/text.js?v=32" defer></script>
-  <script src="../scripts/site-shell.js?v=29" defer></script>
+  <script src="../scripts/site-shell.js?v=34" defer></script>
   <script src="../scripts/navigation.js?v=5" defer></script>
   <script src="../scripts/game-help.js?v=1" defer></script>
   <script src="../scripts/cases.js?v=0.8" defer></script>
@@ -68,7 +68,7 @@
         <ol id="clues"></ol>
       </section>
 
-      <!-- app.js befüllt die anklickbaren Raumquadrate und aktiviert bei Bedarf die Auswahl einer falschen Aussage. -->
+      <!-- Ich befülle die anklickbaren Raumquadrate in app.js und aktiviere bei Bedarf die Auswahl einer falschen Aussage. -->
       <div class="floor-plan-art" aria-hidden="true"></div>
       <form class="panel" id="case-form">
         <h2 data-text="rooms">Flurplan</h2>
