@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#fff">
+  <title>Spark · brainly</title>
+
+  <!-- Ich übernehme Sprache und Farbschema vor dem ersten Rendern. -->
+  <script>
+    const page = document.documentElement
+    page.dataset.theme = matchMedia('(prefers-color-scheme: dark)').matches
+      ? 'dark'
+      : 'light'
+
+    try {
+      page.dataset.theme = localStorage.getItem('sudoku-theme') || page.dataset.theme
+      page.lang = localStorage.getItem('sudoku-language') === 'en' ? 'en' : 'de'
+    } catch {
+      // Ich behalte die Vorgaben bei, wenn der Browser seinen Speicher blockiert.
+    }
+  </script>
+
+  <!-- Ich lade das gemeinsame Design und lasse die Skripte mit defer nach dem Einlesen des HTML laufen. -->
+  <link rel="stylesheet" href="../styles/style.css?v=161">
+  <script src="../scripts/text.js?v=32" defer></script>
+  <script src="../scripts/site-shell.js?v=29" defer></script>
+  <script src="../scripts/navigation.js?v=5" defer></script>
+  <!-- Ich lade das Levelsystem und die Charakteranzeige vor dem Spielskript. -->
+  <script src="../scripts/levels.js?v=13" defer></script>
+  <script src="../scripts/characters.js?v=12" defer></script>
+  <script src="../scripts/spark.js?v=2" defer></script>
+</head>
+<body>
+  <main>
+    <section style="width: min(100%, 640px); margin: 2rem auto; padding: 0 1rem;">
+      <h1>Spark</h1>
+      <p>Bewege den Korb mit dem Finger, der Maus oder den Pfeiltasten. Du hast 30 Sekunden.</p>
+
+      <!-- Ich zeichne den Korb und die Sterne auf einem Canvas mit festen Spielkoordinaten. -->
+      <canvas id="field" width="480" height="240" tabindex="0"
+        aria-label="Spark-Spielfeld"
+        style="display: block; width: 100%; height: auto; border: 1px solid var(--line); background: #211a35; touch-action: none;">
+      </canvas>
+
+      <!-- Ich zeige den Startzustand und die verbleibende Zeit im selben Statusfeld an. -->
+      <p id="status" role="status">Bereit?</p>
+      <button id="start" type="button">Start</button>
+    </section>
+  </main>
+</body>
+</html>

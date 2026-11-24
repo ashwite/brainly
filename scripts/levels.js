@@ -1,20 +1,33 @@
-// Ich zähle gelöste Rätsel, berechne die Gesamt-XP und bestimme die Schwierigkeit pro Spiel.
+// Ich addiere XP aus gelösten Rätseln und aktiver Minispielzeit und bestimme die Rätselschwierigkeit.
 const levelProgress = (() => {
   const prefix = 'puzzle-xp:'
+  const minigamePrefix = 'minigame-xp:'
+  const minigameKey = /^minigame-xp:(rune|spark):[0-9]+(?:-[0-9]+){3}$/
+  const playInterval = 3000
+  const xpPerInterval = 5
   const xpPerLevel = 1000
   const xpWithHelp = 50
   const xpWithoutHelp = 100
   const games = ['sudoku', 'mudoku', 'wordle']
   const sessionAwards = new Map()
 
-  // Ich lese gespeicherte Abschlüsse und ergänze die dieses Tabs. Die Kennung eines Rätsels dient als Schlüssel.
+  // Ich erkenne Minispiel-XP an der Sitzungskennung und an vollständigen Schritten von fünf XP.
+  function isMinigameAward(key, xp) {
+    return minigameKey.test(key) && Number.isSafeInteger(xp) && xp > 0 && xp % xpPerInterval === 0
+  }
+
+  // Ich lese gespeicherte Rätsel- und Minispiel-XP und ergänze den Fortschritt aus diesem Tab.
   function readAwards() {
     const awards = new Map(sessionAwards)
     try {
       for (let index = 0; index < localStorage.length; index++) {
         const key = localStorage.key(index)
-        if (!key?.startsWith(prefix)) continue
+        if (!key?.startsWith(prefix) && !key?.startsWith(minigamePrefix)) continue
         const xp = Number(localStorage.getItem(key))
+        if (key.startsWith(minigamePrefix)) {
+          if (isMinigameAward(key, xp)) awards.set(key, Math.max(xp, awards.get(key) ?? 0))
+          continue
+        }
         // Ich rechne früher gespeicherte Abschlüsse mit der passenden XP-Stufe an.
         if (xp === 5 || xp === xpWithHelp) awards.set(key, xpWithHelp)
         if (xp === 10 || xp === xpWithoutHelp) awards.set(key, xpWithoutHelp)
@@ -48,7 +61,7 @@ function difficulty(game) {
 
     let total = 0
     for (const [key, xp] of readAwards()) {
-      if (games.includes(key.split(':')[1])) total += xp
+      if (key.startsWith(minigamePrefix) || games.includes(key.split(':')[1])) total += xp
     }
     // Ich teile die Gesamt-XP durch 1.000. Ganze Tausender erhöhen das Level, der Rest füllt den Fortschrittsbalken.
     const level = 1 + Math.floor(total / xpPerLevel)
@@ -80,7 +93,41 @@ function difficulty(game) {
     render()
   }
 
-  // Ich verwandle die Liste der Abschlüsse in JSON, damit ich sie als Text im Konto speichern kann.
+  // Ich sammle sichtbare Spielzeit rundenübergreifend und speichere pro geöffneter Spielseite einen XP-Eintrag.
+  function trackPlayTime(game) {
+    const id = crypto.getRandomValues(new Uint32Array(4)).join('-')
+    const key = `${minigamePrefix}${game}:${id}`
+    let remaining = 0
+    let total = 0
+    let visibleSince = document.hidden ? Infinity : performance.now()
+
+    document.addEventListener('visibilitychange', () => {
+      visibleSince = document.hidden ? Infinity : performance.now()
+    })
+
+    return (start, end) => {
+      // Ich rechne nur den sichtbaren Teil des laufenden Spielabschnitts an.
+      // Ich runde die Zeitpunkte ab, damit sich bei vielen Einzelbildern keine Rundungsfehler summieren.
+      remaining += Math.max(0, Math.floor(end) - Math.floor(Math.max(start, visibleSince)))
+      const intervals = Math.floor(remaining / playInterval)
+      if (intervals === 0) return 0
+
+      remaining -= intervals * playInterval
+      const earned = intervals * xpPerInterval
+      total += earned
+      sessionAwards.set(key, total)
+      try {
+        localStorage.setItem(key, String(total))
+      } catch {
+        // Ich behalte die XP im aktuellen Tab, wenn der Browser den Speicher blockiert.
+      }
+      render()
+      // Ich gebe die gerade vergebenen XP für die Anzeige am Rundenende zurück.
+      return earned
+    }
+  }
+
+  // Ich speichere Rätsel- und Minispiel-XP gemeinsam im bestehenden Kontostand.
   function captureSave() {
     return JSON.stringify([...readAwards()])
   }
@@ -94,14 +141,17 @@ function difficulty(game) {
     }
     if (!Array.isArray(entries) || !entries.every(entry =>
       Array.isArray(entry) && entry.length === 2 &&
-      typeof entry[0] === 'string' && /^puzzle-xp:(sudoku|mudoku|wordle):.+$/.test(entry[0]) &&
-      (entry[1] === xpWithHelp || entry[1] === xpWithoutHelp)
+      typeof entry[0] === 'string' &&
+      (isMinigameAward(entry[0], entry[1]) ||
+        (/^puzzle-xp:(sudoku|mudoku|wordle):.+$/.test(entry[0]) &&
+          (entry[1] === xpWithHelp || entry[1] === xpWithoutHelp)))
     )) return false
 
-    // Ich ergänze gültige Online-Abschlüsse, die im Browser noch fehlen. Vorhandene Einträge bleiben erhalten.
+    // Ich ergänze fehlende Rätsel und übernehme je Minispiel-Sitzung den höheren XP-Stand.
     const existing = readAwards()
     for (const [key, xp] of entries) {
-      if (existing.has(key)) continue
+      const saved = existing.get(key)
+      if (saved !== undefined && (!key.startsWith(minigamePrefix) || saved >= xp)) continue
       existing.set(key, xp)
       try {
         localStorage.setItem(key, String(xp))
@@ -135,8 +185,8 @@ function difficulty(game) {
   document.addEventListener('game-language-change', render)
   window.addEventListener('pageshow', render)
   window.addEventListener('storage', event => {
-    if (event.key === null || event.key.startsWith(prefix)) render()
+    if (event.key === null || event.key.startsWith(prefix) || event.key.startsWith(minigamePrefix)) render()
   })
   render()
-  return { award, difficulty, solvedCount, isSolved, saveKey: 'levelProgressSave', captureSave, restoreSave }
+  return { award, trackPlayTime, difficulty, solvedCount, isSolved, saveKey: 'levelProgressSave', captureSave, restoreSave }
 })()
