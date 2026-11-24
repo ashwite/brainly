@@ -1,11 +1,17 @@
 <!doctype html>
+<!-- Ich setze Deutsch als Ausgangssprache für die Seite. -->
 <html lang="de">
 <!-- Ich definiere im Kopfbereich den Tab-Titel und lade das Design und die Skripte für diese Seite. -->
 <head>
+  <!-- Ich verwende UTF-8, damit Umlaute und Symbole korrekt erscheinen. -->
   <meta charset="UTF-8">
+  <!-- Ich richte die Seitenbreite an der Breite des Geräts aus. -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Ich lege die Ausgangsfarbe der Browserleiste fest. -->
   <meta name="theme-color" content="#fff">
+  <!-- Ich lade das Symbol für den Browser-Tab. -->
   <link rel="icon" type="image/png" sizes="32x32" href="../assets/miffy.png">
+  <!-- Ich setze den Titel für den Browser-Tab. -->
   <title>Datenschutz · brainly</title>
   <!-- Ich übernehme die gespeicherte Sprache und das Farbschema vor dem ersten Rendern. -->
   <script>
@@ -18,35 +24,51 @@
       // Wenn der Browser den Speicher blockiert, verwende ich die Vorgaben.
     }
   </script>
-  <link rel="stylesheet" href="../styles/style.css?v=164">
+  <!-- Ich lade das gemeinsame Design mit einer Versionsnummer für den Browsercache. -->
+  <link rel="stylesheet" href="../styles/style.css?v=205">
   <!-- Ich lade Übersetzungen und gemeinsame Bedienelemente zuerst. defer wartet, bis die Seite eingelesen ist. -->
   <script src="../scripts/text.js?v=35" defer></script>
-  <script src="../scripts/site-shell.js?v=37" defer></script>
+  <!-- Ich erzeuge Navigation, Kopfzeile und Footer aus der gemeinsamen Vorlage. -->
+  <script src="../scripts/site-shell.js?v=39" defer></script>
+  <!-- Ich verbinde die Schalter für Sprache und Farbschema mit der Seite. -->
   <script src="../scripts/navigation.js?v=5" defer></script>
+  <!-- Ich lade die gemeinsamen XP und den Fortschritt für die Level-Anzeige. -->
   <script src="../scripts/levels.js?v=14" defer></script>
+  <!-- Ich binde die Kontoanmeldung und den Abgleich der Spielstände ein. -->
   <script src="../scripts/account.js?v=9" data-publishable-key="pk_test_d2FybS1wYW5kYS00MjY1LmNsZXJrLmFjY291bnRzLmRldiQ" defer></script>
 </head>
+<!-- Ich beginne hier mit dem sichtbaren Seiteninhalt. -->
 <body>
   <!-- Hier beginnt der eigentliche Inhalt. Ich verwende dieselbe Grundgestaltung wie beim Spiel. -->
   <!-- Ich hinterlege den Datenschutztext in beiden Sprachen. CSS zeigt die passende Fassung an. -->
   <main class="legal-page">
+    <!-- Ich zeige diesen Teil der Anleitung, wenn Deutsch ausgewählt ist. -->
     <div class="help-de" lang="de">
+      <!-- Ich kennzeichne mit dieser Überschrift den Beginn des zugehörigen Abschnitts. -->
       <h1>Datenschutz</h1>
       <p>Entwurf. Verantwortliche Stelle, Kontaktdaten und Angaben zu den eingesetzten Diensten sind vor der Veröffentlichung zu vervollständigen.</p>
+      <!-- Ich kennzeichne mit dieser Überschrift den Beginn des zugehörigen Abschnitts. -->
       <h2>Spielen ohne Konto</h2>
       <p>Im Browser bleiben die Spielstände von Sudoku, Mudoku und Wordle, die XP, der eingetragene Name, die Charakterauswahl samt eigenem PNG und die Einstellungen für Sprache und Hell-Dunkel-Modus gespeichert.</p>
+      <!-- Ich kennzeichne mit dieser Überschrift den Beginn des zugehörigen Abschnitts. -->
       <h2>Benutzerkonto und Spielstand</h2>
       <p>Die Anmeldung läuft über Clerk. Wenn du angemeldet bist, werden deine XP und der Spielstand des geöffneten Rätsels automatisch bei Clerk gespeichert und auf angemeldeten Geräten abgerufen.</p>
+      <!-- Ich kennzeichne mit dieser Überschrift den Beginn des zugehörigen Abschnitts. -->
       <h2>Hosting und Schriftarten</h2>
       <p>Die Website wird über GitHub Pages bereitgestellt. Beim Laden der Seite werden Schriftarten von Google Fonts abgerufen.</p>
     </div>
+    <!-- Ich zeige diesen Teil der Anleitung, wenn Englisch ausgewählt ist. -->
     <div class="help-en" lang="en">
+      <!-- Ich kennzeichne mit dieser Überschrift den Beginn des zugehörigen Abschnitts. -->
       <h1>Privacy</h1>
       <p>Draft. The data controller, contact details, and information about the services used must be added before publication.</p>
+      <!-- Ich kennzeichne mit dieser Überschrift den Beginn des zugehörigen Abschnitts. -->
       <h2>Playing without an account</h2>
       <p>Your browser stores your Sudoku, Mudoku and Wordle progress, XP, the name you enter, your character choice including a custom PNG, and your language and light or dark mode settings.</p>
+      <!-- Ich kennzeichne mit dieser Überschrift den Beginn des zugehörigen Abschnitts. -->
       <h2>Accounts and saved progress</h2>
       <p>Clerk handles sign-in. While you are signed in, your XP and current puzzle progress are automatically saved to Clerk and retrieved on signed-in devices.</p>
+      <!-- Ich kennzeichne mit dieser Überschrift den Beginn des zugehörigen Abschnitts. -->
       <h2>Hosting and fonts</h2>
       <p>The website is hosted on GitHub Pages. It loads fonts from Google Fonts.</p>
     </div>

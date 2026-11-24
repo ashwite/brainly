@@ -1,12 +1,18 @@
 // Ich erstelle ein teilbares PNG mit Charakter, Name, Level und XP.
 (() => {
+  // Ich greife auf das Element level-share zu, damit ich es im weiteren Ablauf verwenden kann.
   const button = document.querySelector('#level-share')
+  // Ich greife auf das Element level-share-status zu, damit ich es im weiteren Ablauf verwenden kann.
   const status = document.querySelector('#level-share-status')
+  // Ich greife auf das Element level-character zu, damit ich es im weiteren Ablauf verwenden kann.
   const portrait = document.querySelector('#level-character')
+  // Ich greife auf das Element level-title zu, damit ich es im weiteren Ablauf verwenden kann.
   const title = document.querySelector('#level-title')
+  // Ich greife auf das Element level-name zu, damit ich es im weiteren Ablauf verwenden kann.
   const nameInput = document.querySelector('#level-name')
   let statusKey = ''
 
+  // Ich übernehme die Rückmeldung aus der aktuellen Spiel- oder Kontofunktion in die Statusanzeige.
   function showStatus(key) {
     statusKey = key
     status.textContent = key ? translate(key) : ''
@@ -60,6 +66,7 @@
     setTimeout(() => URL.revokeObjectURL(url), 30000)
   }
 
+  // Ich aktualisiere die sprachabhängige Darstellung beim Wechsel der Seitensprache.
   document.addEventListener('game-language-change', () => showStatus(statusKey))
   button.addEventListener('click', async () => {
     if (portrait.hidden) {

@@ -2,8 +2,10 @@
   // Ich verwende die sichtbare Feldgröße als Koordinatensystem für Ballon und Wolken.
   const field = document.querySelector('#puff-field')
   const ctx = field.getContext('2d')
+  // Ich greife auf das Element puff-status zu, damit ich es im weiteren Ablauf verwenden kann.
   const status = document.querySelector('#puff-status')
   const recordPlayTime = levelProgress.trackPlayTime('puff')
+  // Ich speichere Wolkenpaare und ihre jeweiligen Lücken in der laufenden Runde.
   const clouds = []
   const rabbit = new Image()
   const darkRabbit = document.createElement('canvas')
@@ -15,12 +17,19 @@
   let x = 0
   let y = 0
   let velocity = 0
+  // Ich merke mir, ob gerade eine Runde läuft und Eingaben annehmen darf.
   let running = false
+  // Ich speichere, ob die Leertaste gerade gehalten wird.
   let spaceHeld = false
+  // Ich merke mir, welcher Finger oder Mauszeiger den Ballon steuert.
   let pointerId = null
+  // Ich speichere die Zeit des vorigen Bilds für Bewegung und XP.
   let previousTime = 0
+  // Ich merke mir die XP dieser Runde für die Meldung am Spielende.
   let roundXp = 0
+  // Ich speichere den Fortschritt der Platzanimation.
   let popTime = 0
+  // Ich merke mir den Startzeitpunkt der Platzanimation.
   let popStarted = 0
 
   // Ich zeichne die Wolken an beiden Rändern und lasse dazwischen eine Durchflugöffnung frei.
@@ -185,6 +194,7 @@
     spaceHeld = true
     start()
   })
+  // Ich beende die Eingabe beim Loslassen der Taste.
   document.addEventListener('keyup', event => {
     if (event.code === 'Space') spaceHeld = false
   })
