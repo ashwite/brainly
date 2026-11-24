@@ -30,7 +30,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
 /* Wenn ich mit der Tastatur unterwegs bin, zeigt der Rahmen, welches Element gerade den Fokus hat. */
 button:focus-visible, a:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
 
-/* Gemeinsame Kopfzeile mit Logo und Hell-Dunkel-Schalter. */
+/* Ich gestalte die gemeinsame Kopfzeile mit Logo und Hell-Dunkel-Schalter. */
 header {
   position: relative;
   z-index: 50;
@@ -48,12 +48,25 @@ header {
   padding: 0 32px;
 }
 
+/* Ich verteile die Spielkacheln oben in einem Raster mit gleich breiten Spalten. */
 .header-games {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(7, minmax(0, 1fr));
   gap: clamp(6px, 2vw, 14px);
-  width: min(calc(100% - 32px), 360px);
+  width: min(calc(100% - 32px), 640px);
   margin: 0 auto 12px;
+}
+
+@media (max-width: 700px) {
+  .header-games {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 6px 0;
+    max-width: 300px;
+  }
+
+  /* Ich lasse Sudoku neben Rune und Mudoku neben Spark stehen. */
+  .header-game-link { grid-column: span 3; margin-inline: 3px; }
+  .header-game-link:nth-child(n+5) { grid-column: span 4; }
 }
 
 .header-game-link {
@@ -117,7 +130,7 @@ html[data-theme="dark"] .logo-dark { display: block; }
 #game-help-toggle:hover, #game-help-toggle[aria-expanded="true"] { text-decoration: underline; }
 .theme-toggle { display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 0; font-size: 24px; }
 
-/* Gleich große Randzeilen zentrieren den Hauptinhalt, wenn im Fenster genug Platz ist. */
+/* Ich zentriere den Hauptinhalt mit gleich großen Randzeilen, wenn das Fenster genug Platz bietet. */
 main {
   position: relative;
   z-index: 0;
@@ -155,7 +168,7 @@ h1 { margin: 12px 0 4px; font-size: 22px; line-height: 1.35; font-weight: 400; }
   h1 { font-size: 19px; margin: 8px 0 0; }
 }
 
-/* Die Kopfzeile erscheint mit einer kurzen Animation. */
+/* Ich blende die Kopfzeile mit einer kurzen Animation ein. */
 @media (prefers-reduced-motion: no-preference) {
   header { animation: header-arrive .25s ease-out both; }
 }
@@ -199,7 +212,7 @@ body > header { align-self: start; }
   to { background-position: right -150px bottom -2px; }
 }
 
-/* Die Fußnavigation verteilt alle Einträge mit einem gemeinsamen Abstand. */
+/* Ich verteile die Einträge der Fußnavigation mit einem gemeinsamen Abstand. */
 .site-footer {
   border-top: 1px solid var(--line);
   padding: 10px clamp(30px, 8vw, 112px);
@@ -223,6 +236,8 @@ body > header { align-self: start; }
     justify-content: space-between;
     gap: 6px;
   }
+  /* Ich lasse die Spielelinks auf besonders schmalen Displays umbrechen. */
+  .footer-games { flex-wrap: wrap; }
   .footer-meta > button, .footer-meta .footer-languages button { padding-block: 4px; }
   .footer-meta .footer-languages button { min-height: 32px; }
   .footer-meta > * { min-width: 0; text-align: center; }
@@ -337,7 +352,7 @@ html[data-theme="dark"] .mudoku .floor-plan-art {
 .mudoku .panel li + li { margin-top: 8px; }
 .mudoku .panel label { display: block; margin-bottom: 4px; }
 
-/* Die vier Raumquadrate zeigen Buchstabe und gewählte Person. Das Auswahlfeld bedeckt das ganze Quadrat. */
+/* Ich zeige in jedem Raumquadrat den Buchstaben und die gewählte Person. Ich lasse das Auswahlfeld das ganze Quadrat bedecken. */
 .mudoku #rooms {
   display: grid;
   width: min(92%, 218px);
@@ -589,6 +604,7 @@ html[data-theme="dark"] .mudoku .floor-plan-art {
 #character-upload-status:empty { display: none; }
 
 
+/* Ich lege die kurze Charakter-Meldung über die Spielseite und lasse Eingaben darunter durch. */
 .character-celebration {
   position: fixed;
   z-index: 60;
@@ -650,7 +666,7 @@ html[data-theme="dark"] .mudoku .floor-plan-art {
   }
 }
 
-/* Beide Modi teilen die Anordnung der Hintergrundmotive. */
+/* Ich verwende in beiden Farbmodi dieselbe Anordnung der Hintergrundmotive. */
 body {
   position: relative;
   isolation: isolate;
@@ -709,7 +725,7 @@ html[data-theme="dark"] .background-butterflies {
   mix-blend-mode: screen;
 }
 
-/* Explizite Schriftgrößen kompakter darstellen und iOS-Eingabefelder bei mindestens 16 px lassen. */
+/* Ich stelle die Schrift auf kleinen Bildschirmen kompakter dar und lasse iOS-Eingabefelder mindestens 16 px groß. */
 @media (max-width: 700px) {
   .site-footer { font-size: clamp(13px, 3vw, 15px); }
   #hint-message { font-size: 13px; }
@@ -721,4 +737,41 @@ html[data-theme="dark"] .background-butterflies {
   .level-summary h1, .character-celebration p { font-size: clamp(22px, 4.5vw, 32px); }
   .character-upload-label { font-size: 22px; }
   .word-ladder .ladder-entry input, .mudoku .panel select { font-size: 16px; }
+}
+/* Ich lasse Puff zwischen der Spieleauswahl und der Fußnavigation fliegen. */
+body[data-game="puff"] {
+  grid-template-rows: auto minmax(270px, 1fr) auto;
+}
+
+body[data-game="puff"] > main.puff-main {
+  display: block;
+  max-width: none;
+  padding: 0;
+  border-top: 2px solid var(--ink);
+}
+
+body[data-game="puff"] .site-footer {
+  border-top: 2px solid var(--ink);
+}
+
+/* Ich zeichne Puff auf einem transparenten Feld über Blumen und Schmetterlingen. */
+#puff-field {
+  display: block;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+}
+
+#puff-field:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: -2px;
+}
+
+/* Ich lege die Anleitung mittig über Puffs Spielfläche. */
+#hilfe-puff {
+  position: relative;
+  margin: 18px auto 0;
+  width: min(calc(100% - 40px), 610px);
 }

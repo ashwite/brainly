@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#fff">
+  <title>Puff · brainly</title>
+
+  <!-- Ich übernehme Sprache und Farbschema vor dem ersten Rendern. -->
+  <script>
+    const page = document.documentElement
+    page.dataset.theme = matchMedia('(prefers-color-scheme: dark)').matches
+      ? 'dark'
+      : 'light'
+
+    try {
+      page.dataset.theme = localStorage.getItem('sudoku-theme') || page.dataset.theme
+      page.lang = localStorage.getItem('sudoku-language') === 'en' ? 'en' : 'de'
+    } catch {
+      // Ich behalte die Vorgaben bei, wenn der Browser seinen Speicher blockiert.
+    }
+  </script>
+
+  <!-- Ich lade das gemeinsame Design und lasse die Skripte mit defer nach dem Einlesen des HTML laufen. -->
+  <link rel="stylesheet" href="../styles/style.css?v=164">
+  <script src="../scripts/text.js?v=35" defer></script>
+  <script src="../scripts/site-shell.js?v=37" defer></script>
+  <script src="../scripts/navigation.js?v=5" defer></script>
+  <script src="../scripts/game-help.js?v=1" defer></script>
+  <!-- Ich lade das Levelsystem und die Charakteranzeige vor dem Spielskript. -->
+  <script src="../scripts/levels.js?v=14" defer></script>
+  <script src="../scripts/characters.js?v=12" defer></script>
+  <script src="../scripts/puff.js?v=3" defer></script>
+</head>
+<body data-game="puff">
+  <main class="puff-main">
+    <!-- Ich lasse Blumen und Schmetterlinge durch die transparente Spielfläche sichtbar. -->
+    <canvas id="puff-field" tabindex="0" aria-label="Puff"></canvas>
+    <p id="puff-status" class="sr-only" role="status"></p>
+
+    <!-- Ich zeige die Anleitung auf Deutsch oder Englisch über das i in der Kopfzeile. -->
+    <section id="hilfe-puff" class="game-help" aria-labelledby="hilfe-puff-title" hidden>
+      <h2 id="hilfe-puff-title" data-text="helpPuff">Anleitung zu Puff</h2>
+      <p class="help-de" lang="de">Halte den Finger, die Maustaste oder die Leertaste gedrückt, um aufzusteigen. Lass los, um zu sinken. Weiche den Wolken aus.</p>
+      <p class="help-en" lang="en">Hold your finger, the mouse button, or space to rise. Release to descend. Avoid the clouds.</p>
+    </section>
+  </main>
+</body>
+</html>

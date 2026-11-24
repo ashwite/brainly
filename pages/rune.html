@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#fff">
+  <title>Rune · brainly</title>
+
+  <!-- Ich übernehme Sprache und Farbschema vor dem ersten Rendern. -->
+  <script>
+    const page = document.documentElement
+    page.dataset.theme = matchMedia('(prefers-color-scheme: dark)').matches
+      ? 'dark'
+      : 'light'
+    try {
+      page.dataset.theme = localStorage.getItem('sudoku-theme') || page.dataset.theme
+      page.lang = localStorage.getItem('sudoku-language') === 'en' ? 'en' : 'de'
+    } catch {
+      // Ich behalte die Vorgaben bei, wenn der Browser seinen Speicher blockiert.
+    }
+  </script>
+
+  <!-- Ich lade das gemeinsame Design und lasse die Skripte mit defer nach dem Einlesen des HTML laufen. -->
+  <link rel="stylesheet" href="../styles/style.css?v=164">
+  <script src="../scripts/text.js?v=35" defer></script>
+  <script src="../scripts/site-shell.js?v=37" defer></script>
+  <script src="../scripts/navigation.js?v=5" defer></script>
+  <script src="../scripts/game-help.js?v=1" defer></script>
+  <!-- Ich lade das Levelsystem und die Charakteranzeige vor dem Spielskript. -->
+  <script src="../scripts/levels.js?v=14" defer></script>
+  <script src="../scripts/characters.js?v=12" defer></script>
+  <script src="../scripts/rune.js?v=11" defer></script>
+  <!-- Ich gestalte hier die Strecke, die Figuren und die Bedienelemente von Rune. -->
+  <style>
+  /* Ich gebe der Strecke die gesamte Seitenbreite und begrenze die Textbereiche separat. */
+  main.rune-main {
+    max-width: none;
+    padding-inline: 0;
+  }
+
+  .rune-game {
+    width: 100%;
+  }
+
+  .rune-copy {
+    width: min(100%, 650px);
+    margin-inline: auto;
+    padding-inline: 20px;
+  }
+
+  /* Ich verwende dieselbe responsive Höhe wie für Miffyroll. */
+  .rune-track {
+    position: relative;
+    height: clamp(110px, 37vw, 148px);
+  }
+
+  /* Ich zeichne die Bodenlinie in der Vordergrundfarbe des aktuellen Farbschemas. */
+  .rune-track::after {
+    content: '';
+    position: absolute;
+    inset: auto 0 0;
+    height: 2px;
+    background: var(--ink);
+    pointer-events: none;
+  }
+
+  /* Ich lasse das Feld transparent, damit die Seitenmotive durchscheinen. */
+  #field {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    background: transparent;
+    touch-action: manipulation;
+  }
+
+  /* Ich markiere den Tastaturfokus mit einer dickeren Bodenlinie. */
+  #field:focus {
+    outline: none;
+  }
+
+  .rune-track:has(#field:focus-visible)::after {
+    height: 3px;
+  }
+
+  /* Ich schneide das einlaufende Hindernis am Spielfeldrand ab. */
+  .rune-obstacle-layer {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  /* Ich zeige beide Figuren gleich hoch und lasse sie um ihre Fußpunkte skalieren. */
+  #rune-player,
+  #rune-obstacle {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: auto;
+    height: 80%;
+    transform-origin: center bottom;
+    pointer-events: none;
+  }
+
+  #rune-player {
+    margin-left: -7px;
+  }
+
+  #rune-obstacle {
+    translate: -50% 0;
+  }
+
+  /* Ich kehre die schwarzen Konturen im Dunkelmodus zu Weiß um. */
+  html[data-theme="dark"] :is(#rune-player, #rune-obstacle) {
+    filter: invert(1);
+  }
+</style>
+</head>
+<body data-game="rune">
+  <main class="rune-main">
+  <section class="rune-game" aria-label="Rune">
+    <div class="rune-copy">
+      <!-- Ich zeige die Anleitung erst beim Öffnen über das i in der Kopfzeile. -->
+      <section id="hilfe-rune" class="game-help" aria-labelledby="hilfe-rune-title" hidden>
+        <h2 id="hilfe-rune-title" data-text="helpRune">Anleitung zu Rune</h2>
+        <p class="help-de" lang="de">Tippe auf den Bildschirm oder drücke die Leertaste, um zu starten. Tippe oder drücke erneut, um zu springen.</p>
+        <p class="help-en" lang="en">Tap the screen or press the space bar to start. Tap or press again to jump.</p>
+      </section>
+    </div>
+    <!-- Ich lasse den Rundenstatus vorlesen, ohne ihn auf der Strecke einzublenden. -->
+    <p id="status" class="sr-only" role="status">Bereit. Tippe oder drücke die Leertaste.</p>
+    <!-- Ich setze die Strecke per Skript an die Stelle von Miffyroll. -->
+    <div class="rune-track">
+      <!-- Ich mache die Spielfläche für Berührung und Tastatur erreichbar. -->
+      <canvas id="field" width="480" height="204" tabindex="0"
+        aria-label="Rune-Spielfeld"></canvas>
+      <img id="rune-player" src="../assets/rune-player.png" alt="">
+      <!-- Ich setze die Hindernisebene im HTML nach dem Spielerbild, damit sie bei einer Überlappung vorne gezeichnet wird. -->
+      <div class="rune-obstacle-layer" aria-hidden="true">
+        <img id="rune-obstacle" src="../assets/rune-obstacle.png" alt="" hidden>
+      </div>
+    </div>
+  </section>
+</main>
+</body>
+</html>
