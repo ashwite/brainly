@@ -189,6 +189,7 @@ function startWordLadder() {
     return puzzles[lang].findIndex(([first, last, difficulty], index) =>
       index !== exclude && difficulty === level && !levelProgress.isSolved('wordle', `${lang}:${first}:${last}`))
   }
+  // Ich öffne zuerst ein ungelöstes Rätsel. Falls keines übrig ist, nehme ich das erste Rätsel der aktuellen Stufe.
   function startingPuzzle(lang) {
     const next = nextPuzzle(lang)
     return next === -1 ? puzzles[lang].findIndex(([, , level]) => level === levelProgress.difficulty('wordle')) : next
@@ -208,6 +209,7 @@ function startWordLadder() {
     return ''
   }
 
+  // Ich zeige die Anzahl der Züge oder den Eingabefehler an und kennzeichne ungültige Eingaben fürs Vorlesen.
   function showStatus(solved) {
     status.textContent = solved ? translate('ladderSolved').replace('{count}', state().path.length - 1)
       : error ? translate(error) : ''
@@ -239,17 +241,19 @@ function startWordLadder() {
     showStatus(solved)
   }
 
+  // Ich leere die Eingabe und setze die Meldung vom letzten Zug zurück.
   function clearInput() {
     input.value = ''
     error = ''
   }
 
+  // Ich breche den geplanten Rätselwechsel ab, etwa wenn die Sprache oder das Rätsel wechselt.
   function stopNextPuzzle() {
     clearTimeout(nextPuzzleTimer)
     nextPuzzleTimer = undefined
   }
 
-  // Nach drei Sekunden folgt das nächste ungelöste Rätsel der aktuellen Stufe in derselben Sprache.
+  // Ich öffne nach drei Sekunden das nächste ungelöste Rätsel derselben Stufe und Sprache, sofern eines verfügbar ist.
   function queueNextPuzzle() {
     const lang = language()
     const completed = state()
@@ -263,6 +267,7 @@ function startWordLadder() {
     }, 3000)
   }
 
+  // Ich tausche das Rätsel nur in der gewählten Sprache aus und beginne wieder mit dem Startwort.
   function openPuzzle(index) {
     if (index === state().puzzle) return
     stopNextPuzzle()
@@ -307,6 +312,7 @@ function startWordLadder() {
     render()
     input.focus()
   })
+  // Ich zeige beim Sprachwechsel den gespeicherten Wortweg der gewählten Sprache an.
   document.addEventListener('game-language-change', () => {
     stopNextPuzzle()
     const lang = language()
@@ -319,7 +325,7 @@ function startWordLadder() {
   })
   render()
 
-  // Der Spielstand enthält beide Sprachversionen. Beim Wiederherstellen prüfe ich jeden gespeicherten Zug.
+  // Ich speichere beide Sprachversionen und prüfe beim Wiederherstellen jeden gespeicherten Zug.
   return {
     translate,
     saveKey: 'wordLadderSave',

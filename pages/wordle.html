@@ -7,7 +7,7 @@
   <meta name="description" content="Ändere pro Zug einen Buchstaben und erreiche das Zielwort.">
   <title>Wordle · brainly</title>
   <link rel="icon" href="../assets/miffy.png" type="image/png">
-  <!-- Gespeicherte Sprache und Hell-Dunkel-Modus vor dem Rendern anwenden. -->
+  <!-- Ich übernehme die gespeicherte Sprache und das Farbschema vor dem ersten Rendern. -->
   <meta name="theme-color" content="#fff">
   <script>
     const preferredTheme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
@@ -20,10 +20,10 @@
     }
   </script>
   <!-- Im Stylesheet sammle ich gemeinsame Regeln und ergänze für jedes Spiel eigene Regeln. -->
-  <link rel="stylesheet" href="../styles/style.css?v=161">
+  <link rel="stylesheet" href="../styles/style.css?v=162">
   <!-- Ich lade Übersetzungen und gemeinsame Bedienelemente zuerst. defer wartet, bis die Seite eingelesen ist. -->
   <script src="../scripts/text.js?v=32" defer></script>
-  <script src="../scripts/site-shell.js?v=29" defer></script>
+  <script src="../scripts/site-shell.js?v=34" defer></script>
   <script src="../scripts/navigation.js?v=5" defer></script>
   <script src="../scripts/game-help.js?v=1" defer></script>
   <script src="../scripts/wordle.js?v=10" defer></script>
@@ -34,7 +34,7 @@
 </head>
 <body class="word-ladder" data-game="wordle">
 
-  <!-- Wordle zeigt Startwort, Zielwort und die bisher geprüften gültigen Wörter. -->
+  <!-- Ich zeige bei Wordle das Startwort, das Zielwort und die bisher geprüften gültigen Wörter. -->
   <main>
     <!-- Ich halte die Anleitung anfangs verborgen. Das kleine i öffnet sie. -->
     <section id="hilfe-wordle" class="game-help" aria-labelledby="hilfe-wordle-title" hidden>

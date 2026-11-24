@@ -33,7 +33,7 @@ const levelProgress = (() => {
         if (xp === 10 || xp === xpWithoutHelp) awards.set(key, xpWithoutHelp)
       }
     } catch {
-      // Bei blockiertem Browserspeicher zeige ich die XP aus dem aktuellen Tab an.
+      // Ich zeige bei blockiertem Browserspeicher die XP aus dem aktuellen Tab an.
     }
     return awards
   }
@@ -51,10 +51,12 @@ function difficulty(game) {
   return 'easy'
 }
 
+  // Ich erkenne einen abgeschlossenen Fall anhand der Kombination aus Spiel- und Rätselkennung.
   function isSolved(game, puzzle) {
     return readAwards().has(`${prefix}${game}:${puzzle}`)
   }
 
+  // Ich addiere Rätsel- und Minispiel-XP für die Level-Anzeige auf der Startseite.
   function render() {
     const progress = document.querySelector('#level-progress')
     if (!progress) return
@@ -101,6 +103,7 @@ function difficulty(game) {
     let total = 0
     let visibleSince = document.hidden ? Infinity : performance.now()
 
+    // Ich beginne nach einem Tabwechsel erst wieder beim Sichtbarwerden mit dem Zählen.
     document.addEventListener('visibilitychange', () => {
       visibleSince = document.hidden ? Infinity : performance.now()
     })
@@ -132,6 +135,7 @@ function difficulty(game) {
     return JSON.stringify([...readAwards()])
   }
 
+  // Ich prüfe den Kontostand vollständig, bevor ich gültige XP in den Browser übernehme.
   function restoreSave(snapshot) {
     let entries
     try {

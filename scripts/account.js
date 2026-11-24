@@ -1,8 +1,8 @@
-// Clerk-Anmeldung und automatische Synchronisierung von XP und den getrennten Rätselständen.
+// Ich gleiche XP und die getrennten Rätselstände automatisch mit dem angemeldeten Konto ab.
 // Ich verbinde die Anmeldung mit Clerk und gleiche Spielstände im Browser und im Konto ab.
 (() => {
   // Ich lese den öffentlichen Schlüssel aus dem Script-Tag der geöffneten Spielseite.
-  // Der Schlüssel bestimmt das Clerk-Projekt. Lokale Spielstände funktionieren auch ohne Clerk.
+  // Ich wähle mit dem Schlüssel das Clerk-Projekt aus und kann lokale Spielstände auch ohne Clerk verwenden.
   const key = document.currentScript.dataset.publishableKey;
   // Ich verwende für jedes Spiel einen eigenen Schlüssel und behalte für Sudoku den bisherigen bei.
   const hasGame = typeof gameApp !== 'undefined';
@@ -11,7 +11,7 @@
   const autosaveInterval = 15_000;
   const autoloadInterval = 20_000;
 
-  // Sudoku speichert seine Eingaben bereits direkt im Browser.
+  // Ich verwende für Sudoku den bereits vorhandenen lokalen Spielstand.
   // Ich gebe Mudoku und Wordle je einen eigenen Eintrag im Browserspeicher. Sudoku speichert schon direkt bei jeder Eingabe.
   const localSaveKey = hasGame && saveKey !== 'sudokuSave' ? `brainly:${saveKey}` : null;
   if (localSaveKey) {
@@ -19,14 +19,14 @@
       try {
         localStorage.setItem(localSaveKey, gameApp.captureSave());
       } catch {
-        // Bei blockiertem Browserspeicher bleibt der Spielstand im Tab.
+        // Ich behalte den Spielstand im aktuellen Tab, wenn der Browser den Speicher blockiert.
       }
     };
     try {
       const snapshot = localStorage.getItem(localSaveKey);
       if (snapshot !== null) restoreSave(snapshot);
     } catch {
-      // Das Spiel startet mit seiner normalen Voreinstellung.
+      // Ich starte mit der normalen Voreinstellung, wenn ich den lokalen Spielstand nicht öffnen kann.
     }
     setInterval(saveLocally, autosaveInterval);
     window.addEventListener('pagehide', saveLocally);
@@ -37,7 +37,7 @@
 
   // Mit querySelector suche ich Elemente anhand ihrer ID. Das # steht für eine ID im HTML.
   const footerStatus = document.querySelector('#footer-account-status');
-  // Konto-Meldungen erscheinen im Footer.
+  // Ich zeige Konto-Meldungen im Footer an.
   function showStatus(text) {
     footerStatus.textContent = text;
   }
@@ -109,7 +109,7 @@
       footerProfile.hidden = !signedIn;
     }
 
-    // Der Konto-Button öffnet die Anmeldung oder meldet die aktive Sitzung ab.
+    // Ich sperre die Konto-Buttons während einer laufenden Aktion.
     let accountActionRunning = false;
     function run(action) {
       return async () => {
@@ -154,7 +154,7 @@
         await user.reload();
         if (accountActionRunning || clerk.user?.id !== user.id) return;
 
-        // Ich führe abgeschlossene Rätsel aus beiden Quellen zusammen. Aus diesen Abschlüssen berechnet die Seite ihre XP.
+        // Ich führe Rätselabschlüsse und Minispiel-XP aus Browser und Konto zusammen.
         const metadata = user.unsafeMetadata;
         const onlineLevel = metadata[progress.saveKey];
         if (typeof onlineLevel === 'string' && !progress.restoreSave(onlineLevel)) {
@@ -166,7 +166,7 @@
 
         // Ich übernehme den Online-Rätselstand nur, wenn seit dem letzten Abgleich keine offenen lokalen Änderungen vorliegen.
         if (load) {
-          // Ein Abruf darf weder lokale Spielzüge noch eine noch nicht bestätigte Worteingabe ersetzen.
+          // Ich schütze offene lokale Spielzüge und noch nicht bestätigte Worteingaben vor dem Online-Abruf.
           if (hasGame && typeof onlineGame === 'string' && onlineGame !== remoteGame &&
               currentGame === game && currentGame === savedGame &&
               !document.querySelector('#ladder-input')?.value) {
@@ -200,7 +200,6 @@
       }
     }
 
-    // Abrufe und Speicherläufe werden nacheinander ausgeführt, wenn ihre Timer zusammentreffen.
     // Ich reihe Abrufe und Speichervorgänge hintereinander ein, damit sie sich nicht während des Wartens überholen.
     function scheduleSync(load) {
       const user = clerk.user;
