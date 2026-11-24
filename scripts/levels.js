@@ -2,7 +2,7 @@
 const levelProgress = (() => {
   const prefix = 'puzzle-xp:'
   const minigamePrefix = 'minigame-xp:'
-  const minigameKey = /^minigame-xp:(rune|spark):[0-9]+(?:-[0-9]+){3}$/
+  const minigameKey = /^minigame-xp:(rune|spark|puff):[0-9]+(?:-[0-9]+){3}$/
   const playInterval = 3000
   const xpPerInterval = 5
   const xpPerLevel = 1000

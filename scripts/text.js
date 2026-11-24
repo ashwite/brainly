@@ -66,6 +66,7 @@ const uiText = {
   helpWordle: ['Anleitung zu Wordle', 'Wordle instructions'],
   helpRune: ['Anleitung zu Rune', 'Rune instructions'],
   helpSpark: ['Anleitung zu Spark', 'Spark instructions'],
+  helpPuff: ['Anleitung zu Puff', 'Puff instructions'],
   imprint: ['Impressum', 'Legal notice'],
   privacy: ['Datenschutz', 'Privacy'],
   lieRule: ['Genau eine der Aussagen ist falsch.', 'Exactly one of the statements is false.'],
