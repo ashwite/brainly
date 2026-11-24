@@ -6,7 +6,7 @@
   const games = { sudoku: 'Sudoku', mudoku: 'Mudoku', wordle: 'Wordle' }
   // Ich lese aus dem Seitenkörper, ob ein Spiel geöffnet ist. Nur dann füge ich das i zur Anleitung hinzu.
   const game = document.body.dataset.game
-  const gameName = games[game]
+  const gameName = game === 'rune' ? 'Rune' : games[game]
   document.body.insertAdjacentHTML('afterbegin', `
   <div class="background-butterflies" aria-hidden="true"></div>
   <div class="background-motif-center" aria-hidden="true"></div>
@@ -27,8 +27,15 @@
       </button>
     </div>
         </div>
-    <nav class="header-games" aria-label="Home, Sudoku, Mudoku, Wordle">
-      ${Object.entries({ home: 'Home', ...games }).map(([slug, name]) => `
+          <nav class="header-games" aria-label="Spielnavigation">
+      ${Object.entries({
+        home: 'Home',
+        sudoku: 'Sudoku',
+        rune: 'Rune',
+        mudoku: 'Mudoku',
+        spark: 'Spark',
+        wordle: 'Wordle'
+      }).map(([slug, name]) => `
         <a class="header-game-link" href="${base}pages/${slug}.html">
           <span class="header-game-image">
             <img src="${base}assets/nav-${slug}.png" alt="">
@@ -63,4 +70,9 @@
       <span id="footer-account-status" role="status"></span>
     </footer>
   </div>`)
+
+  const runeTrack = document.querySelector('.rune-track')
+  if (game === 'rune' && runeTrack) {
+    document.querySelector('.footer-skate').replaceWith(runeTrack)
+  }
 })()

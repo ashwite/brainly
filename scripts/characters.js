@@ -1,4 +1,4 @@
-// Ich verwalte die Charakterauswahl, eigene PNGs und den Glückwunsch nach einem gelösten Rätsel.
+// Ich verwalte die Charakterauswahl, eigene PNGs und die kurze Rückmeldung nach Rätseln oder Minispielrunden.
 (() => {
   const storageKey = 'level-character'
   const customImageKey = 'level-custom-character'
@@ -47,7 +47,16 @@
       celebration.hidden = true
     }
     celebration.addEventListener('animationend', hideCelebration)
-    // Ich reagiere auf das Signal des Spiels, zeige Namen und Bild und blende den Glückwunsch nach kurzer Zeit wieder aus.
+    // Ich zeige den ausgewählten Charakter für beide Meldungen mit derselben Animation.
+    function showCelebration(text) {
+      message.textContent = text
+      setCharacter(image, selectedCharacter())
+      celebration.hidden = false
+      for (const animation of celebration.getAnimations()) animation.currentTime = 0
+      clearTimeout(hideTimer)
+      hideTimer = setTimeout(hideCelebration, 2200)
+    }
+
     document.addEventListener('puzzle-solved', () => {
       let name = ''
       try {
@@ -55,12 +64,12 @@
       } catch {
         // Ohne Browserspeicher zeige ich den Glückwunsch ohne Namen.
       }
-      message.textContent = name ? `Super ${name}!` : 'Super!'
-      setCharacter(image, selectedCharacter())
-      celebration.hidden = false
-      for (const animation of celebration.getAnimations()) animation.currentTime = 0
-      clearTimeout(hideTimer)
-      hideTimer = setTimeout(hideCelebration, 2200)
+      showCelebration(name ? `Super ${name}!` : 'Super!')
+    })
+
+    // Ich zeige am Ende eines Minispiels nur die XP, die in dieser Runde dazugekommen sind.
+    document.addEventListener('minigame-finished', event => {
+      showCelebration(`+${new Intl.NumberFormat(document.documentElement.lang).format(event.detail.xp)} XP`)
     })
     return
   }

@@ -50,10 +50,17 @@ header {
 
 .header-games {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: clamp(6px, 2vw, 14px);
-  width: min(calc(100% - 32px), 360px);
+  width: min(calc(100% - 32px), 550px);
   margin: 0 auto 12px;
+}
+
+@media (max-width: 700px) {
+  .header-games {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    max-width: 300px;
+  }
 }
 
 .header-game-link {

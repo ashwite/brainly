@@ -64,6 +64,7 @@ const uiText = {
   helpSudoku: ['Anleitung zu Sudoku', 'Sudoku instructions'],
   helpMudoku: ['Anleitung zu Mudoku', 'Mudoku instructions'],
   helpWordle: ['Anleitung zu Wordle', 'Wordle instructions'],
+  helpRune: ['Anleitung zu Rune', 'Rune instructions'],
   imprint: ['Impressum', 'Legal notice'],
   privacy: ['Datenschutz', 'Privacy'],
   lieRule: ['Genau eine der Aussagen ist falsch.', 'Exactly one of the statements is false.'],
