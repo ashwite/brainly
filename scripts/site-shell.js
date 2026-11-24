@@ -39,10 +39,11 @@
       `).join('')}
     </nav>
   </header>`)
-  // Ich ergänze den Footer. In Spark und Puff reicht das Spielfeld bis zur Fußnavigation, deshalb lasse ich Miffyroll dort weg.
+  // Ich lasse Miffyroll im Impressum und bei den beiden Spielfeldern über dem Footer weg.
+  const showMiffyroll = !['spark', 'puff'].includes(game) && document.body.dataset.page !== 'impressum'
   document.body.insertAdjacentHTML('beforeend', `
   <div class="footer-area">
-    ${['spark', 'puff'].includes(game) ? '' : '<div class="footer-skate" aria-hidden="true"></div>'}
+    ${showMiffyroll ? '<div class="footer-skate" aria-hidden="true"></div>' : ''}
     <footer class="site-footer">
       <nav class="footer-links" aria-label="Fußnavigation" data-label="footerNavigation">
         <div class="footer-games">
@@ -52,7 +53,7 @@
         <div class="footer-meta">
           ${document.getElementById('account-session') ? '' : '<button id="account-session" type="button" data-text="accountSignIn" hidden>Anmelden</button>'}
           <button id="footer-profile" type="button" data-text="accountManage" hidden>Konto verwalten</button>
-          <span data-text="imprint">Impressum</span>
+          <a href="${base}pages/impressum.html" data-text="imprint">Impressum</a>
           <a href="${base}pages/datenschutz.html" data-text="privacy">Datenschutz</a>
           <div class="languages footer-languages" role="group" data-label="language">
             <button type="button" data-language="en" lang="en" aria-label="English">en</button>
@@ -70,4 +71,21 @@
   if (game === 'rune' && runeTrack) {
     document.querySelector('.footer-skate').replaceWith(runeTrack)
   }
+
+  // Ich überspringe Bedienelemente, Spielfelder und per Tastatur ausgelöste Klicks.
+  const interactive = 'a, button, input, select, textarea, label, summary, canvas, [contenteditable], [tabindex], [role="button"], [role="link"], [role="switch"]'
+  document.addEventListener('click', event => {
+    if (!event.detail || event.defaultPrevented || event.target.closest(interactive)) return
+    // Bei Rune und Spark halte ich die freie Spielfläche für den Rundenstart oder Sprung frei.
+    if (['rune', 'spark'].includes(game) && !event.target.closest('header, .site-footer, .game-help')) return
+
+    // Ich lasse jeden Stern an seiner eigenen Klickposition drei Sekunden lang sichtbar.
+    const star = document.createElement('span')
+    star.className = 'click-star'
+    star.setAttribute('aria-hidden', 'true')
+    star.style.left = event.clientX + 'px'
+    star.style.top = event.clientY + 'px'
+    document.body.append(star)
+    window.setTimeout(() => star.remove(), 3000)
+  })
 })()

@@ -1,5 +1,7 @@
 /* Ich lade hier die Schriftarten. Weiter unten gestalte ich Kopfzeile, Spiele, Footer und Hintergründe. */
 @import url('https://fonts.googleapis.com/css2?family=WindSong:wght@400&family=Jost:wght@400;500;600&family=VT323&display=swap');
+/* Ich lade Patrick Hand SC für die Beschriftungen der Spiele. */
+@import url('https://fonts.googleapis.com/css2?family=Patrick+Hand+SC&display=swap');
 
 /* GEMEINSAM · Hier gestalte ich die Spiele und Infoseiten. */
 
@@ -7,6 +9,7 @@
 /* Hier lege ich wiederverwendbare Farben fest. var(...) liest später den jeweiligen Wert aus. */
 :root {
   color-scheme: light;
+  --paper-star: url("../assets/sternlight.png");
   --bg: #fff;
   --ink: #000;
   --line: color-mix(in srgb, var(--ink) 28%, var(--bg));
@@ -18,8 +21,27 @@
 /* Im Dunkelmodus verwende ich den dunklen Farbton als Hintergrund und den hellen für Text und Linien. */
 html[data-theme="dark"] {
   color-scheme: dark;
+  --paper-star: url("../assets/sterndark.png");
   --bg: #000;
   --ink: #fff;
+}
+
+/* Ich zentriere den dekorativen Stern auf dem Klick und lasse weitere Eingaben durch. */
+/* Ich zeige den Klickstern eine Sekunde lang mit 32 px und verkleinere ihn dann sanft auf 24 px. */
+@keyframes click-star-settle {
+  from { scale: 1.333333; }
+  to { scale: 1; }
+}
+
+.click-star {
+  animation: click-star-settle 160ms ease-out 1s backwards;
+  position: fixed;
+  width: 24px;
+  height: 24px;
+  translate: -50% -50%;
+  background: var(--paper-star) center / contain no-repeat;
+  pointer-events: none;
+  z-index: 10000;
 }
 
 /* Hier lege ich die Grundgestaltung und den sichtbaren Tastaturfokus fest. */
@@ -78,10 +100,12 @@ header {
 
 /* Ich lege für .header-game-link die Anordnung, die Abstände zwischen den Elementen und die Vordergrundfarbe fest. */
 .header-game-link {
+  /* Ich verwende Patrick Hand SC für die Beschriftungen der Spielekacheln. */
+  font-family: "Patrick Hand SC", cursive;
   display: grid;
   gap: 4px;
   color: inherit;
-  font-size: clamp(11px, 2.8vw, 14px);
+  font-size: clamp(13px, 3vw, 16px);
   text-align: center;
   text-decoration: none;
 }
@@ -272,6 +296,11 @@ body > header { align-self: start; }
   justify-content: space-between;
   gap: clamp(8px, 2vw, 24px);
 }
+/* Ich nutze auf mittelbreiten Bildschirmen mehr Platz für die Links und die Sprachwahl. */
+@media (700px < width <= 1000px) {
+  .site-footer { padding-inline: 3vw; }
+  .footer-links { column-gap: 6px; }
+}
 /* Ich verteile am Desktop alle Einträge in einer Reihe. Auf dem Handy bekommt jede Gruppe eine eigene Reihe. */
 .footer-games, .footer-meta { display: contents; }
 /* Ich lege für .footer-meta > button den Rahmen und die Innenabstände fest. */
@@ -314,7 +343,7 @@ body > header { align-self: start; }
 #footer-account-status:empty { display: none; }
 /* Ich lege für #footer-account-status die Anordnung und die Textausrichtung fest. */
 #footer-account-status { display: block; text-align: center; }
-/* Ich lege für .legal-page die Ausrichtung auf der Querachse und die maximale Breite fest. */
+/* DATENSCHUTZ UND IMPRESSUM · Ich begrenze die Lesebreite der Infoseiten und lasse ihre Inhalte den verfügbaren Platz ausfüllen. */
 .legal-page { align-items: stretch; max-width: 640px; }
 
 /* Ich mische die grauen Flächen mit Transparenz. Das Seitenmotiv scheint durch, während der Text volle Deckkraft behält. */
@@ -630,7 +659,7 @@ html[data-theme="dark"] .mudoku .floor-plan-art {
 /* Ich lege für .word-ladder .ladder-entry button:disabled die Deckkraft und den Mauszeiger fest. */
 .word-ladder .ladder-entry button:disabled { opacity: .55; cursor: default; }
 
-/* Ich zeige links die Level-Anzeige und rechts das Charakterprofil. Auf sehr schmalen Bildschirmen stehen beide Blöcke untereinander. */
+/* STARTSEITE · Ich zeige links die Level-Anzeige und rechts das Charakterprofil. Auf sehr schmalen Bildschirmen stehen beide Blöcke untereinander. */
 .home-level { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: stretch; gap: 24px; width: 100%; font-family: 'VT323', monospace; font-size: 20px; }
 
 /* Ich lege für .level-summary, .level-character-settings die Anordnung, die Abstände zwischen den Elementen und die Mindestbreite fest. */
@@ -941,7 +970,7 @@ html[data-theme="dark"] .background-butterflies {
   /* Auf kleinen Bildschirmen lege ich für .word-ladder .ladder-entry input, .mudoku .panel select die Schriftgröße fest. */
   .word-ladder .ladder-entry input, .mudoku .panel select { font-size: 16px; }
 }
-/* Ich lasse Puff zwischen der Spieleauswahl und der Fußnavigation fliegen. */
+/* PUFF · Ich lasse das Spielfeld den Platz zwischen Spieleauswahl und Fußnavigation füllen. */
 body[data-game="puff"] {
   grid-template-rows: auto minmax(270px, 1fr) auto;
 }
@@ -980,4 +1009,410 @@ body[data-game="puff"] .site-footer {
   position: relative;
   margin: 18px auto 0;
   width: min(calc(100% - 40px), 610px);
+}
+
+/* RUNE · Ich gestalte die Strecke, die Bodenlinie und die Spielfiguren. */
+/* Ich gebe der Strecke die gesamte Seitenbreite und begrenze die Textbereiche separat. */
+main.rune-main {
+  max-width: none;
+  padding-inline: 0;
+}
+
+/* Ich lege für .rune-game die Breite fest. */
+.rune-game {
+  width: 100%;
+}
+
+/* Ich lege für .rune-copy die Breite, die seitlichen Außenabstände und die seitlichen Innenabstände fest. */
+.rune-copy {
+  width: min(100%, 650px);
+  margin-inline: auto;
+  padding-inline: 20px;
+}
+
+/* Ich verwende dieselbe responsive Höhe wie für Miffyroll. */
+.rune-track {
+  position: relative;
+  height: clamp(110px, 37vw, 148px);
+}
+
+/* Ich zeichne die Bodenlinie in der Vordergrundfarbe des aktuellen Farbschemas. */
+.rune-track::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0;
+  height: 2px;
+  background: var(--ink);
+  pointer-events: none;
+}
+
+/* Ich lasse das Feld transparent, damit die Seitenmotive durchscheinen. */
+:where(body[data-game="rune"]) #field {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: transparent;
+  touch-action: manipulation;
+}
+
+/* Ich markiere den Tastaturfokus mit einer dickeren Bodenlinie. */
+:where(body[data-game="rune"]) #field:focus {
+  outline: none;
+}
+
+/* Ich lege für .rune-track:has(#field:focus-visible)::after die Höhe fest. */
+.rune-track:has(#field:focus-visible)::after {
+  height: 3px;
+}
+
+/* Ich schneide das einlaufende Hindernis am Spielfeldrand ab. */
+.rune-obstacle-layer {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* Ich zeige beide Figuren gleich hoch und lasse sie um ihre Fußpunkte skalieren. */
+#rune-player,
+#rune-obstacle {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: auto;
+  height: 80%;
+  transform-origin: center bottom;
+  pointer-events: none;
+}
+
+/* Ich ergänze hier die Darstellung für #rune-player. */
+#rune-player {
+  margin-left: -7px;
+}
+
+/* Ich lege für #rune-obstacle die Verschiebung fest. */
+#rune-obstacle {
+  translate: -50% 0;
+}
+
+/* Ich kehre die schwarzen Konturen im Dunkelmodus zu Weiß um. */
+html[data-theme="dark"] :is(#rune-player, #rune-obstacle) {
+  filter: invert(1);
+}
+
+/* SPARK · Ich gestalte die transparente Spielfläche, Trennlinien, den Countdown und die Hilfe. */
+/* Ich lasse das Spiel den gesamten Platz zwischen Spieleauswahl und Fußnavigation füllen. */
+body[data-game="spark"] {
+  grid-template-rows: auto minmax(240px, 1fr) auto;
+}
+
+/* Ich lege für body[data-game="spark"] > main.spark-main die Anordnung, die maximale Breite und die Innenabstände fest. */
+body[data-game="spark"] > main.spark-main {
+  display: block;
+  max-width: none;
+  padding: 0;
+  border-top: 2px solid var(--ink);
+}
+
+/* Ich verwende für beide Trennlinien dieselbe Stärke und Theme-Farbe wie bei Rune. */
+body[data-game="spark"] .site-footer {
+  border-top: 2px solid var(--ink);
+}
+
+/* Ich zeichne auf einem transparenten Canvas, damit die Seitenmotive sichtbar bleiben. */
+:where(body[data-game="spark"]) #field {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  touch-action: none;
+}
+
+/* Ich lege für #field:focus-visible die Fokusmarkierung und den Abstand der Fokusmarkierung fest. */
+:where(body[data-game="spark"]) #field:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: -2px;
+}
+
+/* Ich zeige den Countdown über dem Feld und lasse Eingaben zum Spielfeld durch. */
+.spark-controls {
+  position: relative;
+  text-align: center;
+  pointer-events: none;
+}
+
+/* Ich positioniere die Anleitung oberhalb der Spielfläche und verwende den durchscheinenden Hintergrund der gemeinsamen Hilfe. */
+#hilfe-spark {
+  position: absolute;
+  z-index: 1;
+  top: 18px;
+  left: 50%;
+  translate: -50% 0;
+  width: min(calc(100% - 40px), 610px);
+}
+
+/* IMPRESSUM · Ich gestalte mein Profilbild, meinen Über-mich-Text und die Projektlinks. */
+/* Ich bemesse Kopfzeile, Inhalt und Fußzeile im Impressum nach ihrer tatsächlichen Höhe. */
+body[data-page="impressum"] {
+  min-height: 0;
+  grid-template-rows: auto auto auto;
+}
+
+body[data-page="impressum"] > .legal-page {
+  /* Ich rücke die Sternreihe und den Profiltext näher an die Spieleauswahl. */
+  padding-block: 8px 12px;
+}
+
+#about-heading {
+  font-family: "Patrick Hand SC", cursive;
+  font-size: clamp(24px, 4vw, 28px);
+  font-weight: 400;
+}
+
+/* Ich ordne Sternreihe, Profiltext und Kontaktbereich untereinander an. */
+.imprint-profile {
+  display: grid;
+  gap: 16px;
+  font-size: 0.94rem;
+}
+
+/* Ich reserviere über dem Profiltext eine schmale Zeile für die beiden Papiersterne. */
+.imprint-heading {
+  min-height: 26px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.imprint-heading h1 {
+  margin: 0;
+}
+
+/* Ich stelle meinen Benutzernamen rechts neben mein Profilbild und zentriere beide senkrecht. */
+.imprint-signature {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+/* Ich setze meinen Benutzernamen neben das runde Profilbild. */
+.imprint-handle {
+  margin: 2px 0 0;
+  font-size: 1.1rem;
+}
+
+/* Ich umrahme mein Bild mit der Vordergrundfarbe des aktuellen Modus. */
+.imprint-portrait {
+  display: block;
+  width: 96px;
+  height: 96px;
+  object-fit: contain;
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+}
+
+/* Ich verwende im Fließtext dieselbe geerbte Schrift wie für meinen Benutzernamen. */
+.imprint-copy {
+  font-size: clamp(16px, 2.3vw, 18px);
+}
+
+.imprint-copy p {
+  /* Ich nutze den Rasterabstand als Abstand zur Sternreihe. */
+  margin-block: 0;
+}
+
+/* Ich zeichne die beiden oberen Papiersterne mit unterschiedlichen Größen und Positionen. */
+.imprint-heading::after {
+  content: "";
+  flex: 1;
+  align-self: stretch;
+  background: var(--paper-star) right 8% top 12% / 25px auto no-repeat,
+              var(--paper-star) right 30% bottom 10% / 14px auto no-repeat;
+}
+
+/* Ich platziere zwei weitere Sterne unter den Kontaktlinks. */
+.imprint-profile::after {
+  content: "";
+  display: block;
+  height: 36px;
+  background: var(--paper-star) left 5% center / 22px auto no-repeat,
+              var(--paper-star) right 16% bottom / 17px auto no-repeat;
+}
+
+/* Ich gebe meiner Einladung 40 Prozent und dem illustrierten Kontaktrahmen 60 Prozent der verfügbaren Breite. */
+.imprint-contact {
+  /* Ich lasse über und unter dem Kontaktbereich etwas mehr Platz. */
+  margin-block: 16px;
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+  align-items: center;
+  gap: clamp(8px, 2vw, 16px);
+}
+
+/* Ich neige meine Einladung leicht nach links. */
+.imprint-contact-block {
+  transform: rotate(-2deg);
+  padding: clamp(8px, 2vw, 16px);
+}
+
+.imprint-contact-block p {
+  /* Ich setze meinen Einladungstext in der Handschrift Caveat. */
+  /* Ich leite den weichen Schatten von der Textfarbe des aktiven Designs ab. */
+  text-shadow: 1px 2px 4px color-mix(in srgb, currentColor 40%, transparent);
+  font-family: "Caveat", cursive;
+  font-size: clamp(22px, 3vw, 26px);
+  line-height: 1.2;
+  margin: 0;
+}
+
+/* Ich umgebe die weiße Schrift mit einem schwarzen Schatten, damit ich sie auch auf dem hellen Hasen lesen kann. */
+html[data-theme="dark"] .imprint-contact-block p {
+  text-shadow:
+    -1px -1px 0 #000, 1px -1px 0 #000,
+    -1px  1px 0 #000, 1px  1px 0 #000,
+    0 0 3px #000, 0 2px 5px #000;
+}
+
+/* Ich verwende die natürliche Bildhöhe als Bezug für die beiden Linkzeilen. */
+.imprint-contact-frame {
+  position: relative;
+  width: 100%;
+  max-width: 340px;
+  justify-self: center;
+}
+
+/* Ich passe die Hasengrafik an die Spaltenbreite an und erhalte ihr Seitenverhältnis. */
+.imprint-contact-frame img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Ich zentriere die E-Mail im freien Teil der breiten oberen Zeile. */
+.imprint-email {
+  position: absolute;
+  inset-inline: 30% 6%;
+  top: 56%;
+  translate: 0 -50%;
+  text-align: center;
+  font-size: clamp(13px, 2.3vw, 17px);
+  overflow-wrap: anywhere;
+}
+
+/* Ich setze beide Icons mittig in die kürzere untere Zeile. */
+.imprint-project-links {
+  position: absolute;
+  inset-inline: 43% 25%;
+  top: 86%;
+  translate: 0 -50%;
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+}
+
+/* Ich gebe jedem Projektlink eine eigene Klickfläche und zentriere das Symbol darin. */
+.imprint-project-links a {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 32px;
+  border-radius: 8px;
+}
+
+/* Ich lasse die Kontaktlinks ohne Unterstrich und ohne Hintergrund erscheinen. */
+.imprint-contact-frame a {
+  text-decoration: none;
+  background: transparent;
+}
+
+/* Ich vergrößere den Kontaktlink dezent, wenn ich mit der Maus darüberfahre. */
+@media (hover: hover) {
+  .imprint-contact-frame a:hover {
+    scale: 1.12;
+  }
+}
+
+/* Ich animiere die Vergrößerung, wenn keine reduzierte Bewegung eingestellt ist. */
+@media (prefers-reduced-motion: no-preference) {
+  .imprint-contact-frame a {
+    transition: scale 160ms ease-out;
+  }
+}
+
+/* Ich färbe die Projektsymbole mit der aktuellen Textfarbe ein. */
+.imprint-project-links svg {
+  width: 17px;
+  height: 17px;
+  fill: currentColor;
+}
+
+/* Ich lasse die rechten Zeilenenden im zweispaltigen Layout leicht über die Grafik ragen. */
+@media (width > 520px) {
+  /* Ich rücke Text und Hasengrafik gemeinsam etwas nach links. */
+  .imprint-contact {
+    translate: -24px 0;
+  }
+
+  .imprint-contact-frame {
+    justify-self: start;
+  }
+
+  /* Ich platziere mein Bild unter dem Text, ohne den Text gegenüber der Hasengrafik anzuheben. */
+  .imprint-signature {
+    position: absolute;
+    top: 100%;
+    left: calc(50% + 24px - 48px);
+    margin-top: -12px;
+  }
+
+  .imprint-contact-block {
+    z-index: 1;
+    translate: calc(clamp(8px, 2vw, 16px) + 18px) 0;
+    padding-inline-end: 0;
+    text-align: right;
+  }
+}
+
+/* Ich skaliere die zweispaltige Kontaktgruppe auf dem Handy nach ihrer verfügbaren Breite. */
+@media (max-width: 520px) {
+  /* Ich verwende die Profilbreite als Bezugsgröße. Ein cqw entspricht einem Prozent dieser Breite. */
+  .imprint-profile { container-type: inline-size; }
+  /* Ich lasse zwischen den Spalten Platz und reserviere unten Raum für die Signatur. */
+  .imprint-contact {
+    gap: 2cqw;
+    margin-block-end: calc(16px + 7cqw);
+  }
+  /* Ich schiebe die rechtsbündige Einladung leicht über den Rand der Hasengrafik. */
+  .imprint-contact-block {
+    z-index: 1;
+    translate: 4cqw 0;
+    padding: 2cqw 0 2cqw 2cqw;
+    text-align: right;
+  }
+  /* Ich skaliere die Handschrift mit der verfügbaren Breite. */
+  .imprint-contact-block p { font-size: 4.4cqw; }
+  /* Ich verankere Bild und Benutzernamen unter meiner Einladung. */
+  .imprint-signature {
+    position: absolute;
+    top: 100%;
+    left: 39%;
+    margin-top: -2cqw;
+    gap: 1.4cqw;
+  }
+  /* Ich skaliere Breite und Höhe gleichmäßig, damit das Bild rund bleibt. */
+  .imprint-portrait { width: 16cqw; height: 16cqw; }
+  /* Ich passe meinen Benutzernamen an die Größe des Profilbildes an. */
+  .imprint-handle { font-size: 3cqw; }
+  /* Ich passe die Schriftgröße meiner Adresse an die Breite der illustrierten Zeile an. */
+  .imprint-email { font-size: 3.05cqw; }
+  /* Ich verkleinere den Abstand zwischen den Projektlinks. */
+  .imprint-project-links { gap: 0.7cqw; }
+  /* Ich passe die Klickflächen an den unteren Bildrahmen an. */
+  .imprint-project-links a { width: 6cqw; height: 5.6cqw; }
+  /* Ich skaliere die Symbole innerhalb ihrer Klickflächen. */
+  .imprint-project-links svg { width: 3cqw; height: 3cqw; }
 }
